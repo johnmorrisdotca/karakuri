@@ -20,6 +20,12 @@ open a *Fix a translation* issue with the string's name. `{name}` and the other 
 | `statusPlaying` | Playing. | プレイ中。 |
 | `statusWon` | Level won. | レベルクリア。 |
 | `statusLost` | Level lost. | レベル失敗。 |
+| `pinPins` | Pins left {left} of {n} | 残りのピン {left}／{n} |
+| `pinWon` | Saved! You pulled {n} pins. | 救出成功！ピンを{n}本抜きました。 |
+| `pinWonOne` | Saved! You pulled 1 pin. | 救出成功！ピンを1本抜きました。 |
+| `pinLostLava` | The lava got the hero. Think about which pin lets the lava go, and which one it falls on. | ヒーローが溶岩にのまれました。どのピンが溶岩を流すか、どこへ落ちるかを考えましょう。 |
+| `pinLostSpikes` | The hero landed on the spikes. Something has to make a safe landing first. | ヒーローがトゲに落ちました。先に安全な着地場所を作りましょう。 |
+| `pinLostFell` | The hero fell out of the shaft. | ヒーローが縦穴の外へ落ちました。 |
 | `nutsSlots` | Slots {used} of {slots} · plates left {left} | スロット {used}／{slots}・残りの板 {left} |
 | `nutsWon` | Every plate has fallen, in {n} screws. | {n}本のネジで、すべての板が落ちました。 |
 | `nutsLost` | All {slots} slots are full and plates are still on. Finish one plate at a time, so its screws fall with it and free their slots. | {slots}個のスロットがすべて埋まり、板が残っています。板を一枚ずつ片づけると、ネジも一緒に落ちてスロットが空きます。 |

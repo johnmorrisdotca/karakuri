@@ -25,11 +25,21 @@ test("a page that keeps room round the board can say how much height it may take
       mount.destroy();
       return height;
     };
-    return { small: stageHeight(300), large: stageHeight(600) };
+    // The room a page keeps can change after the board is up: redraw() asks again.
+    let room = 600;
+    const mount = mountKarakuri(host, { game: "tube-sort", level: 1, ui: "board", clock: "manual", room: () => room });
+    const before = host.querySelector(".kk-stage").getBoundingClientRect().height;
+    room = 300;
+    mount.redraw();
+    const after = host.querySelector(".kk-stage").getBoundingClientRect().height;
+    mount.destroy();
+    return { small: stageHeight(300), large: stageHeight(600), before, after };
   });
   expect(heights.small).toBeLessThanOrEqual(301);
   expect(heights.small).toBeGreaterThan(250);
   expect(heights.large).toBeGreaterThan(heights.small + 100);
+  expect(heights.before).toBeGreaterThan(heights.after + 100);
+  expect(heights.after).toBeLessThanOrEqual(301);
   expect(errors).toEqual([]);
 });
 

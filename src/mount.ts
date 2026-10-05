@@ -56,7 +56,7 @@ export interface KarakuriMount {
   advance(ticks: number): void;
   /** Where a place in the game's own units is on the page, in client pixels (for a test or a guide to point at). */
   toClient(x: number, y: number): { x: number; y: number };
-  /** Draws again now (after a change of theme, say). */
+  /** Fits the board to its box again (asking `room` again) and draws it now: after a change of theme, or of the room the page keeps round the board. */
   redraw(): void;
   destroy(): void;
 }
@@ -404,6 +404,7 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     },
     redraw() {
       theme = readTheme(root);
+      fit();
       draw();
     },
     destroy() {

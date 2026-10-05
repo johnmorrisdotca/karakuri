@@ -100,7 +100,7 @@ const board = mountKarakuri(host, {
   level: 3,                  // from 1
   lang: "ja",                // "en" or "ja"; the page's language if left out
   ui: "board",               // "full" (default) draws a bar, a result card and buttons; "board" is the canvas alone
-  onStatus: ({ level, status, result }) => { /* "playing" at the start, then "won" or "lost" */ },
+  onStatus: ({ level, status, text, info }) => { /* "playing" at the start, then "won" or "lost"; text and info are words in the player's language */ },
 });
 board.restart();             // the same level again
 board.setLevel(4);           // another level of the same game
@@ -108,7 +108,7 @@ board.advance(60);           // step the game 60 sixtieths of a second now (with
 board.destroy();
 ```
 
-The tag takes the same things as attributes: `game`, `level`, `lang`, `ui` and `clock` (`real` or `manual`), fires `karakuri-status` with `{ game, level, status, result }` in `detail`, and has the methods `restart()` and `setLevel(n)`.
+The tag takes the same things as attributes: `game`, `level`, `lang`, `ui` and `clock` (`real` or `manual`), fires `karakuri-status` with `{ game, level, status, result, text, info }` in `detail`, and has the methods `restart()` and `setLevel(n)`.
 
 A game of the package is a `Controller`: `createController(game, level)` from `/play` gives one without a page, with `pointerDown`, `pointerMove`, `pointerUp`, `tick` and `draw`, and `snapshot()` for plain data to read.
 Everything that thinks about a level is a pure function on plain state in its own namespace: a state in, a new state out.

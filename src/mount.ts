@@ -28,6 +28,10 @@ export interface StatusEvent {
   level: number;
   status: Status;
   result: Say | null;
+  /** The words of `result` in the player's language ("" while playing), for a page that draws its own result. */
+  text: string;
+  /** The line the bar would show about the level, in the player's language (moves made, ink left, and so on). */
+  info: string;
 }
 
 /** The handle `mountKarakuri` gives back. */
@@ -192,6 +196,16 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     controller.draw(g, { ...theme, lang });
   };
 
+  /** What a page is told: the level's state now, with its words in the player's language. */
+  const eventNow = (): StatusEvent => ({
+    game,
+    level,
+    status: controller.status,
+    result: controller.result,
+    text: controller.result === null ? "" : words(controller.result),
+    info: words(controller.info),
+  });
+
   /** Brings the bar, the card and the status in line with the controller, and tells the page what changed. */
   const sync = (): void => {
     const now = controller.info;
@@ -206,16 +220,16 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
       root.dataset.status = lastStatus;
       showCard();
       live.textContent = lastStatus === "playing" ? "" : `${say(lang, lastStatus === "won" ? "statusWon" : "statusLost")} ${controller.result === null ? "" : words(controller.result)}`;
-      const event: StatusEvent = { game, level, status: lastStatus, result: controller.result };
+      const event = eventNow();
       options.onStatus?.(event);
       host.dispatchEvent(new CustomEvent("karakuri-status", { detail: event, bubbles: true }));
     }
-    if (changed) options.onChange?.({ game, level, status: controller.status, result: controller.result });
+    if (changed) options.onChange?.(eventNow());
   };
 
   /** Tells the page a level has begun (or begun again). */
   const announce = (): void => {
-    const event: StatusEvent = { game, level, status: "playing", result: null };
+    const event = eventNow();
     options.onStatus?.(event);
     host.dispatchEvent(new CustomEvent("karakuri-status", { detail: event, bubbles: true }));
   };

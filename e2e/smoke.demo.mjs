@@ -27,3 +27,21 @@ test("the page does not scroll sideways at the width it is made for", async ({ p
   const over = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(over).toBeLessThanOrEqual(0);
 });
+
+test("a status event carries the level's line as words, in the language chosen, for a page that draws its own", async ({ page }) => {
+  const errors = await open(page, "?game=tube-sort");
+  await page.evaluate(() => {
+    window.__events = [];
+    document.addEventListener("karakuri-status", (event) => window.__events.push(event.detail));
+  });
+  await page.locator(`${at("board")} [data-testid="restart"]`).click();
+  const english = await page.evaluate(() => window.__events.at(-1));
+  expect(english.status).toBe("playing");
+  expect(english.text).toBe("");
+  expect(english.info.length).toBeGreaterThan(0);
+  await page.locator('[data-lang="ja"]').click();
+  await page.locator(`${at("board")} [data-testid="restart"]`).click();
+  const japanese = await page.evaluate(() => window.__events.at(-1));
+  expect(japanese.info).not.toBe(english.info);
+  expect(errors).toEqual([]);
+});

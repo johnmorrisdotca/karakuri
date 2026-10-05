@@ -20,6 +20,10 @@ open a *Fix a translation* issue with the string's name. `{name}` and the other 
 | `statusPlaying` | Playing. | プレイ中。 |
 | `statusWon` | Level won. | レベルクリア。 |
 | `statusLost` | Level lost. | レベル失敗。 |
+| `ropeCuts` | Cuts {n} | 切った回数 {n} |
+| `ropeWonOne` | The lantern is home after 1 cut. | 1回切って、ランタンが無事に着きました。 |
+| `ropeWon` | The lantern is home after {n} cuts. | {n}回切って、ランタンが無事に着きました。 |
+| `ropeLost` | The lantern fell into the pit. Cut at a different moment, or a different rope first. | ランタンが穴に落ちました。切るタイミングか、切るロープの順番を変えてみましょう。 |
 | `pinPins` | Pins left {left} of {n} | 残りのピン {left}／{n} |
 | `pinWon` | Saved! You pulled {n} pins. | 救出成功！ピンを{n}本抜きました。 |
 | `pinWonOne` | Saved! You pulled 1 pin. | 救出成功！ピンを1本抜きました。 |

@@ -128,6 +128,9 @@ src/
 ├── pinRescue.ts
 ├── pinRescueView.ts
 ├── play-entry.ts
+├── ropeCut.levels.ts
+├── ropeCut.ts
+├── ropeCutView.ts
 ├── strings.ts
 ├── style.ts
 ├── theme.ts

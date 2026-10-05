@@ -5,6 +5,8 @@ import { NUTS_AND_BOLTS_LEVELS } from "./nutsAndBolts.levels.ts";
 import { nutsAndBoltsController } from "./nutsAndBoltsView.ts";
 import { PIN_RESCUE_LEVELS } from "./pinRescue.levels.ts";
 import { pinRescueController } from "./pinRescueView.ts";
+import { ROPE_CUT_LEVELS } from "./ropeCut.levels.ts";
+import { ropeCutController } from "./ropeCutView.ts";
 import { TUBE_SORT_LEVELS } from "./tubeSort.levels.ts";
 import { tubeSortController } from "./tubeSortView.ts";
 
@@ -58,7 +60,7 @@ export const KARAKURI_GAMES: Record<KarakuriGame, GameInfo> = {
   "nuts-and-bolts": { id: "nuts-and-bolts", levels: NUTS_AND_BOLTS_LEVELS.length, gesture: "tap", physics: false, create: nutsAndBoltsController },
   "stretch-grabber": todo("stretch-grabber"),
   "grid-escape": { id: "grid-escape", levels: GRID_ESCAPE_LEVELS.length, gesture: "drag", physics: false, create: gridEscapeController },
-  "rope-cut": todo("rope-cut"),
+  "rope-cut": { id: "rope-cut", levels: ROPE_CUT_LEVELS.length, gesture: "drag", physics: true, create: ropeCutController },
   "tube-sort": { id: "tube-sort", levels: TUBE_SORT_LEVELS.length, gesture: "tap", physics: false, create: tubeSortController },
   "choice-story": todo("choice-story"),
 };

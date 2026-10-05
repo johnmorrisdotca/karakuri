@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest";
 import { KARAKURI_GAME_IDS, KARAKURI_GAMES } from "./games.ts";
 import { movesAllowed } from "./gridEscape.ts";
 import { GRID_ESCAPE_LEVELS } from "./gridEscape.levels.ts";
+import { TUBE_SORT_LEVELS } from "./tubeSort.levels.ts";
 import { STEP } from "./physics/bodies.ts";
 import { KARAKURI_STRINGS } from "./strings.ts";
 import { KARAKURI_STYLE } from "./style.ts";
@@ -147,5 +148,10 @@ describe("the games' design notes", () => {
   it("docs/grid-escape.md has a row for each level with its fewest moves and the moves allowed", () => {
     const doc = readFileSync("docs/grid-escape.md", "utf8");
     for (const [i, level] of GRID_ESCAPE_LEVELS.entries()) expect(doc, `level ${i + 1}`).toContain(`| ${i + 1} | ${level.fewest} | ${movesAllowed(level.fewest)} |`);
+  });
+
+  it("docs/tube-sort.md has a row for each level with its colours and tubes", () => {
+    const doc = readFileSync("docs/tube-sort.md", "utf8");
+    for (const [i, level] of TUBE_SORT_LEVELS.entries()) expect(doc, `level ${i + 1}`).toContain(`| ${i + 1} | ${new Set(level.tubes.flat()).size} | ${level.tubes.length} |`);
   });
 });

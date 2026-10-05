@@ -1,6 +1,8 @@
 import type { Controller, GameInfo } from "./controller.ts";
 import { GRID_ESCAPE_LEVELS } from "./gridEscape.levels.ts";
 import { gridEscapeController } from "./gridEscapeView.ts";
+import { TUBE_SORT_LEVELS } from "./tubeSort.levels.ts";
+import { tubeSortController } from "./tubeSortView.ts";
 
 /** The ids of the games, in the order the package lists them (kebab case, the same in every address and attribute). */
 export const KARAKURI_GAME_IDS = ["save-the-character", "pin-rescue", "nuts-and-bolts", "stretch-grabber", "grid-escape", "rope-cut", "tube-sort", "choice-story"] as const;
@@ -53,7 +55,7 @@ export const KARAKURI_GAMES: Record<KarakuriGame, GameInfo> = {
   "stretch-grabber": todo("stretch-grabber"),
   "grid-escape": { id: "grid-escape", levels: GRID_ESCAPE_LEVELS.length, gesture: "drag", physics: false, create: gridEscapeController },
   "rope-cut": todo("rope-cut"),
-  "tube-sort": todo("tube-sort"),
+  "tube-sort": { id: "tube-sort", levels: TUBE_SORT_LEVELS.length, gesture: "tap", physics: false, create: tubeSortController },
   "choice-story": todo("choice-story"),
 };
 

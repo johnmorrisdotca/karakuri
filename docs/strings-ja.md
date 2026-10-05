@@ -20,6 +20,10 @@ open a *Fix a translation* issue with the string's name. `{name}` and the other 
 | `statusPlaying` | Playing. | プレイ中。 |
 | `statusWon` | Level won. | レベルクリア。 |
 | `statusLost` | Level lost. | レベル失敗。 |
+| `tubePours` | Pours {n} | 注いだ回数 {n} |
+| `tubeWonOne` | Every tube is one colour, in 1 pour. | 1回で、どのチューブも一つの色になりました。 |
+| `tubeWon` | Every tube is one colour, in {n} pours. | {n}回で、どのチューブも一つの色になりました。 |
+| `tubeLost` | No pour is left that does anything. Try again, and keep the empty tube free as long as you can. | 意味のある注ぎ方が、もう残っていません。もう一度。空のチューブはできるだけあけておきましょう。 |
 | `gridMoves` | Moves {used} of {limit} · fewest possible {fewest} | 手数 {used}／{limit}・最短 {fewest}手 |
 | `gridWon` | The key is out, in {used} moves. The fewest possible is {fewest}. | {used}手でカギが出ました。最短は{fewest}手です。 |
 | `gridWonBest` | The key is out in {used} moves: the fewest possible! | {used}手でカギが出ました。これが最短です！ |

@@ -14,6 +14,12 @@ export interface MountOptions {
   lang?: KarakuriLanguage;
   /** `full` (default) draws the bar above the board, the result card on it and the buttons below; `board` draws the board alone, for a page that has its own buttons. */
   ui?: "full" | "board";
+  /**
+   * The most height, in pixels, the board may take now. A page that puts something above or under the board says how much room is left
+   * (it is asked again whenever the board is fitted: on a resize, and when the box it sits in changes size). By default most of the
+   * window: 82% of its height, less 120 pixels for the bar and buttons when `ui` is `full`.
+   */
+  room?: () => number;
   /** `real` (default) steps with the display; `manual` steps only when `advance` is called, for a test that must see exact frames. */
   clock?: "real" | "manual";
   /** Called whenever the level's status changes (and once at the start, as `playing`). */
@@ -160,7 +166,8 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     const ratio = controller.height / controller.width;
     stage.style.aspectRatio = `${controller.width} / ${controller.height}`;
     // Wide enough for the box, and no taller than most of the window, so that the whole board shows on a short screen.
-    root.style.maxWidth = `min(100%, ${Math.round((window.innerHeight * 0.82 - (full ? 120 : 0)) / ratio)}px)`;
+    const room = options.room?.() ?? window.innerHeight * 0.82 - (full ? 120 : 0);
+    root.style.maxWidth = `min(100%, ${Math.round(Math.max(120, room) / ratio)}px)`;
     const box = stage.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
     const w = Math.max(1, Math.round(box.width * dpr));

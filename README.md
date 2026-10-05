@@ -100,6 +100,7 @@ const board = mountKarakuri(host, {
   level: 3,                  // from 1
   lang: "ja",                // "en" or "ja"; the page's language if left out
   ui: "board",               // "full" (default) draws a bar, a result card and buttons; "board" is the canvas alone
+  room: () => window.innerHeight - 280,  // the most height the board may take, if the page keeps more round it than the default allows
   onStatus: ({ level, status, text, info }) => { /* "playing" at the start, then "won" or "lost"; text and info are words in the player's language */ },
 });
 board.restart();             // the same level again

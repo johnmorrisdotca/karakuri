@@ -12,6 +12,27 @@ test("the page opens with no complaint, lists the eight games, and plays the one
   expect(errors).toEqual([]);
 });
 
+test("a page that keeps room round the board can say how much height it may take", async ({ page }) => {
+  const errors = await open(page, "?game=tube-sort");
+  const heights = await page.evaluate(async () => {
+    const { mountKarakuri } = await import("/dist/play-entry.js");
+    const host = document.createElement("div");
+    host.style.width = "900px";
+    document.body.append(host);
+    const stageHeight = (room) => {
+      const mount = mountKarakuri(host, { game: "tube-sort", level: 1, ui: "board", clock: "manual", ...(room === undefined ? {} : { room: () => room }) });
+      const height = host.querySelector(".kk-stage").getBoundingClientRect().height;
+      mount.destroy();
+      return height;
+    };
+    return { small: stageHeight(300), large: stageHeight(600) };
+  });
+  expect(heights.small).toBeLessThanOrEqual(301);
+  expect(heights.small).toBeGreaterThan(250);
+  expect(heights.large).toBeGreaterThan(heights.small + 100);
+  expect(errors).toEqual([]);
+});
+
 test("the language chooser speaks Japanese and the choice survives a reload, as the family's demos do", async ({ page }) => {
   const errors = await open(page, "?game=grid-escape");
   await page.locator('[data-lang="ja"]').click();

@@ -6,6 +6,8 @@ import process from "node:process";
 import { describe, expect, it } from "vitest";
 
 import { KARAKURI_GAME_IDS, KARAKURI_GAMES } from "./games.ts";
+import { movesAllowed } from "./gridEscape.ts";
+import { GRID_ESCAPE_LEVELS } from "./gridEscape.levels.ts";
 import { STEP } from "./physics/bodies.ts";
 import { KARAKURI_STRINGS } from "./strings.ts";
 import { KARAKURI_STYLE } from "./style.ts";
@@ -138,5 +140,12 @@ describe("the README's promises", () => {
 
   it("keeps SECURITY.md and CODE_OF_CONDUCT.md equal to the family's master text, a copy of which is kept in scripts/community", () => {
     for (const file of ["SECURITY.md", "CODE_OF_CONDUCT.md"]) expect(readFileSync(file, "utf8"), file).toBe(readFileSync(`scripts/community/${file}`, "utf8"));
+  });
+});
+
+describe("the games' design notes", () => {
+  it("docs/grid-escape.md has a row for each level with its fewest moves and the moves allowed", () => {
+    const doc = readFileSync("docs/grid-escape.md", "utf8");
+    for (const [i, level] of GRID_ESCAPE_LEVELS.entries()) expect(doc, `level ${i + 1}`).toContain(`| ${i + 1} | ${level.fewest} | ${movesAllowed(level.fewest)} |`);
   });
 });

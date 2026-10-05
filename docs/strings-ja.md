@@ -20,6 +20,10 @@ open a *Fix a translation* issue with the string's name. `{name}` and the other 
 | `statusPlaying` | Playing. | プレイ中。 |
 | `statusWon` | Level won. | レベルクリア。 |
 | `statusLost` | Level lost. | レベル失敗。 |
+| `gridMoves` | Moves {used} of {limit} · fewest possible {fewest} | 手数 {used}／{limit}・最短 {fewest}手 |
+| `gridWon` | The key is out, in {used} moves. The fewest possible is {fewest}. | {used}手でカギが出ました。最短は{fewest}手です。 |
+| `gridWonBest` | The key is out in {used} moves: the fewest possible! | {used}手でカギが出ました。これが最短です！ |
+| `gridLost` | Out of moves: all {limit} are used. Try again, and slide the blocks that are in the key's way first. | 手数を使い切りました（{limit}手）。もう一度。まずカギの前をふさぐブロックをどけましょう。 |
 | `game_save_the_character` | Save the Character | キャラを守れ |
 | `game_pin_rescue` | Pin Rescue | ピンを抜け |
 | `game_nuts_and_bolts` | Nuts and Bolts | ナットとボルト |

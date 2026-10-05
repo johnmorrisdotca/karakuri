@@ -91,8 +91,6 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
   let last = 0;
   let acc = 0;
   const pointers = new Set<number>();
-  let theme = readTheme(host);
-
   host.replaceChildren();
   const root = document.createElement("div");
   root.className = "karakuri";
@@ -153,6 +151,7 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
   if (full) root.append(foot);
   root.append(live);
   host.append(root);
+  let theme = readTheme(root);
 
   const fit = (): void => {
     const ratio = controller.height / controller.width;
@@ -175,8 +174,12 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     title.textContent = say(lang, `game_${wordKey(game)}`);
     canvas.setAttribute("aria-label", say(lang, "boardLabel", { game: say(lang, `game_${wordKey(game)}`), n: level, rules: say(lang, `rules_${wordKey(game)}`) }));
     restartButton.textContent = say(lang, "restart");
-    previousButton.textContent = say(lang, "previousLevel");
-    nextButton.textContent = say(lang, "nextLevel");
+    previousButton.textContent = "‹";
+    previousButton.setAttribute("aria-label", say(lang, "previousLevel"));
+    previousButton.title = say(lang, "previousLevel");
+    nextButton.textContent = "›";
+    nextButton.setAttribute("aria-label", say(lang, "nextLevel"));
+    nextButton.title = say(lang, "nextLevel");
     previousButton.disabled = level <= 1;
     nextButton.disabled = level >= info.levels;
   };
@@ -314,7 +317,7 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
   };
   window.addEventListener("resize", onWindow);
   const onTheme = (): void => {
-    theme = readTheme(host);
+    theme = readTheme(root);
     draw();
   };
   const dark = typeof matchMedia === "function" ? matchMedia("(prefers-color-scheme: dark)") : null;
@@ -380,7 +383,7 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
       return { x: box.left + (x * box.width) / controller.width, y: box.top + (y * box.height) / controller.height };
     },
     redraw() {
-      theme = readTheme(host);
+      theme = readTheme(root);
       draw();
     },
     destroy() {

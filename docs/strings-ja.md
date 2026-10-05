@@ -20,6 +20,12 @@ open a *Fix a translation* issue with the string's name. `{name}` and the other 
 | `statusPlaying` | Playing. | プレイ中。 |
 | `statusWon` | Level won. | レベルクリア。 |
 | `statusLost` | Level lost. | レベル失敗。 |
+| `saveDraw` | Draw one line · ink left {ink}% | 線を1本描いてください・インク残り {ink}% |
+| `saveSafe` | Keep him safe for {s} s | あと {s} 秒、守りきろう |
+| `saveWon` | Safe! The line kept the danger off for three seconds. | セーフ！線が3秒間、危険を防ぎました。 |
+| `saveLostBee` | The bees got him. Close the line in round him on the side they come from. | ハチにやられました。ハチの来る側に、線で壁を作りましょう。 |
+| `saveLostRock` | A rock got him. Put a roof over his head. | 岩にやられました。頭の上に屋根を作りましょう。 |
+| `saveLostFell` | He fell off. Draw a line that does not push him over the edge. | 落ちてしまいました。押し出さない線を描きましょう。 |
 | `grabArm` | Arm left {left}% | アームの残り {left}% |
 | `grabWon` | Got the star! | 星をつかみました！ |
 | `grabLost` | Zap! The arm touched something red. Keep it clear of the red blobs and the laser beams. | ビリッ！アームが赤いものにふれました。赤い玉やレーザーに近づかないようにしましょう。 |

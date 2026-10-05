@@ -9,6 +9,8 @@ import { ROPE_CUT_LEVELS } from "./ropeCut.levels.ts";
 import { ropeCutController } from "./ropeCutView.ts";
 import { STRETCH_GRABBER_LEVELS } from "./stretchGrabber.levels.ts";
 import { stretchGrabberController } from "./stretchGrabberView.ts";
+import { SAVE_THE_CHARACTER_LEVELS } from "./saveTheCharacter.levels.ts";
+import { saveTheCharacterController } from "./saveTheCharacterView.ts";
 import { TUBE_SORT_LEVELS } from "./tubeSort.levels.ts";
 import { tubeSortController } from "./tubeSortView.ts";
 
@@ -57,7 +59,7 @@ function todo(id: string): GameInfo {
  * runs physics, and how to make a controller for a level.
  */
 export const KARAKURI_GAMES: Record<KarakuriGame, GameInfo> = {
-  "save-the-character": todo("save-the-character"),
+  "save-the-character": { id: "save-the-character", levels: SAVE_THE_CHARACTER_LEVELS.length, gesture: "drag", physics: true, create: saveTheCharacterController },
   "pin-rescue": { id: "pin-rescue", levels: PIN_RESCUE_LEVELS.length, gesture: "tap", physics: true, create: pinRescueController },
   "nuts-and-bolts": { id: "nuts-and-bolts", levels: NUTS_AND_BOLTS_LEVELS.length, gesture: "tap", physics: false, create: nutsAndBoltsController },
   "stretch-grabber": { id: "stretch-grabber", levels: STRETCH_GRABBER_LEVELS.length, gesture: "drag", physics: false, create: stretchGrabberController },

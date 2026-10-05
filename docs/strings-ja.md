@@ -20,6 +20,9 @@ open a *Fix a translation* issue with the string's name. `{name}` and the other 
 | `statusPlaying` | Playing. | プレイ中。 |
 | `statusWon` | Level won. | レベルクリア。 |
 | `statusLost` | Level lost. | レベル失敗。 |
+| `grabArm` | Arm left {left}% | アームの残り {left}% |
+| `grabWon` | Got the star! | 星をつかみました！ |
+| `grabLost` | Zap! The arm touched something red. Keep it clear of the red blobs and the laser beams. | ビリッ！アームが赤いものにふれました。赤い玉やレーザーに近づかないようにしましょう。 |
 | `ropeCuts` | Cuts {n} | 切った回数 {n} |
 | `ropeWonOne` | The lantern is home after 1 cut. | 1回切って、ランタンが無事に着きました。 |
 | `ropeWon` | The lantern is home after {n} cuts. | {n}回切って、ランタンが無事に着きました。 |

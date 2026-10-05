@@ -131,6 +131,9 @@ src/
 ├── ropeCut.levels.ts
 ├── ropeCut.ts
 ├── ropeCutView.ts
+├── stretchGrabber.levels.ts
+├── stretchGrabber.ts
+├── stretchGrabberView.ts
 ├── strings.ts
 ├── style.ts
 ├── theme.ts

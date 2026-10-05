@@ -7,6 +7,8 @@ import { PIN_RESCUE_LEVELS } from "./pinRescue.levels.ts";
 import { pinRescueController } from "./pinRescueView.ts";
 import { ROPE_CUT_LEVELS } from "./ropeCut.levels.ts";
 import { ropeCutController } from "./ropeCutView.ts";
+import { STRETCH_GRABBER_LEVELS } from "./stretchGrabber.levels.ts";
+import { stretchGrabberController } from "./stretchGrabberView.ts";
 import { TUBE_SORT_LEVELS } from "./tubeSort.levels.ts";
 import { tubeSortController } from "./tubeSortView.ts";
 
@@ -58,7 +60,7 @@ export const KARAKURI_GAMES: Record<KarakuriGame, GameInfo> = {
   "save-the-character": todo("save-the-character"),
   "pin-rescue": { id: "pin-rescue", levels: PIN_RESCUE_LEVELS.length, gesture: "tap", physics: true, create: pinRescueController },
   "nuts-and-bolts": { id: "nuts-and-bolts", levels: NUTS_AND_BOLTS_LEVELS.length, gesture: "tap", physics: false, create: nutsAndBoltsController },
-  "stretch-grabber": todo("stretch-grabber"),
+  "stretch-grabber": { id: "stretch-grabber", levels: STRETCH_GRABBER_LEVELS.length, gesture: "drag", physics: false, create: stretchGrabberController },
   "grid-escape": { id: "grid-escape", levels: GRID_ESCAPE_LEVELS.length, gesture: "drag", physics: false, create: gridEscapeController },
   "rope-cut": { id: "rope-cut", levels: ROPE_CUT_LEVELS.length, gesture: "drag", physics: true, create: ropeCutController },
   "tube-sort": { id: "tube-sort", levels: TUBE_SORT_LEVELS.length, gesture: "tap", physics: false, create: tubeSortController },

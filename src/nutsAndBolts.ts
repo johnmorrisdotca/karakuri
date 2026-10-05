@@ -100,57 +100,78 @@ export function solveNuts(plates: readonly NutPlate[]): NutSolution | null {
     first.push(refs.length);
     for (let s = 0; s < plates[p].screws.length; s += 1) refs.push({ plate: p, screw: s });
   }
-  if (refs.length > 24) throw new Error("karakuri: too many screws to search");
-  const bit = (p: number, s: number): number => 2 ** (first[p] + s);
-  const plateMask = plates.map((plate, p) => plate.screws.reduce((sum, _, s) => sum + bit(p, s), 0));
-  const has = (mask: number, b: number): boolean => Math.floor(mask / b) % 2 === 1;
-  const fallenIn = (mask: number): boolean[] => plates.map((_, p) => (mask & plateMask[p]) === plateMask[p]);
-  const everything = plateMask.reduce((a, b) => a + b, 0);
-  const memo = new Map<number, { cost: number; next: number }>();
-  /** The fewest slots-minus-one needed from here: the most screws held at a moment with a plate left, minimised over the orders. */
-  const best = (mask: number): { cost: number; next: number } => {
-    if (mask === everything) return { cost: 0, next: -1 };
-    const known = memo.get(mask);
-    if (known !== undefined) return known;
+  const n = refs.length;
+  if (n > 24) throw new Error("karakuri: too many screws to search");
+  // What never changes, worked out once: the screws of each plate, and for each screw the plates above it that cover it.
+  const screwsOf = plates.map((plate, p) => plate.screws.reduce((sum, _, s) => sum | (1 << (first[p] + s)), 0));
+  const coveredBy = refs.map(({ plate, screw }) => {
+    let above = 0;
+    const at = plates[plate].screws[screw];
+    for (let q = plate + 1; q < plates.length; q += 1) if (pointInPolygon(at.x, at.y, plates[q].polygon)) above |= 1 << q;
+    return above;
+  });
+  const everything = screwsOf.reduce((a, b) => a | b, 0);
+  const bits = (x: number): number => {
+    let c = 0;
+    for (let v = x; v !== 0; v &= v - 1) c += 1;
+    return c;
+  };
+  /** The plates that have fallen when the screws in `mask` are out. */
+  const fallenIn = (mask: number): number => {
+    let gone = 0;
+    for (let p = 0; p < plates.length; p += 1) if ((mask & screwsOf[p]) === screwsOf[p]) gone |= 1 << p;
+    return gone;
+  };
+  // The fewest "most held at a moment with a plate left" from each position: 255 not yet known.
+  const cost = new Uint8Array(2 ** n).fill(255);
+  /** The most screws held at any moment from here on, at best (it is the slots needed, less one). */
+  const best = (mask: number): number => {
+    if (mask === everything) return 0;
+    if (cost[mask] !== 255) return cost[mask];
     const gone = fallenIn(mask);
-    let cost = Infinity;
-    let next = -1;
-    for (let i = 0; i < refs.length; i += 1) {
-      const { plate: p, screw: s } = refs[i];
-      if (gone[p] || has(mask, bit(p, s))) continue;
-      const covered = ((): boolean => {
-        const at = plates[p].screws[s];
-        for (let above = p + 1; above < plates.length; above += 1) if (!gone[above] && pointInPolygon(at.x, at.y, plates[above].polygon)) return true;
-        return false;
-      })();
-      if (covered) continue;
-      const after = mask + bit(p, s);
+    let least = 254;
+    for (let i = 0; i < n; i += 1) {
+      const bit = 1 << i;
+      if ((mask & bit) !== 0 || (gone & (1 << refs[i].plate)) !== 0 || (coveredBy[i] & ~gone) !== 0) continue;
+      const after = mask | bit;
       const gone2 = fallenIn(after);
-      let held = 0;
-      for (let q = 0; q < plates.length; q += 1) if (!gone2[q]) for (let t = 0; t < plates[q].screws.length; t += 1) if (has(after, bit(q, t))) held += 1;
-      const rest = best(after).cost;
-      const worst = after === everything ? 0 : Math.max(held, rest);
-      if (worst < cost) {
-        cost = worst;
-        next = after;
+      let worst = 0;
+      if (after !== everything) {
+        let held = 0;
+        for (let q = 0; q < plates.length; q += 1) if ((gone2 & (1 << q)) === 0) held += bits(after & screwsOf[q]);
+        worst = Math.max(held, best(after));
       }
+      if (worst < least) least = worst;
     }
-    const result = { cost, next };
-    memo.set(mask, result);
-    return result;
+    cost[mask] = least;
+    return least;
   };
   const start = best(0);
-  if (!Number.isFinite(start.cost)) return null;
+  if (start >= 254) return null;
+  // Walk the best way: at each position take a screw whose cost matches.
   const order: ScrewRef[] = [];
-  for (let mask = 0; mask !== everything; ) {
-    const { next } = best(mask);
-    const diff = next - mask;
-    const index = refs.findIndex(({ plate, screw }) => bit(plate, screw) === diff);
-    order.push(refs[index]);
-    mask = next;
+  let mask = 0;
+  while (mask !== everything) {
+    const gone = fallenIn(mask);
+    let chosen = -1;
+    for (let i = 0; i < n && chosen < 0; i += 1) {
+      const bit = 1 << i;
+      if ((mask & bit) !== 0 || (gone & (1 << refs[i].plate)) !== 0 || (coveredBy[i] & ~gone) !== 0) continue;
+      const after = mask | bit;
+      let worst = 0;
+      if (after !== everything) {
+        const gone2 = fallenIn(after);
+        let held = 0;
+        for (let q = 0; q < plates.length; q += 1) if ((gone2 & (1 << q)) === 0) held += bits(after & screwsOf[q]);
+        worst = Math.max(held, best(after));
+      }
+      if (worst === best(mask)) chosen = i;
+    }
+    order.push(refs[chosen]);
+    mask |= 1 << chosen;
   }
   // The slots needed: one more than the most held at a moment while a plate is left (the screw going in needs a slot to go in).
-  return { fewestSlots: start.cost + 1, order };
+  return { fewestSlots: start + 1, order };
 }
 
 /**

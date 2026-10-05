@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security problem
+    url: https://github.com/johnmorrisdotca/karakuri/blob/main/SECURITY.md
+    about: Input that makes a game run for long or use a great deal of memory, or markup that gets out of the drawing: please write privately, as the policy says.

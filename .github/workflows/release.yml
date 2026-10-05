@@ -1,0 +1,58 @@
+name: Release
+# A version tag builds the package, attaches its tarball to a GitHub release,
+# and publishes that version to npm.
+# Run by hand (Actions → Release → Run workflow) from main, it tags the commit
+# with package.json's version itself: for a checkout that cannot push tags.
+#
+# npm trusts this workflow by name (npmjs.com → the package → Settings →
+# Trusted Publisher), so publishing needs no token and no secret: GitHub proves
+# which repository and workflow is asking.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+permissions:
+  contents: write
+  id-token: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm build
+      - name: The package as npm packs it installs, imports and runs
+        run: node scripts/check-package.mjs
+      - name: The tag is the version in package.json
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then test "v$VERSION" = "$GITHUB_REF_NAME"; fi
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "TAG=v$VERSION" >> "$GITHUB_ENV"
+          echo "NAME=$(node -p "require('./package.json').name")" >> "$GITHUB_ENV"
+      - run: npm pack --ignore-scripts
+      - name: Attach the tarball to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" ./*.tgz --clobber
+          else
+            node scripts/release-notes.mjs "$VERSION" > "$RUNNER_TEMP/notes.md"
+            gh release create "$TAG" ./*.tgz --title "$TAG" --notes-file "$RUNNER_TEMP/notes.md" --target "$GITHUB_SHA"
+          fi
+      - name: Publish to npm, unless this version is already there
+        run: |
+          npm install -g npm@latest
+          if npm view "$NAME@$VERSION" version >/dev/null 2>&1; then
+            echo "$NAME@$VERSION is already on npm."
+          else
+            npm publish --access public --provenance --ignore-scripts
+          fi

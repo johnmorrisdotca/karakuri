@@ -1,0 +1,103 @@
+{
+  "name": "@johnmorrisdotca/karakuri",
+  "version": "0.1.0",
+  "description": "Karakuri からくり, eight hyper-casual puzzle games for JavaScript and TypeScript, played by finger or mouse in any page: draw a shield, pull the pins, unscrew the plates, stretch an arm round pegs, slide the blocks, cut the ropes, pour the tubes, choose the tool. Levels that step up, a clear win and loss, and a small deterministic physics core that gives the same result in every browser. Zero dependencies.",
+  "keywords": [
+    "puzzle",
+    "puzzle-game",
+    "hyper-casual",
+    "physics",
+    "physics-puzzle",
+    "sliding-block",
+    "tube-sort",
+    "levels",
+    "typescript",
+    "javascript",
+    "zero-dependencies",
+    "browser",
+    "canvas",
+    "itsutsu",
+    "custom-element",
+    "web-component"
+  ],
+  "homepage": "https://github.com/johnmorrisdotca/karakuri#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnmorrisdotca/karakuri.git"
+  },
+  "bugs": {
+    "url": "https://github.com/johnmorrisdotca/karakuri/issues"
+  },
+  "author": "John Morris",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "./dist/element-define.js"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./physics": {
+      "types": "./dist/physics-entry.d.ts",
+      "import": "./dist/physics-entry.js",
+      "default": "./dist/physics-entry.js"
+    },
+    "./levels": {
+      "types": "./dist/levels.d.ts",
+      "import": "./dist/levels.js",
+      "default": "./dist/levels.js"
+    },
+    "./play": {
+      "types": "./dist/play-entry.d.ts",
+      "import": "./dist/play-entry.js",
+      "default": "./dist/play-entry.js"
+    },
+    "./element": {
+      "types": "./dist/element.d.ts",
+      "import": "./dist/element.js",
+      "default": "./dist/element.js"
+    },
+    "./element/define": {
+      "types": "./dist/element-define.d.ts",
+      "import": "./dist/element-define.js",
+      "default": "./dist/element-define.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.check.json",
+    "test": "vitest run",
+    "test:package": "pnpm build && node scripts/check-package.mjs",
+    "family:readme": "node scripts/family-readme.mjs",
+    "check": "pnpm lint && pnpm typecheck && pnpm test",
+    "prepublishOnly": "pnpm check && pnpm build",
+    "site": "pnpm build && node scripts/site.mjs",
+    "test:demo": "pnpm site && playwright test",
+    "docs:make": "node scripts/docs.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@playwright/test": "^1.63.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^5.0.0"
+  },
+  "packageManager": "pnpm@10.11.0"
+}

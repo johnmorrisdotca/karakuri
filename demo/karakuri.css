@@ -1,0 +1,24 @@
+/* Karakuri's own look, after family.css: the choosers, and the game on its table. */
+:root { --intro-room: 11rem; --intro-room-wide: 6rem; }
+.setup { margin-top: 10px; }
+.setup .fam-seg { max-width: 100%; }
+.setup .fam-seg button { font-size: .85rem; }
+.info { margin: 10px 0 0; color: var(--muted); font-size: .85rem; min-height: 2.6em; }
+
+/* The game on its table: the player on the family's felt, its bar and buttons in the felt's ink. */
+#board { margin: 8px auto 0; max-width: min(100%, 620px); padding: 14px 14px 10px; min-width: 0; }
+#board .karakuri { --kk-ink: #2b2a28; }
+#board .kk-bar { color: var(--felt-ink); }
+#board .kk-info { color: var(--felt-ink); opacity: .85; }
+#board .kk-button { color: var(--felt-ink); border-color: rgba(255, 255, 255, .45); }
+#board .kk-button[data-main="true"] { background: var(--felt-ink); color: var(--felt-deep); }
+#board .kk-card .kk-button { color: var(--kk-ink); border-color: var(--kk-accent); }
+#board .kk-card .kk-button[data-main="true"] { background: var(--kk-accent); color: var(--kk-paper); }
+#board .kk-card { color: var(--kk-ink); }
+.settings { margin-top: 22px; display: grid; gap: 4px; }
+.settings h2 { margin: 12px 0 0; font-size: 1.05rem; }
+.uses { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.uses code { font-family: var(--mono); font-size: .85rem; overflow-wrap: anywhere; }
+.more .uses { grid-template-columns: 1fr; }
+.tag #tag { max-width: 420px; }
+@media (max-width: 520px) { #board { padding: 10px 10px 8px; } }

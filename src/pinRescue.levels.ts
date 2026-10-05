@@ -68,16 +68,16 @@ export const PIN_RESCUE_LEVELS: readonly PinRescueEntry[] = [
     solution: [2, 0, 1],
     loss: [0, 1],
   },
-  // 5. A ramp carries the hero across to the pit; the water has to run down it first.
+  // 5. A ramp carries the hero across to the pit, one more pin below him; the water has to run down it first.
   {
     walls: [...SHAFT, { ax: 180, ay: 40, bx: 180, by: 205 }, { ax: 74, ay: 335, bx: 190, by: 392 }],
-    pins: [{ x: 74, y: 250, length: 102, side: "left" }, { x: 74, y: 200, length: 102, side: "left" }, { x: 286, y: 200, length: 102, side: "right" }],
+    pins: [{ x: 74, y: 250, length: 102, side: "left" }, { x: 74, y: 200, length: 102, side: "left" }, { x: 286, y: 200, length: 102, side: "right" }, { x: 74, y: 300, length: 102, side: "left" }],
     hero: { x: 125, y: 232 },
     fluids: [{ kind: "water", x: 78, y: 148, w: 98, h: 47 }, { kind: "lava", x: 184, y: 148, w: 98, h: 47 }, { kind: "lava", x: 196, y: 396, w: 86, h: 40 }],
     spikes: [],
     zone: { x: 196, y: 350, w: 86, h: 50 },
     goal: "hero",
-    solution: [1, 0],
-    loss: [0],
+    solution: [1, 0, 3],
+    loss: [0, 3],
   },
 ];

@@ -66,3 +66,68 @@ open a *Fix a translation* issue with the string's name. `{name}` and the other 
 | `rules_rope_cut` | Swipe across a rope to cut it. Bring the load to the target, and do not let it fall into the pit. | ロープをなぞるように切ります。荷物をターゲットまで運び、穴に落とさないようにしましょう。 |
 | `rules_tube_sort` | Tap a tube, then another, to pour the top colour across. Make every tube hold one colour. | チューブを一つ、次にもう一つタップして、いちばん上の色を注ぎます。どのチューブも一つの色にしましょう。 |
 | `rules_choice_story` | Pick the right tool at each of the three stages to finish the story. | 3つの場面で、それぞれ正しい道具を選んで、物語をクリアしましょう。 |
+| `story_1` | A Rainy Walk | あめのさんぽ |
+| `story_2` | Night in the Cave | どうくつのよる |
+| `story_3` | Snow Day | ゆきの日 |
+| `story_4` | Treasure Island | たからじま |
+| `storyStage` | Stage {n} of 3 | {n}／3 場面 |
+| `storyWon` | The story is finished with no slips: three stars! | まちがえずにお話をクリア！星3つです。 |
+| `storyWonSlips` | The story is finished! You slipped {n} times on the way. | お話をクリアしました！途中で{n}回まちがえました。 |
+| `storyWonSlipsOne` | The story is finished! You slipped once on the way. | お話をクリアしました！途中で1回まちがえました。 |
+| `storyPick` | Pick the tool that helps. | 役に立つ道具をえらんでね。 |
+| `tool_umbrella` | Umbrella | かさ |
+| `tool_sunglasses` | Sunglasses | サングラス |
+| `tool_boots` | Boots | 長ぐつ |
+| `tool_sandals` | Sandals | サンダル |
+| `tool_key` | Key | かぎ |
+| `tool_balloon` | Balloon | ふうせん |
+| `tool_flashlight` | Torch | 懐中電灯 |
+| `tool_spoon` | Spoon | スプーン |
+| `tool_plank` | Plank | 板 |
+| `tool_pillow` | Pillow | まくら |
+| `tool_honey` | Honey | はちみつ |
+| `tool_ball` | Ball | ボール |
+| `tool_shovel` | Shovel | スコップ |
+| `tool_kite` | Kite | たこ |
+| `tool_scarf` | Scarf | マフラー |
+| `tool_sunhat` | Sun hat | 日よけぼうし |
+| `tool_sled` | Sled | そり |
+| `tool_raft` | Raft | いかだ |
+| `tool_map` | Map | 地図 |
+| `tool_sandwich` | Sandwich | サンドイッチ |
+| `s11_prompt` | Rain is falling on the way home. | 帰り道に雨がふってきました。 |
+| `s11_right` | Pit-pat! The umbrella keeps the rain off. | ぽつぽつ！かさが雨をふせいでくれます。 |
+| `s11_wrong` | Splash! Sunglasses do not keep the rain off. | ばしゃっ！サングラスでは雨をふせげません。 |
+| `s12_prompt` | A big muddy puddle is in the way. | 大きなどろの水たまりが道をふさいでいます。 |
+| `s12_right` | Squish! The boots splash straight through. | ざぶざぶ！長ぐつなら水たまりもへっちゃら。 |
+| `s12_wrong` | Squelch! The sandals get stuck in the mud. | ぐにゅっ！サンダルがどろにはまりました。 |
+| `s13_prompt` | The front door is locked. | 家のげんかんにかぎがかかっています。 |
+| `s13_right` | Click! The key opens the door. Home at last! | カチャッ！かぎでドアが開きました。やっと帰れた！ |
+| `s13_wrong` | Boing! A balloon cannot open a lock. | ぼよん！ふうせんではかぎは開けられません。 |
+| `s21_prompt` | It is very dark inside the cave. | どうくつの中は、とてもくらいです。 |
+| `s21_right` | Click! The torch lights up the cave. | カチッ！懐中電灯がどうくつを照らします。 |
+| `s21_wrong` | Clink! A spoon does not give any light. | カチン！スプーンは光りません。 |
+| `s22_prompt` | There is a gap in the path. | 道に大きなすき間があります。 |
+| `s22_right` | Clunk! The plank makes a bridge across. | ゴトン！板が橋になりました。 |
+| `s22_wrong` | Flump! The pillow is too soft to stand on. | ぼふっ！まくらはやわらかすぎて乗れません。 |
+| `s23_prompt` | A baby bear is hungry and wants a snack. | 子グマがおなかをすかせて、おやつをほしがっています。 |
+| `s23_right` | Yum! The bear cub loves the honey and lets you by. | もぐもぐ！子グマははちみつが大すき。通してくれました。 |
+| `s23_wrong` | Boing! The cub wanted a snack, not a ball. | ぼよん！子グマがほしいのはおやつで、ボールではありません。 |
+| `s31_prompt` | Deep snow blocks the path. | 深い雪が道をふさいでいます。 |
+| `s31_right` | Scoop! The shovel clears a way through. | ざくっ！スコップで道ができました。 |
+| `s31_wrong` | Whoosh! A kite cannot clear snow. | ひゅー！たこでは雪はどけられません。 |
+| `s32_prompt` | A cold wind is blowing. | つめたい風がふいています。 |
+| `s32_right` | Cosy! The scarf keeps the cold out. | ぽかぽか！マフラーが寒さをふせぎます。 |
+| `s32_wrong` | Brr! A sun hat does not keep the cold out. | ぶるる！日よけぼうしでは寒さはふせげません。 |
+| `s33_prompt` | A long snowy hill leads down to the village. | 村へつづく長い雪の坂があります。 |
+| `s33_right` | Wheee! The sled takes you all the way down. | ひゃっほー！そりでふもとまですいすい。 |
+| `s33_wrong` | Slip! Sandals slide the wrong way in the snow. | つるん！サンダルは雪の上ですべってしまいます。 |
+| `s41_prompt` | The island is across the sea. | 島は海のむこうにあります。 |
+| `s41_right` | Splish! The raft carries you across. | ちゃぷちゃぷ！いかだで海をわたります。 |
+| `s41_wrong` | Plop! A ball cannot carry you over the sea. | ぽちゃん！ボールでは海をわたれません。 |
+| `s42_prompt` | Where is the treasure buried? | たからはどこにうまっているのでしょう。 |
+| `s42_right` | X marks the spot! The map shows the way. | ここだ！地図が場所を教えてくれました。 |
+| `s42_wrong` | Munch! Tasty, but a sandwich does not show where to dig. | もぐもぐ！おいしいけれど、サンドイッチでは場所はわかりません。 |
+| `s43_prompt` | The treasure chest is locked. | たからばこにかぎがかかっています。 |
+| `s43_right` | Click! The key opens the chest. Shiny treasure! | カチャッ！かぎでふたが開き、ぴかぴかのたからものです。 |
+| `s43_wrong` | Clink! A spoon cannot open a lock. | カチン！スプーンではかぎは開けられません。 |

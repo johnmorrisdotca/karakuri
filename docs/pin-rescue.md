@@ -25,7 +25,7 @@ the tests play the whole simulation to check them, and play every other order of
 | 2 | 3 | hero | Lava waits in the floor: water poured first sets a crust the hero can land on. |
 | 3 | 3 | gold | The gold is what has to get home, and it melts: water first, and keep clear of the lava above the hero. |
 | 4 | 4 | hero | Two steps down: the hero's first pin drops him onto the second, which must wait for the water. |
-| 5 | 3 | hero | The hero rolls down a ramp to the pit: the water has to be in the pit first. |
+| 5 | 4 | hero | The hero drops to a second pin, then rolls down a ramp to the pit: the water has to be in the pit first. |
 
 ## What is tested
 

@@ -112,7 +112,6 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
   const canvas = document.createElement("canvas");
   canvas.className = "kk-canvas";
   canvas.setAttribute("role", "img");
-  canvas.tabIndex = 0;
   stage.append(canvas);
 
   const card = document.createElement("div");
@@ -190,7 +189,7 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     if (g === null) return;
     g.setTransform(canvas.width / controller.width, 0, 0, canvas.height / controller.height, 0, 0);
     g.clearRect(0, 0, controller.width, controller.height);
-    controller.draw(g, theme);
+    controller.draw(g, { ...theme, lang });
   };
 
   /** Brings the bar, the card and the status in line with the controller, and tells the page what changed. */
@@ -228,7 +227,7 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     if (status === "playing") return;
     const lastLevel = level >= info.levels;
     cardTitle.textContent = say(lang, status === "won" ? "won" : "lost");
-    cardText.textContent = status === "won" && lastLevel ? say(lang, "wonLast") : controller.result === null ? "" : words(controller.result);
+    cardText.textContent = [controller.result === null ? "" : words(controller.result), status === "won" && lastLevel ? say(lang, "wonLast") : ""].filter((part) => part !== "").join(" ");
     cardButtons.replaceChildren();
     if (status === "won" && !lastLevel) {
       const next = button("card-next", () => api.setLevel(level + 1));

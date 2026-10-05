@@ -76,7 +76,8 @@ export async function drag(page, testInfo, points, { stepsBetween = 4, hold = 0 
 
 /** A tap, by touch where there is a touch screen and by the mouse where there is not. */
 export async function tap(page, testInfo, point) {
-  if (isTouch(testInfo)) await page.touchscreen.tap(point.x, point.y);
+  // Every phone project has a touch screen (WebKit's takes taps only); the desk has the mouse.
+  if (testInfo.project.use.hasTouch === true) await page.touchscreen.tap(point.x, point.y);
   else await page.mouse.click(point.x, point.y);
 }
 

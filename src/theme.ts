@@ -13,12 +13,12 @@ export function readTheme(element: Element): Theme {
   const style = getComputedStyle(element);
   const scheme = style.getPropertyValue("--kk-scheme").trim() === "dark" ? "dark" : "light";
   const base = KARAKURI_THEMES[scheme];
-  const theme = { dark: scheme === "dark", font: style.fontFamily || "system-ui, sans-serif" } as Record<string, string | boolean>;
+  const theme = { dark: scheme === "dark", font: style.fontFamily || "system-ui, sans-serif", lang: "en" } as Record<string, string | boolean>;
   for (const name of NAMES) theme[name] = style.getPropertyValue(`--kk-${name}`).trim() || base[name];
   return theme as unknown as Theme;
 }
 
 /** The theme without a page: the light one, for a drawing made where there is no style to read (a test, a server). */
 export function defaultTheme(dark = false): Theme {
-  return { ...KARAKURI_THEMES[dark ? "dark" : "light"], dark, font: "system-ui, sans-serif" };
+  return { ...KARAKURI_THEMES[dark ? "dark" : "light"], dark, font: "system-ui, sans-serif", lang: "en" };
 }

@@ -89,7 +89,8 @@
     "prepublishOnly": "pnpm check && pnpm build",
     "site": "pnpm build && node scripts/site.mjs",
     "test:demo": "pnpm site && playwright test",
-    "docs:make": "node scripts/docs.mjs"
+    "docs:make": "node scripts/docs.mjs",
+    "pictures": "pnpm site && node scripts/readme-pictures.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

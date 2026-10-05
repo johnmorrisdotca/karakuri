@@ -1,6 +1,6 @@
 // The documents and the demo, held to the source. Plain JavaScript, so that reading files needs no Node types.
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import process from "node:process";
 
 import { describe, expect, it } from "vitest";
@@ -133,6 +133,37 @@ describe("the README's promises", () => {
       expect(KARAKURI_STRINGS.en[`rules_${key}`], id).toBeTruthy();
       expect(KARAKURI_GAMES[id].id).toBe(id);
       expect(KARAKURI_GAMES[id].levels, id).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  it("every line a game says is in the words, in both languages", () => {
+    const keys = new Set();
+    for (const file of readdirSync("src").filter((name) => name.endsWith("View.ts"))) {
+      for (const match of readFileSync(`src/${file}`, "utf8").matchAll(/key: "(\w+)"/g)) keys.add(match[1]);
+    }
+    expect(keys.size).toBeGreaterThan(20);
+    for (const key of keys) {
+      expect(KARAKURI_STRINGS.en[key], `en ${key}`).toBeTruthy();
+      expect(KARAKURI_STRINGS.ja[key], `ja ${key}`).toBeTruthy();
+    }
+    // A line with a "One" beside it has its twin in both languages.
+    for (const key of Object.keys(KARAKURI_STRINGS.en)) if (key.endsWith("One")) expect(KARAKURI_STRINGS.ja[key], key).toBeTruthy();
+  });
+
+  it("lists every game in the README with its number of levels, and says how many there are in all", () => {
+    const table = rows(section("The games"));
+    for (const id of KARAKURI_GAME_IDS) {
+      const row = table.find((cells) => cells[0] === `\`${id}\``);
+      expect(row, id).toBeDefined();
+      expect(row[3], id).toBe(String(KARAKURI_GAMES[id].levels));
+    }
+    const total = KARAKURI_GAME_IDS.reduce((sum, id) => sum + KARAKURI_GAMES[id].levels, 0);
+    expect(section("Limits")).toContain(`${total} in all`);
+  });
+
+  it("never calls a game by another game's trademarked name", () => {
+    for (const file of ["README.md", "CHANGELOG.md", "CONTRIBUTING.md", ...KARAKURI_GAME_IDS.map((id) => `docs/${id}.md`)]) {
+      expect(readFileSync(file, "utf8"), file).not.toMatch(/cut the rope\b|pull the pin\b|water sort|color switch|save the doge|rush hour|screw jam/i);
     }
   });
 

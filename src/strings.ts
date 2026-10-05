@@ -5,9 +5,11 @@
  *
  * `{name}` in a line is a value filled in; a line `foo` that has a `fooOne` beside it is said as `fooOne` when its `{n}` is 1.
  */
+import { STORY_STRINGS } from "./storyWords.ts";
+
 export type KarakuriLanguage = "en" | "ja";
 
-export const KARAKURI_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
+const BASE_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
   en: {
     restart: "Restart",
     tryAgain: "Try again",
@@ -131,6 +133,9 @@ export const KARAKURI_STRINGS: Record<KarakuriLanguage, Record<string, string>> 
     rules_choice_story: "3つの場面で、それぞれ正しい道具を選んで、物語をクリアしましょう。",
   },
 };
+
+/** Every word the package says: its own, and the stories'. */
+export const KARAKURI_STRINGS: Record<KarakuriLanguage, Record<string, string>> = { en: { ...BASE_STRINGS.en, ...STORY_STRINGS.en }, ja: { ...BASE_STRINGS.ja, ...STORY_STRINGS.ja } };
 
 /** The words for `key` in `lang`, with each `{name}` filled from `values`; English when the language has none; the key itself when nobody has. */
 export function say(lang: KarakuriLanguage, key: string, values: Record<string, string | number> = {}): string {

@@ -18,13 +18,12 @@ export const KARAKURI_STYLE = `
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .karakuri { ${vars("dark")} } }
 :root[data-theme="dark"] .karakuri { ${vars("dark")} }
 .karakuri *, .karakuri *::before, .karakuri *::after { box-sizing: border-box; user-select: none; -webkit-user-select: none; }
-.karakuri .kk-bar { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; margin: 0 2px 6px; min-height: 2.6em; font-size: .95rem; }
+.karakuri .kk-bar { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 12px; margin: 0 2px 6px; min-height: 4.3em; align-content: flex-start; font-size: .95rem; line-height: 1.4; }
 .karakuri .kk-title { font-weight: 700; }
-.karakuri .kk-info { color: var(--kk-muted); font-variant-numeric: tabular-nums; }
+.karakuri .kk-info { color: var(--kk-muted); font-variant-numeric: tabular-nums; flex: 1 1 100%; min-height: 2.8em; }
 .karakuri .kk-stage { position: relative; width: 100%; border-radius: 14px; overflow: hidden; background: var(--kk-board); box-shadow: 0 0 0 2px var(--kk-deep); }
 .karakuri .kk-canvas { display: block; width: 100%; height: 100%; touch-action: manipulation; cursor: pointer; outline: none; }
 .karakuri[data-gesture="drag"] .kk-canvas { touch-action: none; cursor: crosshair; }
-.karakuri .kk-canvas:focus-visible { box-shadow: inset 0 0 0 3px var(--kk-accent); }
 .karakuri .kk-card { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 16px; text-align: center; background: color-mix(in srgb, var(--kk-board) 82%, transparent); backdrop-filter: blur(1.5px); }
 .karakuri .kk-card[hidden] { display: none; }
 .karakuri .kk-card h3 { margin: 0; font-size: 1.5rem; line-height: 1.2; }

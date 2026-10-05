@@ -11,6 +11,8 @@ import { STRETCH_GRABBER_LEVELS } from "./stretchGrabber.levels.ts";
 import { stretchGrabberController } from "./stretchGrabberView.ts";
 import { SAVE_THE_CHARACTER_LEVELS } from "./saveTheCharacter.levels.ts";
 import { saveTheCharacterController } from "./saveTheCharacterView.ts";
+import { STORIES } from "./choiceStory.ts";
+import { choiceStoryController } from "./choiceStoryView.ts";
 import { TUBE_SORT_LEVELS } from "./tubeSort.levels.ts";
 import { tubeSortController } from "./tubeSortView.ts";
 
@@ -19,40 +21,6 @@ export const KARAKURI_GAME_IDS = ["save-the-character", "pin-rescue", "nuts-and-
 
 /** The id of a game of the package. */
 export type KarakuriGame = (typeof KARAKURI_GAME_IDS)[number];
-
-/** A game not built yet: it says so. Removed as each game lands. */
-function todo(id: string): GameInfo {
-  return {
-    id,
-    levels: 1,
-    gesture: "tap",
-    physics: false,
-    create: () => ({
-      width: 300,
-      height: 400,
-      gesture: "tap",
-      status: "playing",
-      result: null,
-      info: { key: "level", values: { n: 1, total: 1 } },
-      animating: false,
-      pointerDown() {},
-      pointerMove() {},
-      pointerUp() {},
-      pointerCancel() {},
-      tick() {},
-      draw(g, theme) {
-        g.fillStyle = theme.board;
-        g.fillRect(0, 0, 300, 400);
-        g.fillStyle = theme.ink;
-        g.font = `20px ${theme.font}`;
-        g.textAlign = "center";
-        g.fillText(id, 150, 200);
-      },
-      restart() {},
-      snapshot: () => ({}),
-    }),
-  };
-}
 
 /**
  * THE GAMES of the package, by id. Each is a `GameInfo`: how many levels it has, how it is played (`drag` or `tap`), whether it
@@ -66,7 +34,7 @@ export const KARAKURI_GAMES: Record<KarakuriGame, GameInfo> = {
   "grid-escape": { id: "grid-escape", levels: GRID_ESCAPE_LEVELS.length, gesture: "drag", physics: false, create: gridEscapeController },
   "rope-cut": { id: "rope-cut", levels: ROPE_CUT_LEVELS.length, gesture: "drag", physics: true, create: ropeCutController },
   "tube-sort": { id: "tube-sort", levels: TUBE_SORT_LEVELS.length, gesture: "tap", physics: false, create: tubeSortController },
-  "choice-story": todo("choice-story"),
+  "choice-story": { id: "choice-story", levels: STORIES.length, gesture: "tap", physics: false, create: choiceStoryController },
 };
 
 /** Makes a controller for level `level` (from 1) of a game; a level out of range is held to the nearest. */

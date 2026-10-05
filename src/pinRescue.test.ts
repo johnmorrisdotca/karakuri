@@ -107,6 +107,15 @@ describe("the levels", () => {
   });
 });
 
+describe("spikes", () => {
+  it("a hero who lands on spikes is lost, and the rule says so", () => {
+    const level = { ...PIN_RESCUE_LEVELS[0], spikes: [{ ax: 80, ay: 426, bx: 280, by: 426, r: 3 }], fluids: [] };
+    const game = playPulls(level, [0]);
+    expect(game.status).toBe("lost");
+    expect(game.loss).toBe("spikes");
+  });
+});
+
 describe("water and lava", () => {
   it("turn to stone where they meet, the stone stays, and the hero lands on it", () => {
     const level = PIN_RESCUE_LEVELS[1];

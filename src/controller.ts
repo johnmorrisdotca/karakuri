@@ -37,6 +37,8 @@ export interface Theme {
   paper: string;
   dark: boolean;
   font: string;
+  /** The language words drawn on the canvas are in. */
+  lang: "en" | "ja";
 }
 
 /** What the player reads in the bar above the board. */

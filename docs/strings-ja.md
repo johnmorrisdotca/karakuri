@@ -20,6 +20,9 @@ open a *Fix a translation* issue with the string's name. `{name}` and the other 
 | `statusPlaying` | Playing. | プレイ中。 |
 | `statusWon` | Level won. | レベルクリア。 |
 | `statusLost` | Level lost. | レベル失敗。 |
+| `nutsSlots` | Slots {used} of {slots} · plates left {left} | スロット {used}／{slots}・残りの板 {left} |
+| `nutsWon` | Every plate has fallen, in {n} screws. | {n}本のネジで、すべての板が落ちました。 |
+| `nutsLost` | All {slots} slots are full and plates are still on. Finish one plate at a time, so its screws fall with it and free their slots. | {slots}個のスロットがすべて埋まり、板が残っています。板を一枚ずつ片づけると、ネジも一緒に落ちてスロットが空きます。 |
 | `tubePours` | Pours {n} | 注いだ回数 {n} |
 | `tubeWonOne` | Every tube is one colour, in 1 pour. | 1回で、どのチューブも一つの色になりました。 |
 | `tubeWon` | Every tube is one colour, in {n} pours. | {n}回で、どのチューブも一つの色になりました。 |

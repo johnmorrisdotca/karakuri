@@ -1,6 +1,8 @@
 import type { Controller, GameInfo } from "./controller.ts";
 import { GRID_ESCAPE_LEVELS } from "./gridEscape.levels.ts";
 import { gridEscapeController } from "./gridEscapeView.ts";
+import { NUTS_AND_BOLTS_LEVELS } from "./nutsAndBolts.levels.ts";
+import { nutsAndBoltsController } from "./nutsAndBoltsView.ts";
 import { TUBE_SORT_LEVELS } from "./tubeSort.levels.ts";
 import { tubeSortController } from "./tubeSortView.ts";
 
@@ -51,7 +53,7 @@ function todo(id: string): GameInfo {
 export const KARAKURI_GAMES: Record<KarakuriGame, GameInfo> = {
   "save-the-character": todo("save-the-character"),
   "pin-rescue": todo("pin-rescue"),
-  "nuts-and-bolts": todo("nuts-and-bolts"),
+  "nuts-and-bolts": { id: "nuts-and-bolts", levels: NUTS_AND_BOLTS_LEVELS.length, gesture: "tap", physics: false, create: nutsAndBoltsController },
   "stretch-grabber": todo("stretch-grabber"),
   "grid-escape": { id: "grid-escape", levels: GRID_ESCAPE_LEVELS.length, gesture: "drag", physics: false, create: gridEscapeController },
   "rope-cut": todo("rope-cut"),

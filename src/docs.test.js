@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest";
 import { KARAKURI_GAME_IDS, KARAKURI_GAMES } from "./games.ts";
 import { movesAllowed } from "./gridEscape.ts";
 import { GRID_ESCAPE_LEVELS } from "./gridEscape.levels.ts";
+import { NUTS_AND_BOLTS_LEVELS } from "./nutsAndBolts.levels.ts";
 import { TUBE_SORT_LEVELS } from "./tubeSort.levels.ts";
 import { STEP } from "./physics/bodies.ts";
 import { KARAKURI_STRINGS } from "./strings.ts";
@@ -153,5 +154,10 @@ describe("the games' design notes", () => {
   it("docs/tube-sort.md has a row for each level with its colours and tubes", () => {
     const doc = readFileSync("docs/tube-sort.md", "utf8");
     for (const [i, level] of TUBE_SORT_LEVELS.entries()) expect(doc, `level ${i + 1}`).toContain(`| ${i + 1} | ${new Set(level.tubes.flat()).size} | ${level.tubes.length} |`);
+  });
+
+  it("docs/nuts-and-bolts.md has a row for each level with its plates, screws and slots", () => {
+    const doc = readFileSync("docs/nuts-and-bolts.md", "utf8");
+    for (const [i, level] of NUTS_AND_BOLTS_LEVELS.entries()) expect(doc, `level ${i + 1}`).toContain(`| ${i + 1} | ${level.plates.length} | ${level.plates.reduce((sum, p) => sum + p.screws.length, 0)} | ${level.slots} |`);
   });
 });

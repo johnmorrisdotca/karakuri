@@ -4,6 +4,20 @@ All notable changes to this package are written here, newest first, in the form 
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-05
+
+Nothing that was exported has changed.
+
+### Added
+
+- A test holds every `@johnmorrisdotca/karakuri@N` version pin in the README to this package's major version.
+
+### Changed
+
+- The family's list, in the README and in the demo's footer, names all twenty-four packages, Karakuri and Houseki included.
+- The npm description is one sentence of 250 characters or fewer, so npm and its search show it whole; it is also the repository's About text. `homepage` is the demo site and `author` is `"John Morris"`, the same in every package.
+- The GitHub Actions workflows use the current versions of the actions (checkout 7, setup-node 7, pnpm/action-setup 6; configure-pages 6, upload-pages-artifact 5 and deploy-pages 5 for Pages), which clears GitHub's Node 20 deprecation warning.
+
 ## [0.1.0] - 2026-10-05
 
 ### Added
@@ -18,4 +32,5 @@ All notable changes to this package are written here, newest first, in the form 
 - **Save the Character**: draw one line to shelter the character, let go, and the line falls on the package's physics while bees fly at him and rocks fall; keep him safe for three seconds. Five levels (bees along the ground, rocks, a narrow ledge, a pit, a small ledge with no floor), each with a recorded winning line chosen so that its neighbours also win, and a recorded loss.
 - **Choice Story**: four small stories of three stages each (a rainy walk, a night in a cave, a snow day, treasure island), two tools to choose from at each stage, one of which helps. The right tool plays a little animation and moves on; the wrong one plays a harmless slapstick failure, says why in plain words, and the stage is tried again. Every word and every tool name is in English and Japanese, and a test refuses a failure that harms anyone.
 
-[Unreleased]: https://github.com/johnmorrisdotca/karakuri/commits/main
+[Unreleased]: https://github.com/johnmorrisdotca/karakuri/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/johnmorrisdotca/karakuri/compare/v0.1.0...v0.1.1

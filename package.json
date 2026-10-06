@@ -1,7 +1,7 @@
 {
   "name": "@johnmorrisdotca/karakuri",
-  "version": "0.1.0",
-  "description": "Karakuri からくり, eight hyper-casual puzzle games for JavaScript and TypeScript, played by finger or mouse in any page: draw a shield, pull the pins, unscrew the plates, stretch an arm round pegs, slide the blocks, cut the ropes, pour the tubes, choose the tool. Levels that step up, a clear win and loss, and a small deterministic physics core that gives the same result in every browser. Zero dependencies.",
+  "version": "0.1.1",
+  "description": "Karakuri からくり, eight hyper-casual puzzle games for JavaScript and TypeScript, played by finger or mouse in any page: draw a shield, pull pins, cut ropes, slide blocks, pour tubes and more. Zero dependencies.",
   "keywords": [
     "puzzle",
     "puzzle-game",
@@ -20,7 +20,7 @@
     "custom-element",
     "web-component"
   ],
-  "homepage": "https://github.com/johnmorrisdotca/karakuri#readme",
+  "homepage": "https://johnmorrisdotca.github.io/karakuri/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/johnmorrisdotca/karakuri.git"

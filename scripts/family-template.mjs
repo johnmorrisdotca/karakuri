@@ -73,6 +73,7 @@ export const FAMILY = [
   { id: "jirai", name: "Jirai", kana: "地雷" },
   { id: "gunjin", name: "Gunjin", kana: "軍人" },
   { id: "karakuri", name: "Karakuri", kana: "からくり" },
+  { id: "houseki", name: "Houseki", kana: "宝石" },
 ];
 
 /**
@@ -104,6 +105,7 @@ export const FAMILY_PITCH = {
   jirai: "minesweeper on shaped grids with verified no-guess boards",
   gunjin: "five hidden-rank strategy games with pass-the-device play",
   karakuri: "eight hyper-casual puzzle games, some of them physics: draw a shield, pull pins, cut ropes, slide blocks, pour tubes",
+  houseki: "gem and stone matching puzzles: falling triplets, stone collapse, colour chains and gem swap",
 };
 
 /**

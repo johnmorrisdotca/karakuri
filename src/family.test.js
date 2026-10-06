@@ -15,9 +15,9 @@ const id = pkg.name.replace(/^@[^/]+\//, "");
 
 // The recorded hashes. The template's is the one that says every demo's header and footer, and every README's
 // list of the family, are the same text.
-// KARAKURI'S COPY ADDS ITSELF to the list (FAMILY and FAMILY_PITCH) and is otherwise the family's file of 2026-10-05, whose hash began
-// 061b5ed8: the family's list is swept again, in every repository at once, when this package is added to it, and this hash is then the new one.
-const TEMPLATE = { version: "2026-10-05", sha256: "ea3a2fd84a1959192f7705a4b9eec3aa5ba72493e5a5de48ea1a9ae9ebc3762d" };
+// The template of 2026-10-05 lists twenty-four packages, Karakuri and Houseki included. The family's list is swept again, in every
+// repository at once, when a package is added to it, and this hash is then the new one.
+const TEMPLATE = { version: "2026-10-05", sha256: "a2dc81808be980438bdef8b91f5c0bbff920a739bc50930cd4632cb017c8fa48" };
 const FILES = {
   "scripts/family-readme.mjs": "3c9d5b2cbf17a92d31bced98edac7f544616edb0dff90bf2d141722a9d4516c5",
   "scripts/release-notes.mjs": "efab0fb78ad05973a8885624c0d2ce3b458b55799c11eabaa5176603ce8cd1e9",
@@ -34,7 +34,7 @@ describe("the family template", () => {
   it("lists every package of the family, in order, each with its Japanese name and a line on it", () => {
     expect(FAMILY.map((one) => one.id)).toEqual([
       "korokoro", "kyuubu", "hitotsu", "toranpu", "tane", "narabe", "tenka", "kumimoji", "tsunagi", "jarajara",
-      "suido", "domino", "kotoba", "sugoroku", "kazu", "meikyuu", "hikidashi", "chizu", "bushu", "tobiishi", "jirai", "gunjin", "karakuri",
+      "suido", "domino", "kotoba", "sugoroku", "kazu", "meikyuu", "hikidashi", "chizu", "bushu", "tobiishi", "jirai", "gunjin", "karakuri", "houseki",
     ]);
     for (const one of FAMILY) {
       expect(one.name, one.id).toBe(one.id[0].toUpperCase() + one.id.slice(1));
@@ -74,6 +74,18 @@ describe("the README's family", () => {
   it("names every package once, as a link", () => {
     const block = familyBlockOf(readme);
     for (const one of FAMILY) expect(block.split(`](https://github.com/johnmorrisdotca/${one.id})`).length - 1, one.id).toBe(1);
+  });
+});
+
+describe("the README's version pins", () => {
+  it("name this package's major version, never an older one: a CDN address says @2 once the package is 2.x", () => {
+    const major = pkg.version.split(".")[0];
+    const pins = read("README.md")
+      .split(`${pkg.name}@`)
+      .slice(1)
+      .map((rest) => /^\d+/.exec(rest)?.[0])
+      .filter((pin) => pin !== undefined);
+    for (const pin of pins) expect(pin, `${pkg.name}@${pin} in README.md`).toBe(major);
   });
 });
 

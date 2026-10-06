@@ -1,11 +1,11 @@
 // choiceStoryView.ts: Choice Story as a controller: a tap on one of the two tools plays what happens (the problem goes away, or the character slips in a
 // harmless way) and the story goes on or the stage is tried again. The rules are in choiceStory.ts, the pictures in storyScenes.ts and storyTools.ts.
 import type { Controller, Point, Say, Status, Theme } from "./controller.ts";
-import { STORIES, choose, newStory, retryStage, stageKey, stageOf, type StoryState } from "./choiceStory.ts";
+import { STORIES, choose, newStory, retryStage, stageKey, stageOf, type StoryState } from "./choice-story.ts";
 import { alpha, roundRect } from "./draw.ts";
 import { say } from "./strings.ts";
-import { drawScene, type Pose } from "./storyScenes.ts";
-import { drawTool } from "./storyTools.ts";
+import { drawScene, type Pose } from "./story-scenes.ts";
+import { drawTool } from "./story-tools.ts";
 
 const WIDTH = 360;
 const HEIGHT = 480;

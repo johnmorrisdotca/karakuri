@@ -1,9 +1,9 @@
 // levels.ts: the `@johnmorrisdotca/karakuri/levels` entry point: every game's level list, as plain data (no page, no drawing).
-export * from "./gridEscape.levels.ts";
-export * from "./tubeSort.levels.ts";
-export * from "./nutsAndBolts.levels.ts";
-export * from "./pinRescue.levels.ts";
-export * from "./ropeCut.levels.ts";
-export * from "./stretchGrabber.levels.ts";
-export * from "./saveTheCharacter.levels.ts";
-export { STORIES } from "./choiceStory.ts";
+export * from "./grid-escape.levels.ts";
+export * from "./tube-sort.levels.ts";
+export * from "./nuts-and-bolts.levels.ts";
+export * from "./pin-rescue.levels.ts";
+export * from "./rope-cut.levels.ts";
+export * from "./stretch-grabber.levels.ts";
+export * from "./save-the-character.levels.ts";
+export { STORIES } from "./choice-story.ts";

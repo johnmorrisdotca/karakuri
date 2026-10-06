@@ -1,7 +1,7 @@
 // pinRescue.levels.ts: Pin Rescue's levels. Each is a shaft (walls 70 to 290 across, 40 to 440 down) with pins across it, a hero, maybe
 // some gold, lava and water in chambers or in a pit, and a safe place. A level is kept only when the tests find a way to win it (in
 // `solution`, the pins to pull in order) and a way to lose it, by playing the whole simulation.
-import type { PinLevel, Segment } from "./pinRescue.ts";
+import type { PinLevel, Segment } from "./pin-rescue.ts";
 
 /** The four walls of the shaft. */
 const SHAFT: Segment[] = [

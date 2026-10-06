@@ -2,7 +2,7 @@
 // package's own search says the level needs exactly the slots it has (the fewest that can win it), a losing order can be played, and every
 // screw is plainly under a plate or plainly clear of it; fixed: a level keeps its number for ever. Plates are listed from the bottom layer to
 // the top; each has its outline, its screws (their places on the board, which is 360 across and 360 down) and which colour it is drawn.
-import type { NutPuzzle } from "./nutsAndBolts.ts";
+import type { NutPuzzle } from "./nuts-and-bolts.ts";
 
 /** The levels, with more plates and more screws each time. */
 export const NUTS_AND_BOLTS_LEVELS: readonly NutPuzzle[] = [

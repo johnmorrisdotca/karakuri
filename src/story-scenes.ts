@@ -2,9 +2,9 @@
 // in: waiting, solved (a progress from 0 to 1), or having beaten the character in a harmless, slapstick way. The area is 360 across and 300 down.
 // Plain shapes and flat colours only; nothing is copied from anywhere.
 import type { Theme } from "./controller.ts";
-import type { ProblemId, ToolId } from "./choiceStory.ts";
+import type { ProblemId, ToolId } from "./choice-story.ts";
 import { alpha, disc, roundRect, shade } from "./draw.ts";
-import { drawTool } from "./storyTools.ts";
+import { drawTool } from "./story-tools.ts";
 
 /** Where the ground is, and where the character stands. */
 export const GROUND = 238;

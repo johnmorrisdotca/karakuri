@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { STORIES, choose, isRight, newStory, retryStage, stageKey, stageOf, type StoryState } from "./choiceStory.ts";
+import { STORIES, choose, isRight, newStory, retryStage, stageKey, stageOf, type StoryState } from "./choice-story.ts";
 import { KARAKURI_STRINGS } from "./strings.ts";
 
 describe("the stories", () => {

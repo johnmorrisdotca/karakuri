@@ -1,4 +1,4 @@
-import type { SaveLevel } from "./saveTheCharacter.ts";
+import type { SaveLevel } from "./save-the-character.ts";
 
 /** The ground: a long ledge near the bottom. */
 const GROUND = { ax: 14, ay: 440, bx: 346, by: 440 };

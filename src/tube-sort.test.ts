@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import { TUBE_CAPACITY, canPour, findDeadEnd, isSolved, isUseful, newTubeGame, pour, pourTubes, runOf, solveTubes, usefulPours, type TubeState } from "./tubeSort.ts";
-import { TUBE_SORT_LEVELS } from "./tubeSort.levels.ts";
-import { tubeLayout } from "./tubeSortView.ts";
+import { TUBE_CAPACITY, canPour, findDeadEnd, isSolved, isUseful, newTubeGame, pour, pourTubes, runOf, solveTubes, usefulPours, type TubeState } from "./tube-sort.ts";
+import { TUBE_SORT_LEVELS } from "./tube-sort.levels.ts";
+import { tubeLayout } from "./tube-sort-view.ts";
 
 const counts = (tubes: readonly (readonly number[])[]): Record<number, number> => {
   const out: Record<number, number> = {};

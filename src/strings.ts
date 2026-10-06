@@ -5,7 +5,7 @@
  *
  * `{name}` in a line is a value filled in; a line `foo` that has a `fooOne` beside it is said as `fooOne` when its `{n}` is 1.
  */
-import { STORY_STRINGS } from "./storyWords.ts";
+import { STORY_STRINGS } from "./story-words.ts";
 
 export type KarakuriLanguage = "en" | "ja";
 

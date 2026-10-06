@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { isCalled, isMoving, newPinGame, pinNumbers, playPulls, pullPin, stepPinGame, type PinGame } from "./pinRescue.ts";
-import { PIN_RESCUE_LEVELS } from "./pinRescue.levels.ts";
+import { isCalled, isMoving, newPinGame, pinNumbers, playPulls, pullPin, stepPinGame, type PinGame } from "./pin-rescue.ts";
+import { PIN_RESCUE_LEVELS } from "./pin-rescue.levels.ts";
 import { hashNumbers } from "./physics/geometry.ts";
 
 const run = (game: PinGame, ticks: number): void => {

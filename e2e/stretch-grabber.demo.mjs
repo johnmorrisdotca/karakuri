@@ -2,7 +2,7 @@
 // with a finger (or the mouse); the recorded loss loses it; and a tip that is not touched is not taken hold of.
 import { expect, test } from "@playwright/test";
 
-import { STRETCH_GRABBER_LEVELS } from "../dist/stretchGrabber.levels.js";
+import { STRETCH_GRABBER_LEVELS } from "../dist/stretch-grabber.levels.js";
 import { at, client, drag, open, read } from "./demo.mjs";
 
 /** Leads the tip from where it is along the points (in the game's own units). */

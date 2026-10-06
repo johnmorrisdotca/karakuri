@@ -2,8 +2,8 @@
 // board is drawn on a canvas. The rules are in nutsAndBolts.ts; this holds the level in play and turns taps into screws taken.
 import type { Controller, Point, Say, Status, Theme } from "./controller.ts";
 import { alpha, PIECE_COLOURS, roundRect, shade } from "./draw.ts";
-import { freeScrews, newNutGame, takeScrew, type NutPlate, type NutState, type ScrewRef } from "./nutsAndBolts.ts";
-import { NUTS_AND_BOLTS_LEVELS } from "./nutsAndBolts.levels.ts";
+import { freeScrews, newNutGame, takeScrew, type NutPlate, type NutState, type ScrewRef } from "./nuts-and-bolts.ts";
+import { NUTS_AND_BOLTS_LEVELS } from "./nuts-and-bolts.levels.ts";
 
 const WIDTH = 360;
 const HEIGHT = 480;

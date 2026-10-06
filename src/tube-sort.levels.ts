@@ -1,7 +1,7 @@
 // tubeSort.levels.ts: Tube Sort's five levels. Dealt from a fixed seed by scripts/tube-sort-levels.ts, kept only when the package's own search
 // finds a way to win from them and a dead end can be reached from them, and fixed: a level keeps its number for ever. Each tube is listed
 // from its bottom layer to its top, a layer being a colour number.
-import type { TubePuzzle } from "./tubeSort.ts";
+import type { TubePuzzle } from "./tube-sort.ts";
 
 /** The levels, each with more colours and more tubes than the one before. */
 export const TUBE_SORT_LEVELS: readonly TubePuzzle[] = [

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { MIN_STROKE, SPACING, SURVIVE_TICKS, beginStroke, clearStroke, extendStroke, isCalled, lengthOf, newSaveGame, playStroke, releaseStroke, saveNumbers, stepSaveGame, type Pt } from "./saveTheCharacter.ts";
-import { SAVE_THE_CHARACTER_LEVELS } from "./saveTheCharacter.levels.ts";
+import { MIN_STROKE, SPACING, SURVIVE_TICKS, beginStroke, clearStroke, extendStroke, isCalled, lengthOf, newSaveGame, playStroke, releaseStroke, saveNumbers, stepSaveGame, type Pt } from "./save-the-character.ts";
+import { SAVE_THE_CHARACTER_LEVELS } from "./save-the-character.levels.ts";
 import { hashNumbers } from "./physics/geometry.ts";
 
 const level1 = SAVE_THE_CHARACTER_LEVELS[0];

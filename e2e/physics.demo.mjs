@@ -3,8 +3,8 @@
 import { expect, test } from "@playwright/test";
 
 import * as physics from "../dist/physics-entry.js";
-import { newPinGame, pinNumbers, pullPin, stepPinGame } from "../dist/pinRescue.js";
-import { PIN_RESCUE_LEVELS } from "../dist/pinRescue.levels.js";
+import { newPinGame, pinNumbers, pullPin, stepPinGame } from "../dist/pin-rescue.js";
+import { PIN_RESCUE_LEVELS } from "../dist/pin-rescue.levels.js";
 import { open } from "./demo.mjs";
 
 /** The simulations, as the source of a function that takes the modules and gives back their hashes. */
@@ -38,8 +38,8 @@ test("the same simulations give the same frames, bit for bit, in the browser as 
   const here = run(physics, { newPinGame, pinNumbers, pullPin, stepPinGame }, PIN_RESCUE_LEVELS);
   const there = await page.evaluate(async (source) => {
     const P = await import("./dist/physics-entry.js");
-    const pin = await import("./dist/pinRescue.js");
-    const levels = (await import("./dist/pinRescue.levels.js")).PIN_RESCUE_LEVELS;
+    const pin = await import("./dist/pin-rescue.js");
+    const levels = (await import("./dist/pin-rescue.levels.js")).PIN_RESCUE_LEVELS;
     return (0, eval)(source)(P, pin, levels);
   }, SIMULATIONS);
   expect(there).toEqual(here);

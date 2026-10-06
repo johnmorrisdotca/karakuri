@@ -1,20 +1,20 @@
 import type { Controller, GameInfo } from "./controller.ts";
-import { GRID_ESCAPE_LEVELS } from "./gridEscape.levels.ts";
-import { gridEscapeController } from "./gridEscapeView.ts";
-import { NUTS_AND_BOLTS_LEVELS } from "./nutsAndBolts.levels.ts";
-import { nutsAndBoltsController } from "./nutsAndBoltsView.ts";
-import { PIN_RESCUE_LEVELS } from "./pinRescue.levels.ts";
-import { pinRescueController } from "./pinRescueView.ts";
-import { ROPE_CUT_LEVELS } from "./ropeCut.levels.ts";
-import { ropeCutController } from "./ropeCutView.ts";
-import { STRETCH_GRABBER_LEVELS } from "./stretchGrabber.levels.ts";
-import { stretchGrabberController } from "./stretchGrabberView.ts";
-import { SAVE_THE_CHARACTER_LEVELS } from "./saveTheCharacter.levels.ts";
-import { saveTheCharacterController } from "./saveTheCharacterView.ts";
-import { STORIES } from "./choiceStory.ts";
-import { choiceStoryController } from "./choiceStoryView.ts";
-import { TUBE_SORT_LEVELS } from "./tubeSort.levels.ts";
-import { tubeSortController } from "./tubeSortView.ts";
+import { GRID_ESCAPE_LEVELS } from "./grid-escape.levels.ts";
+import { gridEscapeController } from "./grid-escape-view.ts";
+import { NUTS_AND_BOLTS_LEVELS } from "./nuts-and-bolts.levels.ts";
+import { nutsAndBoltsController } from "./nuts-and-bolts-view.ts";
+import { PIN_RESCUE_LEVELS } from "./pin-rescue.levels.ts";
+import { pinRescueController } from "./pin-rescue-view.ts";
+import { ROPE_CUT_LEVELS } from "./rope-cut.levels.ts";
+import { ropeCutController } from "./rope-cut-view.ts";
+import { STRETCH_GRABBER_LEVELS } from "./stretch-grabber.levels.ts";
+import { stretchGrabberController } from "./stretch-grabber-view.ts";
+import { SAVE_THE_CHARACTER_LEVELS } from "./save-the-character.levels.ts";
+import { saveTheCharacterController } from "./save-the-character-view.ts";
+import { STORIES } from "./choice-story.ts";
+import { choiceStoryController } from "./choice-story-view.ts";
+import { TUBE_SORT_LEVELS } from "./tube-sort.levels.ts";
+import { tubeSortController } from "./tube-sort-view.ts";
 
 /** The ids of the games, in the order the package lists them (kebab case, the same in every address and attribute). */
 export const KARAKURI_GAME_IDS = ["save-the-character", "pin-rescue", "nuts-and-bolts", "stretch-grabber", "grid-escape", "rope-cut", "tube-sort", "choice-story"] as const;

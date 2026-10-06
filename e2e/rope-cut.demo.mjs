@@ -3,7 +3,7 @@
 // real clock as well, with a cut made when the lantern is where it was wanted.
 import { expect, test } from "@playwright/test";
 
-import { ROPE_CUT_LEVELS } from "../dist/ropeCut.levels.js";
+import { ROPE_CUT_LEVELS } from "../dist/rope-cut.levels.js";
 import { at, client, drag, open, read } from "./demo.mjs";
 
 /** Advances the game to the step `to`. */

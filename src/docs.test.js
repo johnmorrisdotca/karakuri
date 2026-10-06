@@ -6,10 +6,10 @@ import process from "node:process";
 import { describe, expect, it } from "vitest";
 
 import { KARAKURI_GAME_IDS, KARAKURI_GAMES } from "./games.ts";
-import { movesAllowed } from "./gridEscape.ts";
-import { GRID_ESCAPE_LEVELS } from "./gridEscape.levels.ts";
-import { NUTS_AND_BOLTS_LEVELS } from "./nutsAndBolts.levels.ts";
-import { TUBE_SORT_LEVELS } from "./tubeSort.levels.ts";
+import { movesAllowed } from "./grid-escape.ts";
+import { GRID_ESCAPE_LEVELS } from "./grid-escape.levels.ts";
+import { NUTS_AND_BOLTS_LEVELS } from "./nuts-and-bolts.levels.ts";
+import { TUBE_SORT_LEVELS } from "./tube-sort.levels.ts";
 import { STEP } from "./physics/bodies.ts";
 import { KARAKURI_STRINGS } from "./strings.ts";
 import { KARAKURI_STYLE } from "./style.ts";
@@ -138,7 +138,7 @@ describe("the README's promises", () => {
 
   it("every line a game says is in the words, in both languages", () => {
     const keys = new Set();
-    for (const file of readdirSync("src").filter((name) => name.endsWith("View.ts"))) {
+    for (const file of readdirSync("src").filter((name) => name.endsWith("-view.ts"))) {
       for (const match of readFileSync(`src/${file}`, "utf8").matchAll(/key: "(\w+)"/g)) keys.add(match[1]);
     }
     expect(keys.size).toBeGreaterThan(20);

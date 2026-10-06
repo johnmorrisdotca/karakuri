@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { ARM_R, TIP_R, armLength, moveTip, nearTip, newGrabGame, playPath, tipOf, type GrabLevel } from "./stretchGrabber.ts";
-import { STRETCH_GRABBER_LEVELS } from "./stretchGrabber.levels.ts";
+import { ARM_R, TIP_R, armLength, moveTip, nearTip, newGrabGame, playPath, tipOf, type GrabLevel } from "./stretch-grabber.ts";
+import { STRETCH_GRABBER_LEVELS } from "./stretch-grabber.levels.ts";
 
 const open: GrabLevel = { base: { x: 180, y: 440 }, star: { x: 180, y: 60, r: 13 }, maxLength: 500, solids: [], hazards: [] };
 

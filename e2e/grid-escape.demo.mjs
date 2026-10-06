@@ -2,8 +2,8 @@
 // the mouse), the card says so, and a level can be lost by running out of moves, and started again.
 import { expect, test } from "@playwright/test";
 
-import { GRID_ESCAPE_LEVELS, gridPuzzleOf } from "../dist/gridEscape.levels.js";
-import { cellsOf, newGridGame, reach, slide, solveGrid } from "../dist/gridEscape.js";
+import { GRID_ESCAPE_LEVELS, gridPuzzleOf } from "../dist/grid-escape.levels.js";
+import { cellsOf, newGridGame, reach, slide, solveGrid } from "../dist/grid-escape.js";
 import { at, client, drag, open, read } from "./demo.mjs";
 
 const CELL = 48;

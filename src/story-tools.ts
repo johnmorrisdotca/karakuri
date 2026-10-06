@@ -1,7 +1,7 @@
 // storyTools.ts: the pictures of the tools in Choice Story, each drawn in code on a canvas in a box 100 across and 100 down centred on the origin.
 // Plain shapes and flat colours, outlined, so that each reads at the size of a thumb and on a light or a dark board. Nothing is copied from anywhere.
 import { roundRect, shade } from "./draw.ts";
-import type { ToolId } from "./choiceStory.ts";
+import type { ToolId } from "./choice-story.ts";
 
 const INK = "#3a2f26";
 

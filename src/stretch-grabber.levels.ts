@@ -2,7 +2,7 @@
 // route for the tip to the star over the free space and gave the arm that length and a little slack; the route is recorded as each
 // level's `solution` (waypoints for the tip) and the tests play it on the rules, and `loss` is a path that touches a hazard. Fixed: a level
 // keeps its number for ever.
-import type { GrabLevel, Hazard, Pt, Solid } from "./stretchGrabber.ts";
+import type { GrabLevel, Hazard, Pt, Solid } from "./stretch-grabber.ts";
 
 /** A level, the waypoints of one way to win it, and of one way to lose it. */
 export interface StretchGrabberEntry extends GrabLevel {

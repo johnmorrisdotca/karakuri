@@ -2,8 +2,8 @@
 // level is lost by filling the slots, and a screw under a plate cannot be tapped.
 import { expect, test } from "@playwright/test";
 
-import { NUTS_AND_BOLTS_LEVELS } from "../dist/nutsAndBolts.levels.js";
-import { findLoss, newNutGame, solveNuts } from "../dist/nutsAndBolts.js";
+import { NUTS_AND_BOLTS_LEVELS } from "../dist/nuts-and-bolts.levels.js";
+import { findLoss, newNutGame, solveNuts } from "../dist/nuts-and-bolts.js";
 import { at, client, open, read, tap } from "./demo.mjs";
 
 /** Taps one screw and waits until the game has counted it. */

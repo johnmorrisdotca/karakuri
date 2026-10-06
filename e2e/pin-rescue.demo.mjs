@@ -2,7 +2,7 @@
 // pulls, with a finger (or the mouse); a level is lost by pulling the wrong pin; Try again starts it over.
 import { expect, test } from "@playwright/test";
 
-import { PIN_RESCUE_LEVELS } from "../dist/pinRescue.levels.js";
+import { PIN_RESCUE_LEVELS } from "../dist/pin-rescue.levels.js";
 import { at, client, open, read, tap } from "./demo.mjs";
 
 /** Taps a pin's ring, and waits until it has moved and everything has come to rest again (or the game is decided). */

@@ -2,8 +2,8 @@
 // pegs, the walls, the hazards and the star are drawn on a canvas. The rules are in stretchGrabber.ts; this turns the pointer into the tip's moves.
 import type { Controller, Say, Status, Theme } from "./controller.ts";
 import { alpha, disc, shade } from "./draw.ts";
-import { ARM_R, TIP_R, armLength, moveTip, nearTip, newGrabGame, tipOf, type GrabGame } from "./stretchGrabber.ts";
-import { STRETCH_GRABBER_LEVELS } from "./stretchGrabber.levels.ts";
+import { ARM_R, TIP_R, armLength, moveTip, nearTip, newGrabGame, tipOf, type GrabGame } from "./stretch-grabber.ts";
+import { STRETCH_GRABBER_LEVELS } from "./stretch-grabber.levels.ts";
 
 const WIDTH = 360;
 const HEIGHT = 480;

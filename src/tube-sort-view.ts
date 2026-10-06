@@ -2,8 +2,8 @@
 // The rules are in tubeSort.ts; this holds the level in play and turns taps into pours.
 import type { Controller, Point, Say, Status, Theme } from "./controller.ts";
 import { alpha, PIECE_COLOURS, roundRect, shade } from "./draw.ts";
-import { TUBE_CAPACITY, canPour, newTubeGame, pour, type TubeState } from "./tubeSort.ts";
-import { TUBE_SORT_LEVELS } from "./tubeSort.levels.ts";
+import { TUBE_CAPACITY, canPour, newTubeGame, pour, type TubeState } from "./tube-sort.ts";
+import { TUBE_SORT_LEVELS } from "./tube-sort.levels.ts";
 
 const WIDTH = 360;
 const HEIGHT = 420;

@@ -2,8 +2,8 @@
 // lost by pouring into a dead end, and picking a tube up and putting it down again is not a pour.
 import { expect, test } from "@playwright/test";
 
-import { TUBE_SORT_LEVELS } from "../dist/tubeSort.levels.js";
-import { findDeadEnd, solveTubes } from "../dist/tubeSort.js";
+import { TUBE_SORT_LEVELS } from "../dist/tube-sort.levels.js";
+import { findDeadEnd, solveTubes } from "../dist/tube-sort.js";
 import { at, client, open, read, tap } from "./demo.mjs";
 
 const centre = async (page, tube) => {

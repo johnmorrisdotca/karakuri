@@ -2,7 +2,7 @@
 // three seconds out, a line that does not help loses, a line too short to count is thrown away, and there is only one line.
 import { expect, test } from "@playwright/test";
 
-import { SAVE_THE_CHARACTER_LEVELS } from "../dist/saveTheCharacter.levels.js";
+import { SAVE_THE_CHARACTER_LEVELS } from "../dist/save-the-character.levels.js";
 import { at, client, drag, open, read } from "./demo.mjs";
 
 /** Draws a line through the points (each point is one pointer event, so the line is the one the tests proved). */

@@ -2,7 +2,7 @@
 // slipped on first (a wrong tool, its failure, Try again) and then done; and a story can be started again.
 import { expect, test } from "@playwright/test";
 
-import { STORIES } from "../dist/choiceStory.js";
+import { STORIES } from "../dist/choice-story.js";
 import { at, client, open, read, tap } from "./demo.mjs";
 
 /** Taps the card for tool 0 or 1 of the stage now shown. */

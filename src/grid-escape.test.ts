@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { GRID_SIZE, cellsOf, gridRows, keyOut, movesAllowed, newGridGame, parseGrid, reach, slide, solveGrid, type GridPuzzle } from "./gridEscape.ts";
-import { GRID_ESCAPE_LEVELS, gridPuzzleOf } from "./gridEscape.levels.ts";
+import { GRID_SIZE, cellsOf, gridRows, keyOut, movesAllowed, newGridGame, parseGrid, reach, slide, solveGrid, type GridPuzzle } from "./grid-escape.ts";
+import { GRID_ESCAPE_LEVELS, gridPuzzleOf } from "./grid-escape.levels.ts";
 
 const parse = (rows: string[]): GridPuzzle => parseGrid(rows) as GridPuzzle;
 

@@ -2,8 +2,8 @@
 // the lantern, the platforms, the target and the pit are drawn on a canvas. The rules and the simulation are in ropeCut.ts.
 import type { Controller, Point, Say, Status, Theme } from "./controller.ts";
 import { alpha, disc, shade } from "./draw.ts";
-import { cutSwipe, isCalled, isMoving, newRopeGame, stepRopeGame, type RopeGame, type RopeLevel } from "./ropeCut.ts";
-import { ROPE_CUT_LEVELS } from "./ropeCut.levels.ts";
+import { cutSwipe, isCalled, isMoving, newRopeGame, stepRopeGame, type RopeGame, type RopeLevel } from "./rope-cut.ts";
+import { ROPE_CUT_LEVELS } from "./rope-cut.levels.ts";
 
 const WIDTH = 360;
 const HEIGHT = 480;

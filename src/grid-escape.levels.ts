@@ -1,7 +1,7 @@
 // gridEscape.levels.ts: Grid Escape's five levels. Found by a search (scripts/grid-escape-levels.ts), each with its fewest moves worked
 // out by the exhaustive search the game itself uses, and fixed: a level keeps its number for ever. Each is six rows of six cells:
 // `.` is empty, `K` is the key, and every other letter is one block.
-import { parseGrid, type GridPuzzle } from "./gridEscape.ts";
+import { parseGrid, type GridPuzzle } from "./grid-escape.ts";
 
 /** One level: its board and its proved fewest moves. */
 export interface GridEscapeLevel {

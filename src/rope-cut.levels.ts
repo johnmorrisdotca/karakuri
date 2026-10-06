@@ -1,4 +1,4 @@
-import type { Platform, RopeLevel } from "./ropeCut.ts";
+import type { Platform, RopeLevel } from "./rope-cut.ts";
 
 /** The catch basket: a floor and two sloping sides, with its zone inside. */
 const basket = (cx: number, top = 380, width = 100): Platform[] => [

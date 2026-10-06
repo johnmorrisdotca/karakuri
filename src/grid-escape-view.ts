@@ -2,8 +2,8 @@
 // board is drawn on a canvas. The rules are in gridEscape.ts; this holds the level in play and turns the pointer into slides.
 import type { Controller, Point, Say, Status, Theme } from "./controller.ts";
 import { alpha, PIECE_COLOURS, roundRect, shade } from "./draw.ts";
-import { GRID_SIZE, cellsOf, keyOut, movesAllowed, newGridGame, reach, slide, type GridState } from "./gridEscape.ts";
-import { GRID_ESCAPE_LEVELS, gridPuzzleOf } from "./gridEscape.levels.ts";
+import { GRID_SIZE, cellsOf, keyOut, movesAllowed, newGridGame, reach, slide, type GridState } from "./grid-escape.ts";
+import { GRID_ESCAPE_LEVELS, gridPuzzleOf } from "./grid-escape.levels.ts";
 
 const CELL = 48;
 const MARGIN = 36;

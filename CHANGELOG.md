@@ -4,6 +4,10 @@ All notable changes to this package are written here, newest first, in the form 
 
 ## [Unreleased]
 
+### Changed
+
+- Repository only: the package and everything it exports are unchanged. `CONTRIBUTING.md` is the family's one text with a section of its own for Karakuri, held to the master in johnmorrisdotca/.github by `src/family.test.js`; `ci.yml` and `pages.yml` are the family's one text (`pnpm check`, the demo, and the package on Linux, macOS and Windows), and any jobs of the package's own after them.
+
 ### Fixed
 
 - The API reference page wraps a long entry path instead of running about 2 px wider than a 360 px screen. Nothing the package exports has changed.

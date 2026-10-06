@@ -76,20 +76,3 @@ The Release workflow (`.github/workflows/release.yml`) checks and builds the
 package, attaches the tarball to a GitHub release and publishes it to npm by
 trusted publishing, with provenance and no token. A version already on npm is
 not published again.
-
-## Particular to Karakuri
-
-Bug reports and ideas go in the [issues](https://github.com/johnmorrisdotca/karakuri/issues).
-
-### Commands and rules
-
-```sh
-pnpm check          # lint, types and tests: every level of every game proved winnable, the physics held bit for bit
-pnpm test:package   # pack it as npm does, install it in an empty project, import every entry
-pnpm test:demo      # build the demo and play every level of every game to a win in a real browser, at a phone's width and a desk's
-pnpm docs:make      # rewrite docs/strings-ja.md after changing a word
-```
-
-The physics is held to a recorded hash: a change to the arithmetic of `src/physics/` changes every frame of every physics game, so it fails the
-determinism tests until the new hash is recorded on purpose, and the levels' recorded solutions are played again to prove they still win.
-A level published keeps its number: levels are only added to the end of a game's list, never edited, except in a release that says so in the changelog.

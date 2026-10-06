@@ -4,6 +4,10 @@ All notable changes to this package are written here, newest first, in the form 
 
 ## [Unreleased]
 
+### Fixed
+
+- The API reference page wraps a long entry path instead of running about 2 px wider than a 360 px screen. Nothing the package exports has changed.
+
 ## [0.1.1] - 2026-10-05
 
 Nothing that was exported has changed.

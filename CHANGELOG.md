@@ -4,6 +4,8 @@ All notable changes to this package are written here, newest first, in the form 
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-05
+
 ### Added
 
 - The package and its family: a small deterministic 2D physics core (rigid bodies made of circles and capsules, rope chains, a particle fluid), shared pointer input, a canvas player with a restart and a level step (`room` says how much height the board may take, for a page with more round it than the default allows, and `redraw()` fits it again when that changes; its status events carry the result and the level's line as words in the player's language, `text` and `info`, for a page that draws its own), the words in English and Japanese, and a demo site.

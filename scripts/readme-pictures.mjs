@@ -1,53 +1,52 @@
-// Takes the README's two pictures from the built demo (`pnpm pictures` builds it first): the desk, and a phone in dark mode and Japanese.
-// Each plays a few moves first, so that the pictures show a game being played, not a start screen. A dev-only tool.
-import { existsSync, readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import process from "node:process";
-import { fileURLToPath } from "node:url";
+// Takes the pictures the README shows, from the built demo in `site/`: `pnpm screenshots:readme` (builds the demo, then runs this).
+// The family's standard is in johnmorrisdotca/.github (README-STANDARD.md); the shared part is readme-pictures-lib.mjs.
+// The page is served to a browser without a port, never fetched from the live site, and the same each run: the game and the level
+// are named by the address, the clock is manual (`clock=manual`, so that only `advance` moves time), the pointer is pressed with
+// the board's own coordinates, and motion is reduced. It waits on the canvas being drawn, never on a clock.
+// Output: docs/images/<subject>-<desk|phone>-<light|dark>.webp.
+import { takePictures } from "./readme-pictures-lib.mjs";
 
-import { chromium } from "@playwright/test";
+const READY = '[data-testid="board"] canvas.kk-canvas';
+const BOARD = '[data-testid="board"]';
+const address = (game, level, lang = "en") => `/?lang=${lang}&help=off&game=${game}&level=${level}&clock=manual`;
 
-const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const site = join(root, "site");
-const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml" };
+/** Run a few lines against the board's handle: `m` is the player, with its controller, its clock and the way to press a point of the board. */
+const play = (lines) => (page) =>
+  page.evaluate(`(async () => { const m = document.querySelector('[data-testid="board"]').karakuri;
+    const press = (x, y) => { const w = m.toClient(x, y); for (const type of ["pointerdown", "pointerup"]) m.canvas.dispatchEvent(new PointerEvent(type, { clientX: w.x, clientY: w.y, pointerId: 1, button: 0, bubbles: true })); };
+    ${lines} })()`);
 
-const browser = await chromium.launch();
-async function shoot({ query, viewport, scheme, touch, moves, out }) {
-  const context = await browser.newContext({ viewport, colorScheme: scheme, hasTouch: touch, isMobile: touch, deviceScaleFactor: touch ? 2 : 1, reducedMotion: "reduce" });
-  const page = await context.newPage();
-  await page.route("http://karakuri.test/**", (route) => {
-    const { pathname } = new URL(route.request().url());
-    const file = join(site, pathname.endsWith("/") ? `${pathname}index.html` : pathname);
-    if (!existsSync(file)) return route.fulfill({ status: 404, body: "" });
-    return route.fulfill({ body: readFileSync(file), contentType: TYPES[file.slice(file.lastIndexOf("."))] ?? "application/octet-stream" });
-  });
-  await page.goto(`http://karakuri.test/${query}`);
-  await page.waitForSelector('[data-testid="board"] canvas.kk-canvas');
-  await page.evaluate(`(async () => { const m = document.querySelector('[data-testid="board"]').karakuri; ${moves} })()`);
-  await page.evaluate(() => document.querySelector('[data-testid="board"]').scrollIntoView({ block: "center" }));
-  await page.waitForTimeout(250);
-  await page.screenshot({ path: join(root, "docs", out), type: "jpeg", quality: 82, fullPage: false });
-  await context.close();
-}
+/** One game, as it looks a moment after its first move. */
+const game = (id, level, lines = "m.advance(30);", extra = {}) => ({ subject: id, views: ["desk"], url: address(id, level), ready: READY, target: BOARD, prepare: play(lines), ...extra });
 
-const press = (x, y) => `{ const w = m.toClient(${x}, ${y}); for (const type of ["pointerdown", "pointerup"]) m.canvas.dispatchEvent(new PointerEvent(type, { clientX: w.x, clientY: w.y, pointerId: 1, button: 0, bubbles: true })); }`;
-const PULL = `const pull = (i) => { const p = m.controller.snapshot().pins[i].handle; ${press("p.x", "p.y")} };`;
-
-await shoot({
-  query: "?game=pin-rescue&level=2&clock=manual",
-  viewport: { width: 1280, height: 860 },
-  scheme: "light",
-  touch: false,
-  moves: `${PULL} pull(1); m.advance(40);`,
-  out: "desktop.jpg",
+await takePictures({
+  shots: [
+    // Pin Rescue, level 2, with the second pin pulled: the water runs onto the lava. On a phone, in Japanese: Tube Sort, level 3, one tube chosen.
+    {
+      subject: "hero",
+      views: ["desk", "phone"],
+      url: address("pin-rescue", 2),
+      ready: READY,
+      height: 1150,
+      async prepare(page, { view }) {
+        if (view === "phone") {
+          await page.goto(`http://karakuri.test${address("tube-sort", 3, "ja")}`);
+          await page.waitForSelector(READY);
+          await play(`const c = m.controller.snapshot().centres[0]; press(c.x, c.y);`)(page);
+          await page.locator("#rules").evaluate((element) => window.scrollTo(0, element.getBoundingClientRect().top + window.scrollY - 8));
+        } else {
+          await play(`const p = m.controller.snapshot().pins[1].handle; press(p.x, p.y); m.advance(40);`)(page);
+          await page.evaluate(() => window.scrollTo(0, 0));
+        }
+      },
+    },
+    game("save-the-character", 2),
+    game("pin-rescue", 2, `const p = m.controller.snapshot().pins[1].handle; press(p.x, p.y); m.advance(40);`),
+    game("nuts-and-bolts", 2),
+    game("stretch-grabber", 2),
+    game("grid-escape", 2),
+    game("rope-cut", 2, "m.advance(10);"),
+    game("tube-sort", 3, `const c = m.controller.snapshot().centres[0]; press(c.x, c.y);`),
+    game("choice-story", 1),
+  ],
 });
-await shoot({
-  query: "?game=tube-sort&level=3&lang=ja&clock=manual",
-  viewport: { width: 390, height: 844 },
-  scheme: "dark",
-  touch: true,
-  moves: `const s = m.controller.snapshot(); const c = s.centres[0]; ${press("c.x", "c.y")}`,
-  out: "phone.jpg",
-});
-await browser.close();
-process.exit(0);

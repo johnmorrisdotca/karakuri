@@ -57,7 +57,7 @@ describe("the documents", () => {
 
 describe("the README's promises", () => {
   it("has the sections a package of this family has, each with something in it", () => {
-    for (const heading of ["In 30 seconds", "Who it is for", "Features", "Use it in your project", "API", "Theming", "Limits", "Browser support", "Languages", "Roadmap", "Architecture", "The name", "Where it comes from", "Development", "Contributing", "Changes", "Licence"]) {
+    for (const heading of ["In 30 seconds", "Who it is for", "Features", "Use it in your project", "Examples", "API", "Theming", "Limits", "Accessibility", "Browser support", "Languages", "Roadmap", "Architecture", "The name", "Where it comes from, and where it is used", "Development", "Contributing", "Changes", "Licence"]) {
       expect(section(heading).length, heading).toBeGreaterThan(heading.length + 40);
     }
   });

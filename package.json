@@ -1,6 +1,6 @@
 {
   "name": "@johnmorrisdotca/karakuri",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Karakuri からくり, eight hyper-casual puzzle games for JavaScript and TypeScript, played by finger or mouse in any page: draw a shield, pull pins, cut ropes, slide blocks, pour tubes and more. Zero dependencies.",
   "keywords": [
     "puzzle",
@@ -90,7 +90,8 @@
     "site": "pnpm build && node scripts/site.mjs",
     "test:demo": "pnpm site && playwright test",
     "docs:make": "node scripts/docs.mjs",
-    "pictures": "pnpm site && node scripts/readme-pictures.mjs"
+    "screenshots:readme": "pnpm site && node scripts/readme-pictures.mjs",
+    "test:readme": "pnpm build && node scripts/check-readme-examples.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

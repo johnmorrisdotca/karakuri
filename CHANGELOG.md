@@ -4,8 +4,18 @@ All notable changes to this package are written here, newest first, in the form 
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-10-06
+
+Nothing that was exported has changed. The README is the family's one layout, in full.
+
+### Added
+
+- The README has a picture of the demo on a desk and on a phone, in light and dark, taken from the demo by `pnpm screenshots:readme` (the pictures are in `docs/images/` and are not in the package), a picture of each of the eight games, an Examples section of nine examples that run (solving Tube Sort and Grid Escape by search, trying every order of the pins of Pin Rescue, playing a level by pointer with no page, the physics core's repeatability, and more), examples for React, Vue, Svelte and Angular, tables of the entry points and the calls to learn first, and an Accessibility section.
+- `pnpm test:readme` type-checks and runs every TypeScript and JavaScript example in the README against the built package, as a job of its own in CI; `src/readme.test.js` holds the README to the family's standard (sections in order, languages on code fences, pictures with alt text and a caption, no marketing words, version pins) in `pnpm check`; `pnpm test:package` fails if a picture or anything under `docs/` is in the packed package.
+
 ### Changed
 
+- `pnpm pictures` is `pnpm screenshots:readme`, and takes WebP pictures in light and dark under `docs/images/`; `docs/desktop.jpg` and `docs/phone.jpg` are gone.
 - Repository only: the package and everything it exports are unchanged. `CONTRIBUTING.md` is the family's one text with a section of its own for Karakuri, held to the master in johnmorrisdotca/.github by `src/family.test.js`; `ci.yml` and `pages.yml` are the family's one text (`pnpm check`, the demo, and the package on Linux, macOS and Windows), and any jobs of the package's own after them.
 - Source files are named in kebab-case, and a lint rule keeps them so.
 

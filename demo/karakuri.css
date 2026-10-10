@@ -22,3 +22,5 @@
 .more .uses { grid-template-columns: 1fr; }
 .tag #tag { max-width: 420px; }
 @media (max-width: 520px) { #board { padding: 10px 10px 8px; } }
+
+#board .kk-keyboard-help { color: var(--felt-ink); opacity: .9; }

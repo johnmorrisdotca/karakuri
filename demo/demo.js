@@ -9,7 +9,7 @@ import "./dist/element-define.js";
 const WORDS = {
   en: {
     pageApi: "API reference",
-    pitch: "Eight small puzzle games for a finger or the mouse: draw a shield, pull the pins, unscrew the plates, stretch an arm round pegs, slide the blocks, cut the ropes, pour the tubes and choose the tool. Each has levels that step up, and the physics gives the same result in every browser.",
+    pitch: "Eight small puzzle games for pointer or keyboard: draw a shield, pull the pins, unscrew the plates, stretch an arm round pegs, slide the blocks, cut the ropes, pour the tubes and choose the tool. Each has levels that step up, and the physics gives the same result in every browser.",
     name: "Karakuri (からくり) is Japanese for a clever mechanism: a trick, a puzzle box, a wind-up toy.",
     nameLink: "About the name",
     game: "Game",
@@ -25,7 +25,7 @@ const WORDS = {
   },
   ja: {
     pageApi: "API（英語）",
-    pitch: "指でもマウスでも遊べる、小さなパズルゲームが8つ。盾を描く、ピンを抜く、ネジを外す、アームを伸ばす、ブロックをすべらせる、ロープを切る、チューブに注ぐ、道具を選ぶ。どのゲームもレベルが順に難しくなり、物理演算はどのブラウザでも同じ結果になります。",
+    pitch: "指、マウス、キーボードで遊べる、小さなパズルゲームが8つ。盾を描く、ピンを抜く、ネジを外す、アームを伸ばす、ブロックをすべらせる、ロープを切る、チューブに注ぐ、道具を選ぶ。どのゲームもレベルが順に難しくなり、物理演算はどのブラウザでも同じ結果になります。",
     name: "「からくり」は、巧みな仕掛けのこと。仕掛け箱やぜんまいじかけのおもちゃのことです。",
     nameLink: "名前について（英語）",
     game: "ゲーム",

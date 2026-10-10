@@ -289,6 +289,12 @@ export class LevelComponent {
 }
 ```
 
+### Embed builder and host options
+
+[Build a puzzle-game embed](https://johnmorrisdotca.github.io/karakuri/builder.html), preview a level and copy element, iframe, module, React 19, Vue, Svelte, Angular, HTML or URL code. It reads no storage. `size` is small/medium/large (320/480/640px), with optional pixel `width`, device/light/dark `theme`, spoken `label` and `controls`. The existing `ui` remains a full/board alias. `keyboard` defaults on; `keyboard-step` sets arrow movement (10 game units by default, with Shift always one).
+
+Every attribute reflects to a property (`keyboardStep` for the hyphenated name). `mount`, `restart()` and `setLevel()` remain; `options` accepts all native mounted choices, callbacks, a room function and a matching host `controller`. Presentation/clock changes preserve the native controller and progress. `defineBoard` accepts custom tags and safely does nothing on a server. The SDK adds `controller`, `keyboard` and `keyboardStep` to `MountOptions`; `karakuri-status` keeps its detail, now bubbling across shadow roots, with `karakuri-change`, `karakuri-load` and `karakuri-error` available too. See [the embed guide](docs/embeds.md).
+
 ## Examples
 
 Each example is a whole recipe: copy it and it works. The ones in TypeScript are run in CI against the built package (`pnpm test:readme`), so none of them is a guess, and the output shown is what they print.
@@ -540,9 +546,9 @@ The colours are custom properties on `.karakuri`, so a page changes any of them 
 
 ## Accessibility
 
-- **The board is named and its result is spoken.** The canvas is an image with a label that says the game, the level and its rules ("Tube Sort, level 3." and the rules), and the result ("Every tube is one colour, in 12 pours.") and the level's line are in a polite live region, so a screen reader hears how a level ended without moving focus.
+- **The board is named and its result is spoken.** The canvas is a focusable play area with a label (or an image when keyboard is disabled) that says the game, the level and its rules ("Tube Sort, level 3." and the rules), and the result ("Every tube is one colour, in 12 pours.") and the level's line are in a polite live region, so a screen reader hears how a level ended without moving focus.
 - **The buttons are real buttons.** Restart, Previous and Next level are native buttons, at least 44 pixels square, with labels in English or Japanese, so they are reached with Tab and pressed with Enter or Space. With `ui: "board"` the page draws its own.
-- **A board is played by pointer.** A finger, a mouse or a pen plays every game; a game that only needs taps leaves the page its own scrolling, and one that reads a drag stops it only on the board. **The keyboard cannot yet play a level.** The rules are pure functions and a controller can be driven by code (see [Examples](#examples)), so a page that needs a keyboard route can build one, and it is on the [Roadmap](#roadmap).
+- **A board is played by pointer.** A finger, a mouse or a pen plays every game; a game that only needs taps leaves the page its own scrolling, and one that reads a drag stops it only on the board. **The focused canvas also accepts the keyboard.** Arrows move a visible cursor; Shift moves one game unit, Enter/Space taps or starts/ends a drag, Escape cancels, and Home centres it. A polite live region reports cursor coordinates and pressing state. This uses the same controller pointer methods as touch and mouse.
 - **Colour carries a meaning, with shape beside it.** Danger is red and also a shape (lava and spikes, a red blob, a laser), safe places are dashed and starred, and the colours of the tubes' contents each carry a small shape, so two colours are not told apart by hue alone.
 - **Motion is the game.** The physics games move because they are physics; a level never moves on a timer except where it says so, and nothing is timed against you. Under `prefers-reduced-motion` the result card drops its blur, and `clock: "manual"` holds time still until the page advances it. There is no setting yet that slows or stills the games themselves.
 - **Light and dark** follow the page, and every colour is a custom property (see [Theming](#theming)); the colour pairs have not been measured against WCAG contrast ratios.
@@ -559,7 +565,7 @@ The words are English and Japanese: the games' names and rules, the buttons, eve
 
 ## Roadmap
 
-A way to play a level from the keyboard, sound, more levels for each game and a way to share a level are next. Nothing here is promised for a date.
+Sound, more levels for each game and more sharing tools are next. Nothing here is promised for a date.
 
 ## Architecture
 
@@ -671,14 +677,14 @@ Karakuri is one of twenty-eight packages, each made for the same site, each at
 
 **Geography & data**
 
-- [address-plus](https://github.com/johnmorrisdotca/address-plus) (アドレスプラス): parse and format addresses in the United States, Canada and Japan. [Demo](https://johnmorrisdotca.github.io/address-plus/).
+- [address-plus](https://github.com/johnmorrisdotca/address-plus) (アドレスプラス): parse and format addresses in the United States, Canada, Japan, Australia and the United Kingdom. [Demo](https://johnmorrisdotca.github.io/address-plus/).
 - [Chizu](https://github.com/johnmorrisdotca/chizu) (地図): maps of the world and of countries' regions, in English and Japanese, with a quiz and callouts. [Demo](https://johnmorrisdotca.github.io/chizu/).
 - [Hata](https://github.com/johnmorrisdotca/hata) (旗): country and regional flags as SVG, at their true proportions and keyed by ISO code. [Demo](https://johnmorrisdotca.github.io/hata/).
 - [Kuni](https://github.com/johnmorrisdotca/kuni) (国): countries and their regions, with ISO codes and names in English and Japanese. [Demo](https://johnmorrisdotca.github.io/kuni/).
 
 **Developer tools**
 
-- [REST in Pieces](https://github.com/spxis/rest-in-pieces) (レスト・イン・ピーシズ): seeded test data and REST APIs for frontend development, with latency and error drills. [Demo](https://spxis.github.io/rest-in-pieces/).
+- [REST in Pieces](https://github.com/spxis/rest-in-pieces) (レスト・イン・ピーシーズ): seeded test data and REST APIs for frontend development, with latency and error drills. [Demo](https://spxis.github.io/rest-in-pieces/).
 
 
 **This package is Karakuri.** The demos of all twenty-eight share one header and footer, so each links the rest.

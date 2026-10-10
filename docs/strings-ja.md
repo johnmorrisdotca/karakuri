@@ -17,6 +17,9 @@ open a *Fix a translation* issue with the string's name. `{name}` and the other 
 | `lost` | Not this time | 残念！ |
 | `wonLast` | That was the last level. Well done! | これが最後のレベルでした。おめでとう！ |
 | `boardLabel` | {game}, level {n}. {rules} | {game}、レベル{n}。{rules} |
+| `keyboardHelp` | Focus the board: arrows move the cursor, Shift moves one unit, Enter or Space taps or starts/ends a drag, Escape cancels, Home centres the cursor. | 盤にフォーカスを合わせます。矢印キーで移動、Shiftで1単位ずつ移動、EnterまたはSpaceでタップやドラッグの開始・終了、Escapeで取り消し、Homeで中央に戻ります。 |
+| `keyboardPosition` | Cursor {x}, {y}. | カーソル{x}、{y}。 |
+| `keyboardPressed` | Cursor {x}, {y}, pressing. | カーソル{x}、{y}、押しています。 |
 | `statusPlaying` | Playing. | プレイ中。 |
 | `statusWon` | Level won. | レベルクリア。 |
 | `statusLost` | Level lost. | レベル失敗。 |

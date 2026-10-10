@@ -21,6 +21,9 @@ const BASE_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
     lost: "Not this time",
     wonLast: "That was the last level. Well done!",
     boardLabel: "{game}, level {n}. {rules}",
+    keyboardHelp: "Focus the board: arrows move the cursor, Shift moves one unit, Enter or Space taps or starts/ends a drag, Escape cancels, Home centres the cursor.",
+    keyboardPosition: "Cursor {x}, {y}.",
+    keyboardPressed: "Cursor {x}, {y}, pressing.",
     statusPlaying: "Playing.",
     statusWon: "Level won.",
     statusLost: "Level lost.",
@@ -82,6 +85,9 @@ const BASE_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
     lost: "残念！",
     wonLast: "これが最後のレベルでした。おめでとう！",
     boardLabel: "{game}、レベル{n}。{rules}",
+    keyboardHelp: "盤にフォーカスを合わせます。矢印キーで移動、Shiftで1単位ずつ移動、EnterまたはSpaceでタップやドラッグの開始・終了、Escapeで取り消し、Homeで中央に戻ります。",
+    keyboardPosition: "カーソル{x}、{y}。",
+    keyboardPressed: "カーソル{x}、{y}、押しています。",
     statusPlaying: "プレイ中。",
     statusWon: "レベルクリア。",
     statusLost: "レベル失敗。",
@@ -135,6 +141,14 @@ const BASE_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
 };
 
 /** Every word the package says: its own, and the stories'. */
+/**
+ * Native player, keyboard, game and story words in English and Japanese.
+ * @example
+ * ```ts
+ * import { KARAKURI_STRINGS } from "@johnmorrisdotca/karakuri/play";
+ * console.log(KARAKURI_STRINGS.en.keyboardPosition);
+ * ```
+ */
 export const KARAKURI_STRINGS: Record<KarakuriLanguage, Record<string, string>> = { en: { ...BASE_STRINGS.en, ...STORY_STRINGS.en }, ja: { ...BASE_STRINGS.ja, ...STORY_STRINGS.ja } };
 
 /** The words for `key` in `lang`, with each `{name}` filled from `values`; English when the language has none; the key itself when nobody has. */

@@ -10,6 +10,11 @@ const vars = (scheme: "light" | "dark"): string => {
  * `prefers-color-scheme` or by `data-theme="dark"` on the root), the layout of the bar, the play area and the buttons, and the one
  * rule that matters for games played with fingers: nothing on the board can be selected, dragged or double-tapped, and the
  * play area stops the page scrolling under a finger only for the games that read a finger's whole path.
+ * @example
+ * ```ts
+ * import { KARAKURI_STYLE } from "@johnmorrisdotca/karakuri/play";
+ * console.log(KARAKURI_STYLE.includes("kk-canvas:focus-visible"));
+ * ```
  */
 export const KARAKURI_STYLE = `
 .karakuri { ${vars("light")}
@@ -23,6 +28,9 @@ export const KARAKURI_STYLE = `
 .karakuri .kk-info { color: var(--kk-muted); font-variant-numeric: tabular-nums; flex: 1 1 100%; min-height: 2.8em; }
 .karakuri .kk-stage { position: relative; width: 100%; border-radius: 14px; overflow: hidden; background: var(--kk-board); box-shadow: 0 0 0 2px var(--kk-deep); }
 .karakuri .kk-canvas { display: block; width: 100%; height: 100%; touch-action: manipulation; cursor: pointer; outline: none; }
+.karakuri .kk-canvas:focus-visible { outline: 3px solid var(--kk-accent); outline-offset: -3px; }
+.karakuri .kk-keyboard-help { font-size: .8rem; line-height: 1.5; color: var(--kk-muted); margin: 8px 0 0; }
+.karakuri .kk-keyboard-help[hidden] { display: none; }
 .karakuri[data-gesture="drag"] .kk-canvas { touch-action: none; cursor: crosshair; }
 .karakuri .kk-card { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 16px; text-align: center; background: color-mix(in srgb, var(--kk-board) 82%, transparent); backdrop-filter: blur(1.5px); }
 .karakuri .kk-card[hidden] { display: none; }

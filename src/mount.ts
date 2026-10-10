@@ -5,9 +5,23 @@ import { readTheme } from "./theme.ts";
 import { createController, KARAKURI_GAME_IDS, KARAKURI_GAMES, type KarakuriGame } from "./games.ts";
 import { STEP } from "./physics/bodies.ts";
 
-/** What `mountKarakuri` is told. */
+/**
+ * Initial native controller, level, layout, keyboard, clock and host callbacks.
+ * @example
+ * ```ts
+ * import type { MountOptions } from "@johnmorrisdotca/karakuri/play";
+ * const options: MountOptions = { game: "tube-sort", clock: "manual", keyboard: true };
+ * console.log(options.game);
+ * ```
+ */
 export interface MountOptions {
   game: KarakuriGame;
+  /** A matching host-owned controller, for preserving an existing position. */
+  controller?: Controller;
+  /** Allow a focused canvas to use the keyboard. Default true. */
+  keyboard?: boolean;
+  /** Arrow movement in game units; Shift always moves one unit. Default 10. */
+  keyboardStep?: number;
   /** The level to start on, from 1. */
   level?: number;
   /** `en` or `ja`; the page's own language when left out. */
@@ -40,7 +54,15 @@ export interface StatusEvent {
   info: string;
 }
 
-/** The handle `mountKarakuri` gives back. */
+/**
+ * The native handle, including its controller and focused keyboard canvas.
+ * @example
+ * ```ts
+ * import type { KarakuriMount } from "@johnmorrisdotca/karakuri/play";
+ * const restart = (player: KarakuriMount): void => { player.restart(); player.redraw(); };
+ * console.log(typeof restart);
+ * ```
+ */
 export interface KarakuriMount {
   readonly game: KarakuriGame;
   readonly level: number;
@@ -61,15 +83,14 @@ export interface KarakuriMount {
   destroy(): void;
 }
 
-let styled = false;
-function ensureStyle(): void {
-  if (styled || typeof document === "undefined") return;
-  styled = true;
-  const style = document.createElement("style");
-  style.setAttribute("data-karakuri", "");
-  style.textContent = KARAKURI_STYLE;
-  document.head.append(style);
+function ensureStyle(host: HTMLElement): void {
+  const root = host.getRootNode();
+  const target: ParentNode = typeof ShadowRoot !== "undefined" && root instanceof ShadowRoot ? root : host.ownerDocument.head;
+  if (target.querySelector("style[data-karakuri]") !== null) return;
+  const style = host.ownerDocument.createElement("style"); style.setAttribute("data-karakuri", ""); style.textContent = KARAKURI_STYLE; target.append(style);
 }
+
+let keyboardCounter = 0;
 
 const pageLanguage = (): KarakuriLanguage => (typeof document !== "undefined" && document.documentElement.lang.toLowerCase().startsWith("ja") ? "ja" : "en");
 
@@ -83,9 +104,22 @@ function toWorld(canvas: HTMLCanvasElement, c: Controller, event: PointerEvent):
  * Plays one game of the package in `host`: a canvas that scales to the box it is given, the pointer (finger or mouse)
  * wired to the game, a fixed-step loop that runs only while something moves, and (with `ui: "full"`) the bar, the buttons and the card that
  * says how a level ended. Safe to call again on the same host: the old game is taken down first.
+ * The focused canvas accepts arrows, Enter/Space, Escape and Home when keyboard is enabled.
+ * @param host - The element that owns this player's canvas and controls.
+ * @param options - Native game/controller, presentation, clock and lifecycle choices.
+ * @returns A handle for reading the controller, changing levels/language, stepping, fitting and cleanup.
+ * @example
+ * ```ts
+ * import { mountKarakuri } from "@johnmorrisdotca/karakuri/play";
+ * if (typeof document !== "undefined") {
+ *   const player = mountKarakuri(document.createElement("div"), { game: "tube-sort", clock: "manual" });
+ *   player.destroy();
+ * }
+ * console.log(typeof mountKarakuri);
+ * ```
  */
 export function mountKarakuri(host: HTMLElement, options: MountOptions): KarakuriMount {
-  ensureStyle();
+  ensureStyle(host);
   const game = options.game;
   if (!KARAKURI_GAME_IDS.includes(game)) throw new Error(`karakuri: no game called ${String(game)}`);
   const info = KARAKURI_GAMES[game];
@@ -93,7 +127,7 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
   const manual = options.clock === "manual";
   let lang: KarakuriLanguage = options.lang ?? pageLanguage();
   let level = Math.min(Math.max(1, Math.round(options.level ?? 1)), info.levels);
-  let controller = createController(game, level);
+  let controller = options.controller ?? createController(game, level);
   let lastStatus: Status = "playing";
   let lastInfo = "";
   let destroyed = false;
@@ -121,7 +155,7 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
   stage.className = "kk-stage";
   const canvas = document.createElement("canvas");
   canvas.className = "kk-canvas";
-  canvas.setAttribute("role", "img");
+  canvas.setAttribute("role", options.keyboard === false ? "img" : "application");
   stage.append(canvas);
 
   const card = document.createElement("div");
@@ -201,6 +235,9 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     g.setTransform(canvas.width / controller.width, 0, 0, canvas.height / controller.height, 0, 0);
     g.clearRect(0, 0, controller.width, controller.height);
     controller.draw(g, { ...theme, lang });
+    if (keyboard.visible && options.keyboard !== false) {
+      g.save(); g.strokeStyle = theme.paper; g.lineWidth = 3; g.beginPath(); g.arc(keyboard.x, keyboard.y, 8, 0, Math.PI * 2); g.stroke(); g.strokeStyle = theme.accent; g.lineWidth = 2; g.beginPath(); g.moveTo(keyboard.x - 12, keyboard.y); g.lineTo(keyboard.x + 12, keyboard.y); g.moveTo(keyboard.x, keyboard.y - 12); g.lineTo(keyboard.x, keyboard.y + 12); g.stroke(); g.restore();
+    }
   };
 
   /** What a page is told: the level's state now, with its words in the player's language. */
@@ -229,16 +266,16 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
       live.textContent = lastStatus === "playing" ? "" : `${say(lang, lastStatus === "won" ? "statusWon" : "statusLost")} ${controller.result === null ? "" : words(controller.result)}`;
       const event = eventNow();
       options.onStatus?.(event);
-      host.dispatchEvent(new CustomEvent("karakuri-status", { detail: event, bubbles: true }));
+      host.dispatchEvent(new CustomEvent("karakuri-status", { detail: JSON.parse(JSON.stringify(event)), bubbles: true, composed: true }));
     }
-    if (changed) options.onChange?.(eventNow());
+    if (changed) { const event = eventNow(); options.onChange?.(event); host.dispatchEvent(new CustomEvent("karakuri-change", { detail: JSON.parse(JSON.stringify(event)), bubbles: true, composed: true })); }
   };
 
   /** Tells the page a level has begun (or begun again). */
   const announce = (): void => {
     const event = eventNow();
     options.onStatus?.(event);
-    host.dispatchEvent(new CustomEvent("karakuri-status", { detail: event, bubbles: true }));
+    host.dispatchEvent(new CustomEvent("karakuri-status", { detail: JSON.parse(JSON.stringify(event)), bubbles: true, composed: true }));
   };
 
   const showCard = (): void => {
@@ -291,6 +328,7 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
   };
 
   const onDown = (event: PointerEvent): void => {
+    cancelKeyboard(); keyboard.visible = false;
     if (event.button !== 0 && event.pointerType === "mouse") return;
     pointers.add(event.pointerId);
     try {
@@ -326,6 +364,37 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
   canvas.addEventListener("pointercancel", onCancel);
   canvas.addEventListener("contextmenu", (event) => event.preventDefault());
 
+  const keyboardId = -1;
+  const keyboardStep = options.keyboardStep ?? 10;
+  if (!Number.isFinite(keyboardStep) || keyboardStep < 1 || keyboardStep > 100) throw new RangeError("karakuri: keyboardStep must be from 1 to 100");
+  const keyboard = { x: controller.width / 2, y: controller.height / 2, active: false, visible: false };
+  const keyboardLive = document.createElement("p"); keyboardLive.className = "kk-live"; keyboardLive.setAttribute("aria-live", "polite"); root.append(keyboardLive);
+  const keyboardHelp = document.createElement("p"); keyboardHelp.className = full ? "kk-keyboard-help" : "kk-live"; keyboardHelp.hidden = options.keyboard === false; keyboardHelp.id = `karakuri-keyboard-${++keyboardCounter}`; root.append(keyboardHelp); if (options.keyboard !== false) canvas.setAttribute("aria-describedby", keyboardHelp.id);
+  canvas.tabIndex = options.keyboard === false ? -1 : 0;
+  const updateKeyboard = (): void => { canvas.dataset.keyX = String(keyboard.x); canvas.dataset.keyY = String(keyboard.y); canvas.dataset.keyActive = String(keyboard.active); keyboardHelp.textContent = say(lang, "keyboardHelp"); keyboardLive.textContent = keyboard.visible ? say(lang, keyboard.active ? "keyboardPressed" : "keyboardPosition", { x: Math.round(keyboard.x), y: Math.round(keyboard.y) }) : ""; };
+  const cancelKeyboard = (): void => { if (keyboard.active) controller.pointerCancel(keyboardId); keyboard.active = false; pointers.delete(keyboardId); };
+  const onKeyboard = (event: KeyboardEvent): void => {
+    if (options.keyboard === false || event.ctrlKey || event.metaKey || event.altKey) return;
+    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Enter", " ", "Escape", "Home"].includes(event.key)) return;
+    event.preventDefault(); keyboard.visible = true;
+    if (event.key.startsWith("Arrow")) {
+      const distance = event.shiftKey ? 1 : keyboardStep;
+      keyboard.x = Math.max(0, Math.min(controller.width, keyboard.x + (event.key === "ArrowLeft" ? -distance : event.key === "ArrowRight" ? distance : 0)));
+      keyboard.y = Math.max(0, Math.min(controller.height, keyboard.y + (event.key === "ArrowUp" ? -distance : event.key === "ArrowDown" ? distance : 0)));
+      if (keyboard.active) controller.pointerMove(keyboard, keyboardId);
+    } else if (event.key === "Escape") cancelKeyboard();
+    else if (event.key === "Home") { cancelKeyboard(); keyboard.x = controller.width / 2; keyboard.y = controller.height / 2; }
+    else if (!event.repeat) {
+      if (controller.gesture === "tap") { controller.pointerDown(keyboard, keyboardId); controller.pointerUp(keyboard, keyboardId); }
+      else if (keyboard.active) { controller.pointerUp(keyboard, keyboardId); keyboard.active = false; pointers.delete(keyboardId); }
+      else { controller.pointerDown(keyboard, keyboardId); keyboard.active = true; pointers.add(keyboardId); }
+    }
+    updateKeyboard(); refresh();
+  };
+  canvas.addEventListener("keydown", onKeyboard);
+  canvas.addEventListener("focus", () => { if (options.keyboard !== false) { keyboard.visible = true; updateKeyboard(); draw(); } });
+  canvas.addEventListener("blur", () => { cancelKeyboard(); keyboard.visible = false; updateKeyboard(); refresh(); });
+
   const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => {
     fit();
     draw();
@@ -346,7 +415,9 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
 
   const load = (next: number): void => {
     level = Math.min(Math.max(1, Math.round(next)), info.levels);
+    cancelKeyboard();
     controller = createController(game, level);
+    keyboard.x = controller.width / 2; keyboard.y = controller.height / 2; updateKeyboard();
     root.dataset.gesture = controller.gesture;
     lastStatus = "playing";
     lastInfo = "";
@@ -374,7 +445,8 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     },
     canvas,
     restart() {
-      controller.restart();
+      cancelKeyboard(); controller.restart();
+      keyboard.x = controller.width / 2; keyboard.y = controller.height / 2; updateKeyboard();
       lastStatus = "playing";
       lastInfo = "";
       root.dataset.status = "playing";
@@ -389,7 +461,7 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     setLang(next) {
       lang = next;
       lastInfo = "";
-      labels();
+      labels(); updateKeyboard(); draw();
       showCard();
       sync();
     },
@@ -408,7 +480,7 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
       draw();
     },
     destroy() {
-      destroyed = true;
+      cancelKeyboard(); for (const id of pointers) controller.pointerCancel(id); pointers.clear(); destroyed = true;
       if (raf !== 0) cancelAnimationFrame(raf);
       observer?.disconnect();
       window.removeEventListener("resize", onWindow);
@@ -419,6 +491,7 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
   };
   Object.defineProperty(host, "karakuri", { value: api, configurable: true });
   labels();
+  updateKeyboard();
   fit();
   draw();
   sync();

@@ -1,14 +1,12 @@
 # Changelog
 
+All notable changes to this package are written here, newest first, in the form of [Keep a Changelog](https://keepachangelog.com).
+
 ## [Unreleased]
 
 - Add focused keyboard-cursor play using the native pointer controllers, with visible focus/cursor, precision movement, cancellation and spoken coordinates. Preserve touch/mouse and native physics.
 - Add reflected embed settings, full host options and custom-tag definition; presentation changes retain controllers. Add the shared builder, validated iframe and composed JSON-safe native events.
 
-
-All notable changes to this package are written here, newest first, in the form of [Keep a Changelog](https://keepachangelog.com).
-
-## [Unreleased]
 
 
 
@@ -19,6 +17,8 @@ All notable changes to this package are written here, newest first, in the form 
 ### Changed
 
 - Group the package family by kind, alphabetize each group, and include the geography packages and REST in Pieces in the shared footer and README.
+
+- Update the shared family description for addresses in all seven supported countries, including France and Germany.
 
 ## [0.1.2] - 2026-10-06
 

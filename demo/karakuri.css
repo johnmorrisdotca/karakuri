@@ -24,3 +24,6 @@
 @media (max-width: 520px) { #board { padding: 10px 10px 8px; } }
 
 #board .kk-keyboard-help { color: var(--felt-ink); opacity: .9; }
+
+/* Keep navigation width stable across languages. */
+header nav a[data-say="pageDocs"] { inline-size: 8rem; justify-content: center; flex: none; }

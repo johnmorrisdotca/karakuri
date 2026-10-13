@@ -4,6 +4,8 @@ All notable changes to this package are written here, newest first, in the form 
 
 ## [Unreleased]
 
+- Add the bilingual documentation site, checked public examples, paired guides, local search and machine-readable pages.
+
 - Add focused keyboard-cursor play using the native pointer controllers, with visible focus/cursor, precision movement, cancellation and spoken coordinates. Preserve touch/mouse and native physics.
 - Add reflected embed settings, full host options and custom-tag definition; presentation changes retain controllers. Add the shared builder, validated iframe and composed JSON-safe native events.
 

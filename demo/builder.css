@@ -18,3 +18,5 @@ main { max-width: 1120px; margin: 0 auto; padding: 24px; }
 .family-bld-code .fam-tabs button { min-width: 90px; }
 
 .family-bld-stage karakuri-board { background: Canvas; border-radius: 12px; padding: 12px; }
+
+header nav a[data-say="pageDocs"] { inline-size: 8rem; justify-content: center; flex: none; }

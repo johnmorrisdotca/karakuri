@@ -23,7 +23,7 @@ const page = `<!doctype html>
   <head>
     ${familyHead({
       id,
-      title: "Karakuri · eight small puzzle games",
+      title: "Karakuri からくり — Physics and hyper-casual puzzle games",
       description: "Play Karakuri, eight hyper-casual puzzle games for the browser: draw a shield, pull the pins, unscrew the plates, stretch an arm round pegs, slide the blocks, cut the ropes, pour the tubes and choose the tool. Pointer or keyboard, levels that step up, free and open source, in English and Japanese.",
       ogTitle: "Karakuri puzzle games",
       ogDescription: "Eight small puzzle games, some with physics, each with levels that step up. Play by pointer or keyboard.",
@@ -34,7 +34,7 @@ const page = `<!doctype html>
   </head>
   <body>
     <main>
-      ${familyHeader({ id, links: [{ href: "api.html", say: "pageApi" }] })}
+      ${familyHeader({ id, links: [{ href: "docs/index.html", say: "pageDocs" }, { href: "api.html", say: "pageApi" }] })}
       <div class="setup fam-row" data-help-en="Choose a game. Each has its own levels, and your progress in each stays on this device." data-help-ja="ゲームを選びます。ゲームごとにレベルがあり、進み具合はこの端末に残ります。">
         <span class="fam-label" data-say="game"></span>
         <div class="fam-seg" role="group" data-say-label="game" id="games" data-testid="games"></div>
@@ -81,7 +81,7 @@ writeFileSync("site/api.html", apiPage({ id, name: "Karakuri", icon: ICON }));
 console.log("site/ is ready: serve it, or let the Pages workflow publish it.");
 
 writeFileSync("site/family-embed-builder.js", `export const FAMILY_EMBED_BUILDER_WORDS = ${JSON.stringify(FAMILY_EMBED_BUILDER_WORDS)};\nexport ${familyEmbedBuilder.toString()};\n`);
-const builderParts = { builderHead: familyHead({ id, title: "Karakuri · build a puzzle game embed", description: "Choose a puzzle game and level, preview it and copy the embed code." }), builderHeader: familyHeader({ id, links: [{ href: "./", say: "toGallery" }] }), unreviewed: familyUnreviewed({ id }), footer: familyFooter({ id }), script: `<script>${FAMILY_SCRIPT}</script>` };
+const builderParts = { builderHead: familyHead({ id, title: "Karakuri からくり — Physics and hyper-casual puzzle games", description: "Choose a puzzle game and level, preview it and copy the embed code." }), builderHeader: familyHeader({ id, links: [{ href: "./", say: "toGallery" }, { href: "docs/index.html", say: "pageDocs" }, { href: "api.html", say: "pageApi" }] }), unreviewed: familyUnreviewed({ id }), footer: familyFooter({ id }), script: `<script>${FAMILY_SCRIPT}</script>` };
 writeFileSync("site/builder.html", readFileSync("demo/builder.html", "utf8").replace(/<!-- family:([A-Za-z]+) -->/g, (_match, key) => builderParts[key]));
 cpSync("demo/embed", "site/embed", { recursive: true });
 for (const file of ["builder.js", "builder.css"]) cpSync(`demo/${file}`, `site/${file}`);

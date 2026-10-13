@@ -4,7 +4,7 @@ import unicorn from "eslint-plugin-unicorn";
 
 export default tseslint.config(
   { ignores: ["dist/", "site/", "node_modules/", "test-results/", "playwright-report/"] },
-  { ignores: [".readme-examples/"] },
+  { ignores: [".readme-examples/", ".docs-examples/"] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   { files: ["e2e/**/*.mjs", "playwright.config.mjs"], languageOptions: { globals: { PointerEvent: "readonly", performance: "readonly", requestAnimationFrame: "readonly", console: "readonly", URL: "readonly", document: "readonly", window: "readonly", location: "readonly", customElements: "readonly", getComputedStyle: "readonly", localStorage: "readonly" } } },

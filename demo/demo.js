@@ -8,6 +8,7 @@ import "./dist/element-define.js";
 // The page's own words, in the two languages it speaks. Set as text, never as HTML. The names and rules of the games are the package's own.
 const WORDS = {
   en: {
+    pageDocs: "Docs",
     pageApi: "API reference",
     pitch: "Eight small puzzle games for pointer or keyboard: draw a shield, pull the pins, unscrew the plates, stretch an arm round pegs, slide the blocks, cut the ropes, pour the tubes and choose the tool. Each has levels that step up, and the physics gives the same result in every browser.",
     name: "Karakuri (からくり) is Japanese for a clever mechanism: a trick, a puzzle box, a wind-up toy.",
@@ -24,6 +25,7 @@ const WORDS = {
     won: "won",
   },
   ja: {
+    pageDocs: "ドキュメント",
     pageApi: "API（英語）",
     pitch: "指、マウス、キーボードで遊べる、小さなパズルゲームが8つ。盾を描く、ピンを抜く、ネジを外す、アームを伸ばす、ブロックをすべらせる、ロープを切る、チューブに注ぐ、道具を選ぶ。どのゲームもレベルが順に難しくなり、物理演算はどのブラウザでも同じ結果になります。",
     name: "「からくり」は、巧みな仕掛けのこと。仕掛け箱やぜんまいじかけのおもちゃのことです。",
@@ -70,7 +72,7 @@ const rulesLine = document.getElementById("rules");
 const boardBox = document.getElementById("board");
 const tagBox = document.getElementById("tag");
 
-const language = familyLanguage({ id: "karakuri", words: WORDS, onChange: () => draw() });
+const language = familyLanguage({ id: "karakuri", words: WORDS, onChange: () => { docsLink(); draw(); } });
 const lang = () => language.lang;
 const levelOf = (id) => Math.min(Math.max(1, Number(levels[id] ?? 1) || 1), KARAKURI_GAMES[id].levels);
 if (params.get("level") !== null) levels[game] = levelOf(game) && Math.min(Math.max(1, Number(params.get("level")) || 1), KARAKURI_GAMES[game].levels);
@@ -131,3 +133,6 @@ function start() {
 
 start();
 tagBox.innerHTML = '<karakuri-board game="tube-sort" level="2"></karakuri-board>';
+
+function docsLink(){document.querySelector('[data-say="pageDocs"]')?.setAttribute("href",language.lang==="ja"?"docs/ja/index.html":"docs/index.html");}
+docsLink();

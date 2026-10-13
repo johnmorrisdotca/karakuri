@@ -1,0 +1,29 @@
+{
+  "measured": "esbuild 0.28.2, bundled, minified, ES2020, gzip level 9",
+  "entries": {
+    ".": {
+      "minified": 52454,
+      "gzip": 18827
+    },
+    "./physics": {
+      "minified": 11210,
+      "gzip": 4925
+    },
+    "./levels": {
+      "minified": 14303,
+      "gzip": 4385
+    },
+    "./play": {
+      "minified": 120018,
+      "gzip": 39708
+    },
+    "./element": {
+      "minified": 126775,
+      "gzip": 41787
+    },
+    "./element/define": {
+      "minified": 126780,
+      "gzip": 41791
+    }
+  }
+}

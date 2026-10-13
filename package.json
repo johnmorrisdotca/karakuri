@@ -1,25 +1,28 @@
 {
   "name": "@johnmorrisdotca/karakuri",
   "version": "0.1.2",
-  "description": "Karakuri からくり, eight puzzle games for JavaScript and TypeScript, played by pointer or keyboard in any page: draw a shield, pull pins, cut ropes, slide blocks, pour tubes and more. Zero dependencies.",
+  "description": "Karakuri からくり — Physics and hyper-casual puzzle games: eight puzzle games, native rules and solvers, deterministic 2D physics, level lists and pointer/keyboard play in English and Japanese. Zero dependencies.",
   "keywords": [
-    "puzzle",
-    "puzzle-game",
-    "hyper-casual",
-    "physics",
-    "physics-puzzle",
-    "sliding-block",
-    "tube-sort",
-    "levels",
-    "typescript",
-    "javascript",
-    "zero-dependencies",
     "browser",
     "canvas",
-    "itsutsu",
+    "casual-games",
     "custom-element",
+    "hyper-casual",
+    "itsutsu",
+    "javascript",
+    "keyboard",
+    "levels",
+    "physics",
+    "physics-game",
+    "physics-puzzle",
+    "puzzle",
+    "puzzle-game",
+    "puzzle-games",
+    "sliding-block",
+    "tube-sort",
+    "typescript",
     "web-component",
-    "keyboard"
+    "zero-dependencies"
   ],
   "homepage": "https://johnmorrisdotca.github.io/karakuri/",
   "repository": {
@@ -89,10 +92,13 @@
     "check": "pnpm lint && pnpm typecheck && pnpm test",
     "prepublishOnly": "pnpm check && pnpm build",
     "site": "pnpm build && node scripts/site.mjs",
-    "test:demo": "pnpm site && playwright test",
+    "test:demo": "pnpm site && node scripts/docs-site.mjs build && playwright test",
     "docs:make": "node scripts/docs.mjs",
     "screenshots:readme": "pnpm site && node scripts/readme-pictures.mjs",
-    "test:readme": "pnpm build && node scripts/check-readme-examples.mjs"
+    "test:readme": "pnpm build && node scripts/check-readme-examples.mjs",
+    "docs:site": "pnpm build && node scripts/docs-site.mjs build",
+    "docs:check": "pnpm build && node scripts/docs-site.mjs check",
+    "size": "node scripts/docs-site.mjs size"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
@@ -101,7 +107,10 @@
     "eslint": "^9.0.0",
     "typescript": "^5.9.0",
     "typescript-eslint": "^8.0.0",
-    "vitest": "^5.0.0"
+    "vitest": "^5.0.0",
+    "pagefind": "^1.5.2",
+    "marked": "^18.0.0",
+    "esbuild": "^0.28.0"
   },
   "packageManager": "pnpm@10.11.0"
 }

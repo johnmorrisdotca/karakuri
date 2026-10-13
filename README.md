@@ -1,4 +1,4 @@
-<h1 align="center">Karakuri <sub>からくり</sub></h1>
+<h1 align="center">Karakuri <sub>からくり</sub> — Physics and hyper-casual puzzle games</h1>
 
 <p align="center"><strong>Eight small puzzle games for JavaScript and TypeScript.</strong><br>
 Draw a shield, pull the pins, unscrew the plates, stretch an arm round pegs, slide the blocks, cut the ropes, pour the tubes and choose the tool: each game played by finger or mouse in any page, each with five levels (four for the story) that step up, a clear win and a clear loss, and a restart. The four physics games share one small deterministic physics core that gives the same frames in every browser. The rules of every game are pure functions on plain data, and every level is proved by the tests. In English and Japanese. No dependencies.</p>
@@ -9,9 +9,11 @@ Draw a shield, pull the pins, unscrew the plates, stretch an arm round pegs, sli
   <a href="./LICENSE"><img alt="MIT licence" src="https://img.shields.io/badge/licence-MIT-2f5d4a"></a>
   <img alt="No dependencies" src="https://img.shields.io/badge/dependencies-0-2f5d4a">
   <img alt="TypeScript" src="https://img.shields.io/badge/types-TypeScript-3178c6">
+  <a href="https://johnmorrisdotca.github.io/karakuri/docs/api/main/index.html"><img alt="18.8 kB minified and gzipped" src="https://img.shields.io/badge/min%2Bgzip-18.8%20kB-2f5d4a"></a>
+  <a href="https://www.npmjs.com/package/@johnmorrisdotca/karakuri#provenance"><img alt="Published with npm provenance" src="https://img.shields.io/badge/npm-provenance-2f5d4a"></a>
 </p>
 
-<p align="center"><a href="https://johnmorrisdotca.github.io/karakuri/"><strong>Play a level →</strong></a> · <a href="https://johnmorrisdotca.github.io/karakuri/api.html">API reference</a></p>
+<p align="center"><a href="https://johnmorrisdotca.github.io/karakuri/"><strong>Play a level →</strong></a> · <a href="https://johnmorrisdotca.github.io/karakuri/docs/">Documentation</a> · <a href="https://johnmorrisdotca.github.io/karakuri/docs/guides/getting-started.html">Getting started</a> · <a href="https://johnmorrisdotca.github.io/karakuri/api.html">API reference</a></p>
 
 <table align="center">
 <tr>
@@ -172,6 +174,17 @@ Each game's rules, levels and tests are written up in [docs/](./docs): [Save the
 [the physics](./docs/physics.md).
 
 ## Use it in your project
+
+### Install under another name
+
+```sh
+npm install puzzle-games@npm:@johnmorrisdotca/karakuri
+```
+
+```ts no-check
+import { tubeSort } from "puzzle-games";
+console.log(tubeSort.topOf([1,1]));
+```
 
 ### Install
 
@@ -488,6 +501,8 @@ console.log(a.length, "numbers; the same both times:", JSON.stringify(a) === JSO
 
 ## API
 
+The [documentation](https://johnmorrisdotca.github.io/karakuri/docs/) provides paired guides, local search and checked examples. The [API index](https://johnmorrisdotca.github.io/karakuri/api.html) retains export anchors.
+
 Every export of every entry point is in the [API reference](https://johnmorrisdotca.github.io/karakuri/api.html), made from the source when the demo is built.
 
 ### Entry points
@@ -569,54 +584,7 @@ Sound, more levels for each game and more sharing tools are next. Nothing here i
 
 ## Architecture
 
-```text
-src/
-├── choice-story-view.ts
-├── choice-story.ts
-├── controller.ts
-├── draw.ts
-├── element-define.ts
-├── element.ts
-├── games.ts
-├── grid-escape-view.ts
-├── grid-escape.levels.ts
-├── grid-escape.ts
-├── index.ts
-├── levels.ts
-├── mount.ts
-├── nuts-and-bolts-view.ts
-├── nuts-and-bolts.levels.ts
-├── nuts-and-bolts.ts
-├── physics/
-│   ├── bodies.ts
-│   ├── fluid.ts
-│   ├── geometry.ts
-│   └── rope.ts
-├── physics-entry.ts
-├── pin-rescue-view.ts
-├── pin-rescue.levels.ts
-├── pin-rescue.ts
-├── play-entry.ts
-├── rope-cut-view.ts
-├── rope-cut.levels.ts
-├── rope-cut.ts
-├── save-the-character-view.ts
-├── save-the-character.levels.ts
-├── save-the-character.ts
-├── story-scenes.ts
-├── story-tools.ts
-├── story-words.ts
-├── stretch-grabber-view.ts
-├── stretch-grabber.levels.ts
-├── stretch-grabber.ts
-├── strings.ts
-├── style.ts
-├── theme.ts
-├── tube-sort-view.ts
-├── tube-sort.levels.ts
-├── tube-sort.ts
-└── version.ts
-```
+The native rule namespaces, physics, controllers and player are explained in the [architecture guide](docs/guides/architecture.md), which preserves the complete original source tree.
 
 ## The name
 
@@ -696,6 +664,8 @@ Karakuri is one of twenty-eight packages, each made for the same site, each at
 pnpm install
 pnpm check          # lint, types and tests: every level of every game proved, the physics held bit for bit
 pnpm test:package   # pack it as npm does, install it in an empty project, import every entry
+pnpm docs:check       # typecheck and run API and guide examples
+pnpm docs:site        # build the docs and local search index
 pnpm test:demo      # build the demo and play every level of every game in a real browser, at a phone's width and a desk's
 pnpm test:readme    # run every example in this README against the built package
 pnpm screenshots:readme  # take the README's pictures from the built demo, in light and dark

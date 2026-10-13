@@ -7,6 +7,16 @@
  */
 import { STORY_STRINGS } from "./story-words.ts";
 
+/** The native English or Japanese puzzle-player language.
+ *
+ * @example
+ * ```ts
+ * import type { KarakuriLanguage } from "@johnmorrisdotca/karakuri";
+ *
+ * const value: KarakuriLanguage = "ja";
+ * console.log(value);
+ * ```
+ */
 export type KarakuriLanguage = "en" | "ja";
 
 const BASE_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
@@ -145,13 +155,25 @@ const BASE_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
  * Native player, keyboard, game and story words in English and Japanese.
  * @example
  * ```ts
- * import { KARAKURI_STRINGS } from "@johnmorrisdotca/karakuri/play";
+ * import { KARAKURI_STRINGS } from "@johnmorrisdotca/karakuri";
  * console.log(KARAKURI_STRINGS.en.keyboardPosition);
  * ```
  */
 export const KARAKURI_STRINGS: Record<KarakuriLanguage, Record<string, string>> = { en: { ...BASE_STRINGS.en, ...STORY_STRINGS.en }, ja: { ...BASE_STRINGS.ja, ...STORY_STRINGS.ja } };
 
-/** The words for `key` in `lang`, with each `{name}` filled from `values`; English when the language has none; the key itself when nobody has. */
+/** The words for `key` in `lang`, with each `{name}` filled from `values`; English when the language has none; the key itself when nobody has.
+ *
+ * @param lang - The native English or Japanese language.
+ * @param key - The native localized-message key.
+ * @param values - Numbers to hash, or localized-message placeholders specified by the signature.
+ * @returns The words for `key` in `lang`, with each `{name}` filled from `values`; English when the language has none; the key itself when nobody has.
+ * @example
+ * ```ts
+ * import { say } from "@johnmorrisdotca/karakuri";
+ *
+ * console.log(say("en","game_tube_sort"));
+ * ```
+ */
 export function say(lang: KarakuriLanguage, key: string, values: Record<string, string | number> = {}): string {
   const table = KARAKURI_STRINGS[lang] ?? KARAKURI_STRINGS.en;
   const one = values.n === 1 && `${key}One` in table ? `${key}One` : key;
@@ -159,5 +181,15 @@ export function say(lang: KarakuriLanguage, key: string, values: Record<string, 
   return template.replace(/\{(\w+)\}/g, (whole, name: string) => (name in values ? String(values[name]) : whole));
 }
 
-/** The key a game's words are kept under: its id with underscores for hyphens (`game_tube_sort`, `rules_tube_sort`). */
+/** The key a game's words are kept under: its id with underscores for hyphens (`game_tube_sort`, `rules_tube_sort`).
+ *
+ * @param game - One of the native KARAKURI_GAME_IDS.
+ * @returns The key a game's words are kept under: its id with underscores for hyphens (`game_tube_sort`, `rules_tube_sort`).
+ * @example
+ * ```ts
+ * import { wordKey } from "@johnmorrisdotca/karakuri";
+ *
+ * console.log(wordKey("tube-sort"));
+ * ```
+ */
 export const wordKey = (game: string): string => game.replace(/-/g, "_");

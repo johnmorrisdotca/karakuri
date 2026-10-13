@@ -3,13 +3,32 @@ import type { SaveLevel } from "./save-the-character.ts";
 /** The ground: a long ledge near the bottom. */
 const GROUND = { ax: 14, ay: 440, bx: 346, by: 440 };
 
-/** A level and the stroke that wins it (points, drawn in order) and a stroke that loses it. */
+/** A level and the stroke that wins it (points, drawn in order) and a stroke that loses it.
+ *
+ * @example
+ * ```ts
+ * import type { SaveEntry } from "@johnmorrisdotca/karakuri/levels";
+ * import { SAVE_THE_CHARACTER_LEVELS } from "@johnmorrisdotca/karakuri/levels";
+ *
+ * const value: SaveEntry = SAVE_THE_CHARACTER_LEVELS[0];
+ * console.log(value);
+ * ```
+ */
 export interface SaveEntry extends SaveLevel {
   solution: readonly { x: number; y: number }[];
   loss: readonly { x: number; y: number }[];
 }
 
-/** The levels. */
+/** The levels.
+ *
+ * @example
+ * ```ts
+ * import { SAVE_THE_CHARACTER_LEVELS } from "@johnmorrisdotca/karakuri/levels";
+ * import { length } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(SAVE_THE_CHARACTER_LEVELS.length);
+ * ```
+ */
 export const SAVE_THE_CHARACTER_LEVELS: readonly SaveEntry[] = [
   // 1. Bees from the left: shelter him.
   {

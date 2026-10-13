@@ -3,25 +3,98 @@
 // purpose: the standard lets each engine round them differently, and a simulation that used them would not give the
 // same frame in every browser.
 
-/** A point or a vector in the plane. */
+/** A point or a vector in the plane.
+ *
+ * @example
+ * ```ts
+ * import type { Vec } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const value: Vec = {x:3,y:4};
+ * console.log(value);
+ * ```
+ */
 export interface Vec {
   x: number;
   y: number;
 }
 
-/** The length of (x, y). */
+/** The length of (x, y).
+ *
+ * @param x - The horizontal coordinate or vector component in native units.
+ * @param y - The vertical coordinate or vector component in native units.
+ * @returns The length of (x, y).
+ * @example
+ * ```ts
+ * import { length } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(length(3,4));
+ * ```
+ */
 export const length = (x: number, y: number): number => Math.sqrt(x * x + y * y);
 
-/** The distance between two points. */
+/** The distance between two points.
+ *
+ * @param ax - The first segment endpoint’s horizontal coordinate.
+ * @param ay - The first segment endpoint’s vertical coordinate.
+ * @param bx - The second segment endpoint’s horizontal coordinate.
+ * @param by - The second segment endpoint’s vertical coordinate.
+ * @returns The distance between two points.
+ * @example
+ * ```ts
+ * import { distance } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(distance(0,0,3,4));
+ * ```
+ */
 export const distance = (ax: number, ay: number, bx: number, by: number): number => length(bx - ax, by - ay);
 
-/** The squared distance between two points, which needs no square root. */
+/** The squared distance between two points, which needs no square root.
+ *
+ * @param ax - The first segment endpoint’s horizontal coordinate.
+ * @param ay - The first segment endpoint’s vertical coordinate.
+ * @param bx - The second segment endpoint’s horizontal coordinate.
+ * @param by - The second segment endpoint’s vertical coordinate.
+ * @returns The squared distance between two points, which needs no square root.
+ * @example
+ * ```ts
+ * import { distanceSquared } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(distanceSquared(0,0,3,4));
+ * ```
+ */
 export const distanceSquared = (ax: number, ay: number, bx: number, by: number): number => (bx - ax) * (bx - ax) + (by - ay) * (by - ay);
 
-/** `value` held between `low` and `high`. */
+/** `value` held between `low` and `high`.
+ *
+ * @param value - The number to clamp.
+ * @param low - The lower clamp bound.
+ * @param high - The upper clamp bound.
+ * @returns `value` held between `low` and `high`.
+ * @example
+ * ```ts
+ * import { clamp } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(clamp(20,0,10));
+ * ```
+ */
 export const clamp = (value: number, low: number, high: number): number => (value < low ? low : value > high ? high : value);
 
-/** The point on the segment a to b nearest to (px, py), and how far along the segment it is (0 to 1). */
+/** The point on the segment a to b nearest to (px, py), and how far along the segment it is (0 to 1).
+ *
+ * @param px - The horizontal coordinate of the point to test.
+ * @param py - The vertical coordinate of the point to test.
+ * @param ax - The first segment endpoint’s horizontal coordinate.
+ * @param ay - The first segment endpoint’s vertical coordinate.
+ * @param bx - The second segment endpoint’s horizontal coordinate.
+ * @param by - The second segment endpoint’s vertical coordinate.
+ * @returns The point on the segment a to b nearest to (px, py), and how far along the segment it is (0 to 1).
+ * @example
+ * ```ts
+ * import { closestOnSegment } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(closestOnSegment(3,4,0,0,10,0));
+ * ```
+ */
 export function closestOnSegment(px: number, py: number, ax: number, ay: number, bx: number, by: number): { x: number; y: number; t: number } {
   const dx = bx - ax;
   const dy = by - ay;
@@ -30,13 +103,45 @@ export function closestOnSegment(px: number, py: number, ax: number, ay: number,
   return { x: ax + dx * t, y: ay + dy * t, t };
 }
 
-/** How far (px, py) is from the segment a to b. */
+/** How far (px, py) is from the segment a to b.
+ *
+ * @param px - The horizontal coordinate of the point to test.
+ * @param py - The vertical coordinate of the point to test.
+ * @param ax - The first segment endpoint’s horizontal coordinate.
+ * @param ay - The first segment endpoint’s vertical coordinate.
+ * @param bx - The second segment endpoint’s horizontal coordinate.
+ * @param by - The second segment endpoint’s vertical coordinate.
+ * @returns How far (px, py) is from the segment a to b.
+ * @example
+ * ```ts
+ * import { distanceToSegment } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(distanceToSegment(3,4,0,0,10,0));
+ * ```
+ */
 export function distanceToSegment(px: number, py: number, ax: number, ay: number, bx: number, by: number): number {
   const near = closestOnSegment(px, py, ax, ay, bx, by);
   return distance(px, py, near.x, near.y);
 }
 
-/** Whether the segments a1 to a2 and b1 to b2 cross or touch. */
+/** Whether the segments a1 to a2 and b1 to b2 cross or touch.
+ *
+ * @param a1x - The first segment’s starting horizontal coordinate.
+ * @param a1y - The first segment’s starting vertical coordinate.
+ * @param a2x - The first segment’s ending horizontal coordinate.
+ * @param a2y - The first segment’s ending vertical coordinate.
+ * @param b1x - The other segment’s starting horizontal coordinate.
+ * @param b1y - The other segment’s starting vertical coordinate.
+ * @param b2x - The other segment’s ending horizontal coordinate.
+ * @param b2y - The other segment’s ending vertical coordinate.
+ * @returns Whether the segments a1 to a2 and b1 to b2 cross or touch.
+ * @example
+ * ```ts
+ * import { segmentsIntersect } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(segmentsIntersect(0,0,10,10,0,10,10,0));
+ * ```
+ */
 export function segmentsIntersect(a1x: number, a1y: number, a2x: number, a2y: number, b1x: number, b1y: number, b2x: number, b2y: number): boolean {
   const d1 = (a2x - a1x) * (b1y - a1y) - (a2y - a1y) * (b1x - a1x);
   const d2 = (a2x - a1x) * (b2y - a1y) - (a2y - a1y) * (b2x - a1x);
@@ -51,7 +156,24 @@ export function segmentsIntersect(a1x: number, a1y: number, a2x: number, a2y: nu
   return false;
 }
 
-/** The nearest points of two segments: where on each, and how far apart they are. Crossing segments are 0 apart. */
+/** The nearest points of two segments: where on each, and how far apart they are. Crossing segments are 0 apart.
+ *
+ * @param a1x - The first segment’s starting horizontal coordinate.
+ * @param a1y - The first segment’s starting vertical coordinate.
+ * @param a2x - The first segment’s ending horizontal coordinate.
+ * @param a2y - The first segment’s ending vertical coordinate.
+ * @param b1x - The other segment’s starting horizontal coordinate.
+ * @param b1y - The other segment’s starting vertical coordinate.
+ * @param b2x - The other segment’s ending horizontal coordinate.
+ * @param b2y - The other segment’s ending vertical coordinate.
+ * @returns The nearest points of two segments: where on each, and how far apart they are. Crossing segments are 0 apart.
+ * @example
+ * ```ts
+ * import { closestBetweenSegments } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(closestBetweenSegments(0,0,10,0,0,5,10,5));
+ * ```
+ */
 export function closestBetweenSegments(a1x: number, a1y: number, a2x: number, a2y: number, b1x: number, b1y: number, b2x: number, b2y: number): { ax: number; ay: number; bx: number; by: number; distance: number } {
   if (segmentsIntersect(a1x, a1y, a2x, a2y, b1x, b1y, b2x, b2y)) {
     // They cross: say where, by the parameter on A, so that the contact has a place.
@@ -86,7 +208,19 @@ export function closestBetweenSegments(a1x: number, a1y: number, a2x: number, a2
   return best.swap ? { ax: best.from.x, ay: best.from.y, bx: best.px, by: best.py, distance: d } : { ax: best.px, ay: best.py, bx: best.from.x, by: best.from.y, distance: d };
 }
 
-/** Whether (px, py) is inside the polygon (an even-odd test over its vertices, in order). */
+/** Whether (px, py) is inside the polygon (an even-odd test over its vertices, in order).
+ *
+ * @param px - The horizontal coordinate of the point to test.
+ * @param py - The vertical coordinate of the point to test.
+ * @param polygon - The polygon’s native vertices, in outline order.
+ * @returns Whether (px, py) is inside the polygon (an even-odd test over its vertices, in order).
+ * @example
+ * ```ts
+ * import { pointInPolygon } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(pointInPolygon(2,2,[{x:0,y:0},{x:5,y:0},{x:5,y:5},{x:0,y:5}]));
+ * ```
+ */
 export function pointInPolygon(px: number, py: number, polygon: readonly Vec[]): boolean {
   let inside = false;
   for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i, i += 1) {
@@ -97,7 +231,18 @@ export function pointInPolygon(px: number, py: number, polygon: readonly Vec[]):
   return inside;
 }
 
-/** The unit vector of (x, y), or (0, 0) for a zero vector. */
+/** The unit vector of (x, y), or (0, 0) for a zero vector.
+ *
+ * @param x - The horizontal coordinate or vector component in native units.
+ * @param y - The vertical coordinate or vector component in native units.
+ * @returns The unit vector of (x, y), or (0, 0) for a zero vector.
+ * @example
+ * ```ts
+ * import { unit } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(unit(3,4));
+ * ```
+ */
 export function unit(x: number, y: number): Vec {
   const l = length(x, y);
   return l === 0 ? { x: 0, y: 0 } : { x: x / l, y: y / l };
@@ -109,7 +254,17 @@ export function unit(x: number, y: number): Vec {
  */
 const bits = new DataView(new ArrayBuffer(8));
 
-/** A 32-bit FNV-1a hash of a list of numbers, taken over the bits of each as a 64-bit float. */
+/** A 32-bit FNV-1a hash of a list of numbers, taken over the bits of each as a 64-bit float.
+ *
+ * @param values - Numbers to hash, or localized-message placeholders specified by the signature.
+ * @returns A 32-bit FNV-1a hash of a list of numbers, taken over the bits of each as a 64-bit float.
+ * @example
+ * ```ts
+ * import { hashNumbers } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(hashNumbers([1,2,3]));
+ * ```
+ */
 export function hashNumbers(values: ArrayLike<number>): string {
   let h = 0x811c9dc5;
   for (let i = 0; i < values.length; i += 1) {

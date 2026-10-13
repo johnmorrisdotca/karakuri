@@ -3,7 +3,16 @@
 // from its bottom layer to its top, a layer being a colour number.
 import type { TubePuzzle } from "./tube-sort.ts";
 
-/** The levels, each with more colours and more tubes than the one before. */
+/** The levels, each with more colours and more tubes than the one before.
+ *
+ * @example
+ * ```ts
+ * import { TUBE_SORT_LEVELS } from "@johnmorrisdotca/karakuri/levels";
+ * import { length } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(TUBE_SORT_LEVELS.length);
+ * ```
+ */
 export const TUBE_SORT_LEVELS: readonly TubePuzzle[] = [
   { tubes: [[2, 0, 2, 1], [2, 1, 0, 1], [1, 0, 0, 2], []] },
   { tubes: [[3, 0, 1, 2], [1, 2, 1, 3], [0, 0, 0, 3], [2, 1, 2, 3], []] },

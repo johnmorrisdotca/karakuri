@@ -2,22 +2,63 @@
 // (see each game's own file); a controller is the thin wrapper that holds one level's state, turns pointer events into the
 // game's moves, steps the physics where there is any, and draws. The player (`mountKarakuri`) needs nothing else of a game.
 
-/** A place in a game's own world, in its own units (not pixels). */
+/** A place in a game's own world, in its own units (not pixels).
+ *
+ * @example
+ * ```ts
+ * import type { Point } from "@johnmorrisdotca/karakuri/play";
+ *
+ * const value: Point = {x:10,y:10};
+ * console.log(value);
+ * ```
+ */
 export interface Point {
   x: number;
   y: number;
 }
 
-/** How a level stands: still being played, won, or lost. */
+/** How a level stands: still being played, won, or lost.
+ *
+ * @example
+ * ```ts
+ * import { createController } from "@johnmorrisdotca/karakuri/play";
+ * import type { Status } from "@johnmorrisdotca/karakuri/play";
+ *
+ * const controller=createController("tube-sort",1);
+ * const value: Status = controller.status;
+ * console.log(value);
+ * ```
+ */
 export type Status = "playing" | "won" | "lost";
 
-/** A line of words to be said in the player's language: a key of `KARAKURI_STRINGS` and the values for its `{name}`s. */
+/** A line of words to be said in the player's language: a key of `KARAKURI_STRINGS` and the values for its `{name}`s.
+ *
+ * @example
+ * ```ts
+ * import { createController } from "@johnmorrisdotca/karakuri/play";
+ * import type { Say } from "@johnmorrisdotca/karakuri/play";
+ *
+ * const controller=createController("tube-sort",1);
+ * const value: Say = controller.info;
+ * console.log(value);
+ * ```
+ */
 export interface Say {
   key: string;
   values?: Record<string, string | number>;
 }
 
-/** The colours and sizes a game draws with, read from the page's custom properties (`--kk-*`) so that it follows light, dark and the family's cloths. */
+/** The colours and sizes a game draws with, read from the page's custom properties (`--kk-*`) so that it follows light, dark and the family's cloths.
+ *
+ * @example
+ * ```ts
+ * import type { Theme } from "@johnmorrisdotca/karakuri/play";
+ * import { defaultTheme } from "@johnmorrisdotca/karakuri/play";
+ *
+ * const value: Theme = defaultTheme();
+ * console.log(value);
+ * ```
+ */
 export interface Theme {
   /** The play area's floor. */
   board: string;
@@ -41,10 +82,32 @@ export interface Theme {
   lang: "en" | "ja";
 }
 
-/** What the player reads in the bar above the board. */
+/** What the player reads in the bar above the board.
+ *
+ * @example
+ * ```ts
+ * import { createController } from "@johnmorrisdotca/karakuri/play";
+ * import type { Info } from "@johnmorrisdotca/karakuri/play";
+ *
+ * const controller=createController("tube-sort",1);
+ * const value: Info = controller.info;
+ * console.log(value);
+ * ```
+ */
 export type Info = Say;
 
-/** One level of one game, played. */
+/** One level of one game, played.
+ *
+ * @example
+ * ```ts
+ * import { createController } from "@johnmorrisdotca/karakuri/play";
+ * import type { Controller } from "@johnmorrisdotca/karakuri/play";
+ *
+ * const controller=createController("tube-sort",1);
+ * const value: Controller = controller;
+ * console.log(value);
+ * ```
+ */
 export interface Controller {
   /** The size of the play area, in the game's units. The player scales it to the box it is given. */
   readonly width: number;
@@ -71,7 +134,17 @@ export interface Controller {
   snapshot(): unknown;
 }
 
-/** What a game of the package is, for a chooser. */
+/** What a game of the package is, for a chooser.
+ *
+ * @example
+ * ```ts
+ * import type { GameInfo } from "@johnmorrisdotca/karakuri/play";
+ * import { KARAKURI_GAMES } from "@johnmorrisdotca/karakuri/play";
+ *
+ * const value: GameInfo = KARAKURI_GAMES["tube-sort"];
+ * console.log(value);
+ * ```
+ */
 export interface GameInfo {
   id: string;
   /** How many levels it has. */

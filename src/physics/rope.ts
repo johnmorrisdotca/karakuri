@@ -5,7 +5,19 @@
 import { clamp, closestOnSegment, length, segmentsIntersect } from "./geometry.ts";
 import type { WorldShape } from "./bodies.ts";
 
-/** A point of a chain. `invMass` 0 pins it. `r` above 0 makes it a disc that rests on the rig's statics. */
+/** A point of a chain. `invMass` 0 pins it. `r` above 0 makes it a disc that rests on the rig's statics.
+ *
+ * @example
+ * ```ts
+ * import { addRope, createRig } from "@johnmorrisdotca/karakuri/physics";
+ * import type { RigNode } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const rig=createRig({gravity:0,iterations:1});
+ * addRope(rig,0,0,10,0,2);
+ * const value: RigNode = rig.nodes[0];
+ * console.log(value);
+ * ```
+ */
 export interface RigNode {
   x: number;
   y: number;
@@ -15,7 +27,19 @@ export interface RigNode {
   r: number;
 }
 
-/** A link that keeps two nodes `length` apart (a rope pulls but does not push: `slack` links only pull). */
+/** A link that keeps two nodes `length` apart (a rope pulls but does not push: `slack` links only pull).
+ *
+ * @example
+ * ```ts
+ * import { addRope, createRig } from "@johnmorrisdotca/karakuri/physics";
+ * import type { RigLink } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const rig=createRig({gravity:0,iterations:1});
+ * addRope(rig,0,0,10,0,2);
+ * const value: RigLink = rig.links[0];
+ * console.log(value);
+ * ```
+ */
 export interface RigLink {
   a: number;
   b: number;
@@ -23,7 +47,19 @@ export interface RigLink {
   alive: boolean;
 }
 
-/** A set of nodes and links, with the fixed shapes the round nodes rest on. */
+/** A set of nodes and links, with the fixed shapes the round nodes rest on.
+ *
+ * @example
+ * ```ts
+ * import { addRope, createRig } from "@johnmorrisdotca/karakuri/physics";
+ * import type { Rig } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const rig=createRig({gravity:0,iterations:1});
+ * addRope(rig,0,0,10,0,2);
+ * const value: Rig = rig;
+ * console.log(value);
+ * ```
+ */
 export interface Rig {
   nodes: RigNode[];
   links: RigLink[];
@@ -37,18 +73,59 @@ export interface Rig {
   bounce: number;
 }
 
-/** Makes an empty rig. */
+/** Makes an empty rig.
+ *
+ * @param options - Native physics tuning or creation options described by this signature.
+ * @returns Makes an empty rig.
+ * @example
+ * ```ts
+ * import { createRig } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(createRig({gravity:0}).gravity);
+ * ```
+ */
 export function createRig(options: { gravity?: number; damping?: number; iterations?: number; grip?: number; bounce?: number } = {}): Rig {
   return { nodes: [], links: [], statics: [], gravity: options.gravity ?? 900, damping: options.damping ?? 0.999, iterations: options.iterations ?? 24, grip: options.grip ?? 0.9, bounce: options.bounce ?? 0.25 };
 }
 
-/** Adds a node and gives back its index. */
+/** Adds a node and gives back its index.
+ *
+ * @param rig - The mutable native rope nodes, constraints and static geometry.
+ * @param x - The horizontal coordinate or vector component in native units.
+ * @param y - The vertical coordinate or vector component in native units.
+ * @param invMass - Inverse mass; zero anchors the node.
+ * @param r - The native node radius.
+ * @returns Adds a node and gives back its index.
+ * @example
+ * ```ts
+ * import { addNode, addRope, createRig } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const rig=createRig({gravity:0,iterations:1});
+ * addRope(rig,0,0,10,0,2);
+ * console.log(addNode(rig,12,0,1,2));
+ * ```
+ */
 export function addNode(rig: Rig, x: number, y: number, invMass: number, r = 0): number {
   rig.nodes.push({ x, y, px: x, py: y, invMass, r });
   return rig.nodes.length - 1;
 }
 
-/** Links two nodes at their present distance (or at `length`) and gives back the link's index. */
+/** Links two nodes at their present distance (or at `length`) and gives back the link's index.
+ *
+ * @param rig - The mutable native rope nodes, constraints and static geometry.
+ * @param a - The first body or native node index specified by the signature.
+ * @param b - The second body or native node index specified by the signature.
+ * @param length_ - Optional rest length; omitted uses the current distance between nodes.
+ * @returns Links two nodes at their present distance (or at `length`) and gives back the link's index.
+ * @example
+ * ```ts
+ * import { addLink, addRope, createRig } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const rig=createRig({gravity:0,iterations:1});
+ * addRope(rig,0,0,10,0,2);
+ * console.log(addLink(rig,0,2));
+ * ```
+ */
 export function addLink(rig: Rig, a: number, b: number, length_?: number): number {
   const na = rig.nodes[a];
   const nb = rig.nodes[b];
@@ -60,6 +137,21 @@ export function addLink(rig: Rig, a: number, b: number, length_?: number): numbe
  * Lays a rope of `pieces` links from (ax, ay) to (bx, by): the first node is pinned and the last is the node `end` if
  * one is given (its place is moved to the rope's end), and the nodes between are light. Gives back the indices of the
  * rope's nodes from the pinned end to the other and of its links.
+ *
+ * @param rig - The mutable native rope nodes, constraints and static geometry.
+ * @param ax - The first segment endpoint’s horizontal coordinate.
+ * @param ay - The first segment endpoint’s vertical coordinate.
+ * @param bx - The second segment endpoint’s horizontal coordinate.
+ * @param by - The second segment endpoint’s vertical coordinate.
+ * @param pieces - The positive number of rope segments to create.
+ * @param end - Optional existing native node index used as the rope’s far endpoint.
+ * @returns Lays a rope of `pieces` links from (ax, ay) to (bx, by): the first node is pinned and the last is the node `end` if one is given (its place is moved to the rope's end), and the nodes between are light. Gives back the indices of the rope's nodes from the pinned end to the other and of its links.
+ * @example
+ * ```ts
+ * import { addRope, createRig, length } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(addRope(createRig({gravity:0}),0,0,10,0,2).links.length);
+ * ```
  */
 export function addRope(rig: Rig, ax: number, ay: number, bx: number, by: number, pieces: number, end?: number): { nodes: number[]; links: number[] } {
   const nodes: number[] = [];
@@ -78,7 +170,19 @@ export function addRope(rig: Rig, ax: number, ay: number, bx: number, by: number
   return { nodes, links };
 }
 
-/** Advances the rig by one step of `dt` seconds. */
+/** Advances the rig by one step of `dt` seconds.
+ *
+ * @param rig - The mutable native rope nodes, constraints and static geometry.
+ * @param dt - Elapsed simulated seconds; use STEP for the package’s fixed-step convention.
+ * @example
+ * ```ts
+ * import { STEP, addRope, createRig, rigNumbers, stepRig } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const rig=createRig({gravity:0,iterations:1});
+ * addRope(rig,0,0,10,0,2);
+ * console.log((stepRig(rig,STEP),rigNumbers(rig)));
+ * ```
+ */
 export function stepRig(rig: Rig, dt: number): void {
   const g = rig.gravity * dt * dt;
   for (const n of rig.nodes) {
@@ -149,7 +253,24 @@ export function stepRig(rig: Rig, dt: number): void {
   }
 }
 
-/** The index of the first live link that the swipe from (x1, y1) to (x2, y2) crosses, or -1. A swipe cuts one link: the nearest to its start. */
+/** The index of the first live link that the swipe from (x1, y1) to (x2, y2) crosses, or -1. A swipe cuts one link: the nearest to its start.
+ *
+ * @param rig - The mutable native rope nodes, constraints and static geometry.
+ * @param x1 - The swipe’s starting horizontal coordinate.
+ * @param y1 - The swipe’s starting vertical coordinate.
+ * @param x2 - The swipe’s ending horizontal coordinate.
+ * @param y2 - The swipe’s ending vertical coordinate.
+ * @param among - Optional native link indices to test instead of the whole rig.
+ * @returns The first crossed alive link’s native index, or -1 when the swipe crosses none.
+ * @example
+ * ```ts
+ * import { addRope, createRig, linkCrossed } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const rig=createRig({gravity:0,iterations:1});
+ * addRope(rig,0,0,10,0,2);
+ * console.log(linkCrossed(rig,5,-5,5,5));
+ * ```
+ */
 export function linkCrossed(rig: Rig, x1: number, y1: number, x2: number, y2: number, among?: readonly number[]): number {
   let best = -1;
   let bestAt = Infinity;
@@ -171,14 +292,39 @@ export function linkCrossed(rig: Rig, x1: number, y1: number, x2: number, y2: nu
   return best;
 }
 
-/** Every number of the rig's nodes, for hashing it. */
+/** Every number of the rig's nodes, for hashing it.
+ *
+ * @param rig - The mutable native rope nodes, constraints and static geometry.
+ * @returns Every number of the rig's nodes, for hashing it.
+ * @example
+ * ```ts
+ * import { addRope, createRig, rigNumbers } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const rig=createRig({gravity:0,iterations:1});
+ * addRope(rig,0,0,10,0,2);
+ * console.log(rigNumbers(rig));
+ * ```
+ */
 export function rigNumbers(rig: Rig): number[] {
   const out: number[] = [];
   for (const n of rig.nodes) out.push(n.x, n.y, n.px, n.py);
   return out;
 }
 
-/** The speed of a node in units a second at a step of `dt`. */
+/** The speed of a node in units a second at a step of `dt`.
+ *
+ * @param n - The native rope node whose displacement is measured.
+ * @param dt - Elapsed simulated seconds; use STEP for the package’s fixed-step convention.
+ * @returns The speed of a node in units a second at a step of `dt`.
+ * @example
+ * ```ts
+ * import { STEP, addRope, createRig, nodeSpeed } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const rig=createRig({gravity:0,iterations:1});
+ * addRope(rig,0,0,10,0,2);
+ * console.log(nodeSpeed(rig.nodes[0],STEP));
+ * ```
+ */
 export function nodeSpeed(n: RigNode, dt: number): number {
   return clamp(length(n.x - n.px, n.y - n.py) / dt, 0, Infinity);
 }

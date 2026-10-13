@@ -16,15 +16,39 @@ import { choiceStoryController } from "./choice-story-view.ts";
 import { TUBE_SORT_LEVELS } from "./tube-sort.levels.ts";
 import { tubeSortController } from "./tube-sort-view.ts";
 
-/** The ids of the games, in the order the package lists them (kebab case, the same in every address and attribute). */
+/** The ids of the games, in the order the package lists them (kebab case, the same in every address and attribute).
+ *
+ * @example
+ * ```ts
+ * import { KARAKURI_GAME_IDS } from "@johnmorrisdotca/karakuri/play";
+ *
+ * console.log(KARAKURI_GAME_IDS);
+ * ```
+ */
 export const KARAKURI_GAME_IDS = ["save-the-character", "pin-rescue", "nuts-and-bolts", "stretch-grabber", "grid-escape", "rope-cut", "tube-sort", "choice-story"] as const;
 
-/** The id of a game of the package. */
+/** The id of a game of the package.
+ *
+ * @example
+ * ```ts
+ * import type { KarakuriGame } from "@johnmorrisdotca/karakuri/play";
+ *
+ * const value: KarakuriGame = "tube-sort";
+ * console.log(value);
+ * ```
+ */
 export type KarakuriGame = (typeof KARAKURI_GAME_IDS)[number];
 
 /**
  * THE GAMES of the package, by id. Each is a `GameInfo`: how many levels it has, how it is played (`drag` or `tap`), whether it
  * runs physics, and how to make a controller for a level.
+ *
+ * @example
+ * ```ts
+ * import { KARAKURI_GAMES } from "@johnmorrisdotca/karakuri/play";
+ *
+ * console.log(Object.keys(KARAKURI_GAMES));
+ * ```
  */
 export const KARAKURI_GAMES: Record<KarakuriGame, GameInfo> = {
   "save-the-character": { id: "save-the-character", levels: SAVE_THE_CHARACTER_LEVELS.length, gesture: "drag", physics: true, create: saveTheCharacterController },
@@ -37,7 +61,18 @@ export const KARAKURI_GAMES: Record<KarakuriGame, GameInfo> = {
   "choice-story": { id: "choice-story", levels: STORIES.length, gesture: "tap", physics: false, create: choiceStoryController },
 };
 
-/** Makes a controller for level `level` (from 1) of a game; a level out of range is held to the nearest. */
+/** Makes a controller for level `level` (from 1) of a game; a level out of range is held to the nearest.
+ *
+ * @param game - One of the native KARAKURI_GAME_IDS.
+ * @param level - The native one-based player level number, or typed level record required by the signature.
+ * @returns Makes a controller for level `level` (from 1) of a game; a level out of range is held to the nearest.
+ * @example
+ * ```ts
+ * import { createController } from "@johnmorrisdotca/karakuri/play";
+ *
+ * console.log(createController("tube-sort",1).status);
+ * ```
+ */
 export function createController(game: KarakuriGame, level: number): Controller {
   const info = KARAKURI_GAMES[game];
   return info.create(Math.min(Math.max(1, Math.round(level)), info.levels));

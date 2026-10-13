@@ -4,7 +4,16 @@
 // the top; each has its outline, its screws (their places on the board, which is 360 across and 360 down) and which colour it is drawn.
 import type { NutPuzzle } from "./nuts-and-bolts.ts";
 
-/** The levels, with more plates and more screws each time. */
+/** The levels, with more plates and more screws each time.
+ *
+ * @example
+ * ```ts
+ * import { NUTS_AND_BOLTS_LEVELS } from "@johnmorrisdotca/karakuri/levels";
+ * import { length } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(NUTS_AND_BOLTS_LEVELS.length);
+ * ```
+ */
 export const NUTS_AND_BOLTS_LEVELS: readonly NutPuzzle[] = [
   {
     slots: 2,

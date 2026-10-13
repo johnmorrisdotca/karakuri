@@ -7,13 +7,32 @@ const basket = (cx: number, top = 380, width = 100): Platform[] => [
   { ax: cx + width / 2, ay: top + 60, bx: cx + width / 2 + 14, by: top },
 ];
 
-/** A level and the cuts that win it, in order: the step to cut at, which rope, which link of it. */
+/** A level and the cuts that win it, in order: the step to cut at, which rope, which link of it.
+ *
+ * @example
+ * ```ts
+ * import type { RopeCutEntry } from "@johnmorrisdotca/karakuri/levels";
+ * import { ROPE_CUT_LEVELS } from "@johnmorrisdotca/karakuri/levels";
+ *
+ * const value: RopeCutEntry = ROPE_CUT_LEVELS[0];
+ * console.log(value);
+ * ```
+ */
 export interface RopeCutEntry extends RopeLevel {
   solution: readonly { at: number; rope: number; link: number }[];
   loss: readonly { at: number; rope: number; link: number }[];
 }
 
-/** The levels. */
+/** The levels.
+ *
+ * @example
+ * ```ts
+ * import { ROPE_CUT_LEVELS } from "@johnmorrisdotca/karakuri/levels";
+ * import { length } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(ROPE_CUT_LEVELS.length);
+ * ```
+ */
 export const ROPE_CUT_LEVELS: readonly RopeCutEntry[] = [
   // 1. One rope above the basket: cut it.
   {

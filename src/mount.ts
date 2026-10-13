@@ -42,7 +42,19 @@ export interface MountOptions {
   onChange?: (event: StatusEvent) => void;
 }
 
-/** What a status callback is given. */
+/** What a status callback is given.
+ *
+ * @example
+ * ```ts
+ * import { createController } from "@johnmorrisdotca/karakuri/play";
+ * import type { StatusEvent } from "@johnmorrisdotca/karakuri/play";
+ * import { say } from "@johnmorrisdotca/karakuri";
+ *
+ * const controller=createController("tube-sort",1);
+ * const value: StatusEvent = {game:"tube-sort",level:1,status:controller.status,result:controller.result,text:"",info:say("en",controller.info.key,controller.info.values)};
+ * console.log(value);
+ * ```
+ */
 export interface StatusEvent {
   game: KarakuriGame;
   level: number;

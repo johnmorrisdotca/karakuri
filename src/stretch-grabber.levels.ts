@@ -4,7 +4,17 @@
 // keeps its number for ever.
 import type { GrabLevel, Hazard, Pt, Solid } from "./stretch-grabber.ts";
 
-/** A level, the waypoints of one way to win it, and of one way to lose it. */
+/** A level, the waypoints of one way to win it, and of one way to lose it.
+ *
+ * @example
+ * ```ts
+ * import type { StretchGrabberEntry } from "@johnmorrisdotca/karakuri/levels";
+ * import { STRETCH_GRABBER_LEVELS } from "@johnmorrisdotca/karakuri/levels";
+ *
+ * const value: StretchGrabberEntry = STRETCH_GRABBER_LEVELS[0];
+ * console.log(value);
+ * ```
+ */
 export interface StretchGrabberEntry extends GrabLevel {
   solution: readonly Pt[];
   loss: readonly Pt[];
@@ -15,7 +25,16 @@ const peg = (x: number, y: number, r: number): Solid => ({ kind: "peg", x, y, r 
 const laser = (ax: number, ay: number, bx: number, by: number): Hazard => ({ kind: "laser", ax, ay, bx, by });
 const blob = (x: number, y: number, r: number): Hazard => ({ kind: "blob", x, y, r });
 
-/** The levels. */
+/** The levels.
+ *
+ * @example
+ * ```ts
+ * import { STRETCH_GRABBER_LEVELS } from "@johnmorrisdotca/karakuri/levels";
+ * import { length } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(STRETCH_GRABBER_LEVELS.length);
+ * ```
+ */
 export const STRETCH_GRABBER_LEVELS: readonly StretchGrabberEntry[] = [
   // 1. A wall with a gap: round the end of it to the star.
   {

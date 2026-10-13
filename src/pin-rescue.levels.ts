@@ -11,13 +11,32 @@ const SHAFT: Segment[] = [
   { ax: 70, ay: 40, bx: 290, by: 40 },
 ];
 
-/** A level, the pins that win it in order (by index in `pins`), and pins that lose it in order. */
+/** A level, the pins that win it in order (by index in `pins`), and pins that lose it in order.
+ *
+ * @example
+ * ```ts
+ * import type { PinRescueEntry } from "@johnmorrisdotca/karakuri/levels";
+ * import { PIN_RESCUE_LEVELS } from "@johnmorrisdotca/karakuri/levels";
+ *
+ * const value: PinRescueEntry = PIN_RESCUE_LEVELS[0];
+ * console.log(value);
+ * ```
+ */
 export interface PinRescueEntry extends PinLevel {
   solution: readonly number[];
   loss: readonly number[];
 }
 
-/** The levels, each with more pins to choose between and more ways to lose. */
+/** The levels, each with more pins to choose between and more ways to lose.
+ *
+ * @example
+ * ```ts
+ * import { PIN_RESCUE_LEVELS } from "@johnmorrisdotca/karakuri/levels";
+ * import { length } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(PIN_RESCUE_LEVELS.length);
+ * ```
+ */
 export const PIN_RESCUE_LEVELS: readonly PinRescueEntry[] = [
   // 1. Lava over the hero: let the hero go first.
   {

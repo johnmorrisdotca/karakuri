@@ -5,7 +5,16 @@
 // Math.sin and Math.cos, so the same inputs give the same frames in every browser and on every server.
 import { clamp, closestBetweenSegments, closestOnSegment, distance, length } from "./geometry.ts";
 
-/** A disc, placed in the body's own frame (its origin is the body's centre of mass for a dynamic body). */
+/** A disc, placed in the body's own frame (its origin is the body's centre of mass for a dynamic body).
+ *
+ * @example
+ * ```ts
+ * import type { CircleShape } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const value: CircleShape = {kind:"circle",x:0,y:0,r:3};
+ * console.log(value);
+ * ```
+ */
 export interface CircleShape {
   kind: "circle";
   x: number;
@@ -13,7 +22,16 @@ export interface CircleShape {
   r: number;
 }
 
-/** A thick segment, from (ax, ay) to (bx, by) with a radius, placed in the body's own frame. */
+/** A thick segment, from (ax, ay) to (bx, by) with a radius, placed in the body's own frame.
+ *
+ * @example
+ * ```ts
+ * import type { CapsuleShape } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const value: CapsuleShape = {kind:"capsule",ax:0,ay:0,bx:10,by:0,r:2};
+ * console.log(value);
+ * ```
+ */
 export interface CapsuleShape {
   kind: "capsule";
   ax: number;
@@ -23,10 +41,33 @@ export interface CapsuleShape {
   r: number;
 }
 
-/** A shape of a body. */
+/** A shape of a body.
+ *
+ * @example
+ * ```ts
+ * import type { Shape } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const value: Shape = {kind:"circle",x:0,y:0,r:3};
+ * console.log(value);
+ * ```
+ */
 export type Shape = CircleShape | CapsuleShape;
 
-/** A shape as the world sees it now: a circle as (ax, ay, r) with a = b, a capsule with its two ends. */
+/** A shape as the world sees it now: a circle as (ax, ay, r) with a = b, a capsule with its two ends.
+ *
+ * @example
+ * ```ts
+ * import type { BodySpec, WorldShape } from "@johnmorrisdotca/karakuri/physics";
+ * import { addBody, createBody, createWorld } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const spec: BodySpec={id:"ball",shapes:[{kind:"circle",x:0,y:0,r:3}],x:0,y:0};
+ * const body=createBody(spec);
+ * const world=createWorld({gravity:0,substeps:1,iterations:1});
+ * addBody(world,body);
+ * const value: WorldShape = body.world[0];
+ * console.log(value);
+ * ```
+ */
 export interface WorldShape {
   ax: number;
   ay: number;
@@ -35,10 +76,31 @@ export interface WorldShape {
   r: number;
 }
 
-/** How a body moves: `dynamic` by forces and contacts, `kinematic` only as the game sets it (it pushes, and is not pushed), `static` not at all. */
+/** How a body moves: `dynamic` by forces and contacts, `kinematic` only as the game sets it (it pushes, and is not pushed), `static` not at all.
+ *
+ * @example
+ * ```ts
+ * import type { BodyType } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const value: BodyType = "static";
+ * console.log(value);
+ * ```
+ */
 export type BodyType = "dynamic" | "static" | "kinematic";
 
-/** A rigid body. A game reads and, for a kinematic one, writes `x`, `y`, `vx` and `vy`; the rest is the solver's. */
+/** A rigid body. A game reads and, for a kinematic one, writes `x`, `y`, `vx` and `vy`; the rest is the solver's.
+ *
+ * @example
+ * ```ts
+ * import type { Body, BodySpec } from "@johnmorrisdotca/karakuri/physics";
+ * import { createBody } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const spec: BodySpec={id:"ball",shapes:[{kind:"circle",x:0,y:0,r:3}],x:0,y:0};
+ * const body=createBody(spec);
+ * const value: Body = body;
+ * console.log(value);
+ * ```
+ */
 export interface Body {
   id: string;
   /** The game's own word for what the body is: "hero", "rock", "stroke". The physics never reads it. */
@@ -65,7 +127,17 @@ export interface Body {
   sensor: boolean;
 }
 
-/** What `createBody` is told. A dynamic body's mass and inertia are worked out from its shapes and `density` unless given. */
+/** What `createBody` is told. A dynamic body's mass and inertia are worked out from its shapes and `density` unless given.
+ *
+ * @example
+ * ```ts
+ * import type { BodySpec } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const spec: BodySpec={id:"ball",shapes:[{kind:"circle",x:0,y:0,r:3}],x:0,y:0};
+ * const value: BodySpec = spec;
+ * console.log(value);
+ * ```
+ */
 export interface BodySpec {
   id: string;
   tag?: string;
@@ -81,7 +153,21 @@ export interface BodySpec {
   sensor?: boolean;
 }
 
-/** The world: its gravity (down is +y, in units a second squared), its bodies in the order they were added, and how hard it works. */
+/** The world: its gravity (down is +y, in units a second squared), its bodies in the order they were added, and how hard it works.
+ *
+ * @example
+ * ```ts
+ * import type { BodySpec, World } from "@johnmorrisdotca/karakuri/physics";
+ * import { addBody, createBody, createWorld } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const spec: BodySpec={id:"ball",shapes:[{kind:"circle",x:0,y:0,r:3}],x:0,y:0};
+ * const body=createBody(spec);
+ * const world=createWorld({gravity:0,substeps:1,iterations:1});
+ * addBody(world,body);
+ * const value: World = world;
+ * console.log(value);
+ * ```
+ */
 export interface World {
   gravity: number;
   bodies: Body[];
@@ -91,7 +177,20 @@ export interface World {
   iterations: number;
 }
 
-/** One contact between two shapes: the normal points from `a` towards `b`. */
+/** One contact between two shapes: the normal points from `a` towards `b`.
+ *
+ * @example
+ * ```ts
+ * import type { BodySpec, Contact } from "@johnmorrisdotca/karakuri/physics";
+ * import { contactsBetween, createBody } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const spec: BodySpec={id:"ball",shapes:[{kind:"circle",x:0,y:0,r:3}],x:0,y:0};
+ * const body=createBody(spec);
+ * const other=createBody({...spec,id:"other",x:4});
+ * const value: Contact = contactsBetween(body,other,0)[0];
+ * console.log(value);
+ * ```
+ */
 export interface Contact {
   a: Body;
   b: Body;
@@ -102,12 +201,30 @@ export interface Contact {
   y: number;
 }
 
-/** The length of the fixed step every game runs at, in seconds. */
+/** The length of the fixed step every game runs at, in seconds.
+ *
+ * @example
+ * ```ts
+ * import { STEP } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(STEP);
+ * ```
+ */
 export const STEP = 1 / 60;
 
 const DEFAULT_FRICTION = 0.5;
 
-/** Makes a world. */
+/** Makes a world.
+ *
+ * @param options - Native physics tuning or creation options described by this signature.
+ * @returns Makes a world.
+ * @example
+ * ```ts
+ * import { createWorld } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(createWorld({gravity:0}).gravity);
+ * ```
+ */
 export function createWorld(options: { gravity?: number; substeps?: number; iterations?: number } = {}): World {
   return { gravity: options.gravity ?? 900, bodies: [], substeps: options.substeps ?? 2, iterations: options.iterations ?? 10 };
 }
@@ -127,7 +244,19 @@ function shapeMass(shape: Shape): { area: number; inertia: number; cx: number; c
   return { area, inertia: own + area * (cx * cx + cy * cy), cx, cy };
 }
 
-/** Makes a body from a spec. A dynamic body's origin is moved to its centre of mass, and its shapes are re-placed round it. */
+/** Makes a body from a spec. A dynamic body's origin is moved to its centre of mass, and its shapes are re-placed round it.
+ *
+ * @param spec - The native body id, shape list, position, type and material/contact properties.
+ * @returns Makes a body from a spec. A dynamic body's origin is moved to its centre of mass, and its shapes are re-placed round it.
+ * @example
+ * ```ts
+ * import type { BodySpec } from "@johnmorrisdotca/karakuri/physics";
+ * import { createBody } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const spec: BodySpec={id:"ball",shapes:[{kind:"circle",x:0,y:0,r:3}],x:0,y:0};
+ * console.log(createBody(spec).type);
+ * ```
+ */
 export function createBody(spec: BodySpec): Body {
   const type = spec.type ?? "static";
   const shapes = spec.shapes.map((shape) => ({ ...shape }));
@@ -189,20 +318,59 @@ export function createBody(spec: BodySpec): Body {
   return body;
 }
 
-/** Adds a body to the world and gives it back. */
+/** Adds a body to the world and gives it back.
+ *
+ * @param world - The mutable native world and its bodies in insertion order.
+ * @param body - The native rigid body whose cached world shapes are used or refreshed.
+ * @returns Adds a body to the world and gives it back.
+ * @example
+ * ```ts
+ * import type { BodySpec } from "@johnmorrisdotca/karakuri/physics";
+ * import { addBody, createBody, createWorld } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const spec: BodySpec={id:"ball",shapes:[{kind:"circle",x:0,y:0,r:3}],x:0,y:0};
+ * const body=createBody(spec);
+ * console.log(addBody(createWorld({gravity:0}),body).id);
+ * ```
+ */
 export function addBody<T extends Body>(world: World, body: T): T {
   world.bodies.push(body);
   return body;
 }
 
-/** A capsule chain for a drawn line: one capsule between each pair of neighbouring points. */
+/** A capsule chain for a drawn line: one capsule between each pair of neighbouring points.
+ *
+ * @param points - Ordered native points forming a polyline.
+ * @param radius - The capsule radius in native world units.
+ * @returns A capsule chain for a drawn line: one capsule between each pair of neighbouring points.
+ * @example
+ * ```ts
+ * import { capsulesAlong } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(capsulesAlong([{x:0,y:0},{x:10,y:0}],2));
+ * ```
+ */
 export function capsulesAlong(points: readonly { x: number; y: number }[], radius: number): CapsuleShape[] {
   const out: CapsuleShape[] = [];
   for (let i = 1; i < points.length; i += 1) out.push({ kind: "capsule", ax: points[i - 1].x, ay: points[i - 1].y, bx: points[i].x, by: points[i].y, r: radius });
   return out;
 }
 
-/** Recomputes a body's shapes in world places from its position and angle. */
+/** Recomputes a body's shapes in world places from its position and angle.
+ *
+ * @param body - The native rigid body whose cached world shapes are used or refreshed.
+ * @example
+ * ```ts
+ * import type { BodySpec } from "@johnmorrisdotca/karakuri/physics";
+ * import { addBody, createBody, createWorld, length, refreshShapes } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const spec: BodySpec={id:"ball",shapes:[{kind:"circle",x:0,y:0,r:3}],x:0,y:0};
+ * const body=createBody(spec);
+ * const world=createWorld({gravity:0,substeps:1,iterations:1});
+ * addBody(world,body);
+ * console.log((refreshShapes(body),body.world.length));
+ * ```
+ */
 export function refreshShapes(body: Body): void {
   const { x, y, c, s } = body;
   if (body.world.length !== body.shapes.length) body.world = body.shapes.map(() => ({ ax: 0, ay: 0, bx: 0, by: 0, r: 0 }));
@@ -310,7 +478,22 @@ function shapeBox(s: WorldShape, margin: number): [number, number, number, numbe
   return [Math.min(s.ax, s.bx) - s.r - margin, Math.min(s.ay, s.by) - s.r - margin, Math.max(s.ax, s.bx) + s.r + margin, Math.max(s.ay, s.by) + s.r + margin];
 }
 
-/** The gap between two bodies: the smallest gap of any pair of their shapes (negative when they overlap). */
+/** The gap between two bodies: the smallest gap of any pair of their shapes (negative when they overlap).
+ *
+ * @param a - The first body or native node index specified by the signature.
+ * @param b - The second body or native node index specified by the signature.
+ * @returns The gap between two bodies: the smallest gap of any pair of their shapes (negative when they overlap).
+ * @example
+ * ```ts
+ * import type { BodySpec } from "@johnmorrisdotca/karakuri/physics";
+ * import { createBody, gap } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const spec: BodySpec={id:"ball",shapes:[{kind:"circle",x:0,y:0,r:3}],x:0,y:0};
+ * const body=createBody(spec);
+ * const other=createBody({...spec,id:"other",x:4});
+ * console.log(gap(body,other));
+ * ```
+ */
 export function gap(a: Body, b: Body): number {
   let least = Infinity;
   const hint = { x: b.x - a.x, y: b.y - a.y };
@@ -326,7 +509,23 @@ export function gap(a: Body, b: Body): number {
   return least;
 }
 
-/** The contacts between two bodies whose shapes are within `margin` of each other. */
+/** The contacts between two bodies whose shapes are within `margin` of each other.
+ *
+ * @param a - The first body or native node index specified by the signature.
+ * @param b - The second body or native node index specified by the signature.
+ * @param margin - The native contact distance within which shapes are tested.
+ * @returns The contacts between two bodies whose shapes are within `margin` of each other.
+ * @example
+ * ```ts
+ * import type { BodySpec } from "@johnmorrisdotca/karakuri/physics";
+ * import { contactsBetween, createBody, length } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const spec: BodySpec={id:"ball",shapes:[{kind:"circle",x:0,y:0,r:3}],x:0,y:0};
+ * const body=createBody(spec);
+ * const other=createBody({...spec,id:"other",x:4});
+ * console.log(contactsBetween(body,other,0).length);
+ * ```
+ */
 export function contactsBetween(a: Body, b: Body, margin: number): Contact[] {
   const out: Contact[] = [];
   const hint = { x: b.x - a.x, y: b.y - a.y };
@@ -358,7 +557,22 @@ interface Row extends Contact {
   pt: number;
 }
 
-/** Advances the world by one fixed step (`STEP` seconds) in `substeps` smaller ones. */
+/** Advances the world by one fixed step (`STEP` seconds) in `substeps` smaller ones.
+ *
+ * @param world - The mutable native world and its bodies in insertion order.
+ * @param dt - Elapsed simulated seconds; use STEP for the package’s fixed-step convention.
+ * @example
+ * ```ts
+ * import type { BodySpec } from "@johnmorrisdotca/karakuri/physics";
+ * import { STEP, addBody, createBody, createWorld, stepWorld, worldNumbers } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const spec: BodySpec={id:"ball",shapes:[{kind:"circle",x:0,y:0,r:3}],x:0,y:0};
+ * const body=createBody(spec);
+ * const world=createWorld({gravity:0,substeps:1,iterations:1});
+ * addBody(world,body);
+ * console.log((stepWorld(world,STEP),worldNumbers(world)));
+ * ```
+ */
 export function stepWorld(world: World, dt: number = STEP): void {
   const h = dt / world.substeps;
   for (let sub = 0; sub < world.substeps; sub += 1) {
@@ -451,7 +665,23 @@ function apply(a: Body, b: Body, rax: number, ray: number, rbx: number, rby: num
   b.w += b.invInertia * (rbx * py - rby * px);
 }
 
-/** Whether every dynamic body in the world is slower than `speed` (units a second) and is hardly turning. */
+/** Whether every dynamic body in the world is slower than `speed` (units a second) and is hardly turning.
+ *
+ * @param world - The mutable native world and its bodies in insertion order.
+ * @param speed - The maximum motion speed considered settled, in native units per second.
+ * @returns Whether every dynamic body in the world is slower than `speed` (units a second) and is hardly turning.
+ * @example
+ * ```ts
+ * import type { BodySpec } from "@johnmorrisdotca/karakuri/physics";
+ * import { addBody, createBody, createWorld, isSettled } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const spec: BodySpec={id:"ball",shapes:[{kind:"circle",x:0,y:0,r:3}],x:0,y:0};
+ * const body=createBody(spec);
+ * const world=createWorld({gravity:0,substeps:1,iterations:1});
+ * addBody(world,body);
+ * console.log(isSettled(world));
+ * ```
+ */
 export function isSettled(world: World, speed: number = 4): boolean {
   for (const body of world.bodies) {
     if (body.type !== "dynamic") continue;
@@ -460,7 +690,22 @@ export function isSettled(world: World, speed: number = 4): boolean {
   return true;
 }
 
-/** Every number of a world's bodies' state, for hashing it: a determinism test compares these bit for bit. */
+/** Every number of a world's bodies' state, for hashing it: a determinism test compares these bit for bit.
+ *
+ * @param world - The mutable native world and its bodies in insertion order.
+ * @returns Every number of a world's bodies' state, for hashing it: a determinism test compares these bit for bit.
+ * @example
+ * ```ts
+ * import type { BodySpec } from "@johnmorrisdotca/karakuri/physics";
+ * import { addBody, createBody, createWorld, worldNumbers } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const spec: BodySpec={id:"ball",shapes:[{kind:"circle",x:0,y:0,r:3}],x:0,y:0};
+ * const body=createBody(spec);
+ * const world=createWorld({gravity:0,substeps:1,iterations:1});
+ * addBody(world,body);
+ * console.log(worldNumbers(world));
+ * ```
+ */
 export function worldNumbers(world: World): number[] {
   const out: number[] = [];
   for (const b of world.bodies) out.push(b.x, b.y, b.vx, b.vy, b.c, b.s, b.w);

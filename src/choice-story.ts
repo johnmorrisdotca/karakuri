@@ -22,7 +22,16 @@ export interface Story {
   stages: readonly [Stage, Stage, Stage];
 }
 
-/** The stories, one to a level. */
+/** The stories, one to a level.
+ *
+ * @example
+ * ```ts
+ * import { STORIES } from "@johnmorrisdotca/karakuri/levels";
+ * import { length } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(STORIES.length);
+ * ```
+ */
 export const STORIES: readonly Story[] = [
   {
     stages: [

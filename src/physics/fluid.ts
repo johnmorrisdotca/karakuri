@@ -5,10 +5,31 @@
 import { closestOnSegment, length } from "./geometry.ts";
 import type { WorldShape } from "./bodies.ts";
 
-/** What a particle is made of. Stone is lava and water that met: it does not move again. */
+/** What a particle is made of. Stone is lava and water that met: it does not move again.
+ *
+ * @example
+ * ```ts
+ * import type { FluidKind } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const value: FluidKind = "water";
+ * console.log(value);
+ * ```
+ */
 export type FluidKind = "water" | "lava" | "stone";
 
-/** One particle. */
+/** One particle.
+ *
+ * @example
+ * ```ts
+ * import { createFluid, fillRect } from "@johnmorrisdotca/karakuri/physics";
+ * import type { Particle } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const fluid=createFluid({radius:2,gravity:0,iterations:1,reacts:false});
+ * fillRect(fluid,"water",0,0,8,8);
+ * const value: Particle = fluid.particles[0];
+ * console.log(value);
+ * ```
+ */
 export interface Particle {
   x: number;
   y: number;
@@ -17,7 +38,19 @@ export interface Particle {
   kind: FluidKind;
 }
 
-/** The liquid: its particles and how it behaves. */
+/** The liquid: its particles and how it behaves.
+ *
+ * @example
+ * ```ts
+ * import { createFluid, fillRect } from "@johnmorrisdotca/karakuri/physics";
+ * import type { Fluid } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const fluid=createFluid({radius:2,gravity:0,iterations:1,reacts:false});
+ * fillRect(fluid,"water",0,0,8,8);
+ * const value: Fluid = fluid;
+ * console.log(value);
+ * ```
+ */
 export interface Fluid {
   particles: Particle[];
   /** A particle's radius, which is also how far apart two settle (twice this). */
@@ -30,12 +63,39 @@ export interface Fluid {
   reacts: boolean;
 }
 
-/** Makes a liquid with no particles. */
+/** Makes a liquid with no particles.
+ *
+ * @param options - Native physics tuning or creation options described by this signature.
+ * @returns Makes a liquid with no particles.
+ * @example
+ * ```ts
+ * import { createFluid, length } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * console.log(createFluid({radius:2,gravity:0}).particles.length);
+ * ```
+ */
 export function createFluid(options: { radius?: number; gravity?: number; damping?: number; iterations?: number; reacts?: boolean } = {}): Fluid {
   return { particles: [], radius: options.radius ?? 4, gravity: options.gravity ?? 900, damping: options.damping ?? 0.995, iterations: options.iterations ?? 3, reacts: options.reacts ?? true };
 }
 
-/** Fills the rectangle from (x, y) to (x + w, y + h) with particles of one kind on a grid a little looser than they settle. */
+/** Fills the rectangle from (x, y) to (x + w, y + h) with particles of one kind on a grid a little looser than they settle.
+ *
+ * @param fluid - The mutable native particle fluid.
+ * @param kind - The native water, lava or stone particle kind.
+ * @param x - The horizontal coordinate or vector component in native units.
+ * @param y - The vertical coordinate or vector component in native units.
+ * @param w - The fill rectangle width in native units.
+ * @param h - The fill rectangle height in native units.
+ * @returns Fills the rectangle from (x, y) to (x + w, y + h) with particles of one kind on a grid a little looser than they settle.
+ * @example
+ * ```ts
+ * import { createFluid, fillRect } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const fluid=createFluid({radius:2,gravity:0,iterations:1,reacts:false});
+ * fillRect(fluid,"water",0,0,8,8);
+ * console.log(fillRect(fluid,"water",10,0,8,8));
+ * ```
+ */
 export function fillRect(fluid: Fluid, kind: FluidKind, x: number, y: number, w: number, h: number): number {
   const step = fluid.radius * 2.05;
   let count = 0;
@@ -52,14 +112,37 @@ export function fillRect(fluid: Fluid, kind: FluidKind, x: number, y: number, w:
   return count;
 }
 
-/** The round bodies the particles must not enter (a character, a coin): centre and radius. */
+/** The round bodies the particles must not enter (a character, a coin): centre and radius.
+ *
+ * @example
+ * ```ts
+ * import type { Disc } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const value: Disc = {x:0,y:0,r:1};
+ * console.log(value);
+ * ```
+ */
 export interface Disc {
   x: number;
   y: number;
   r: number;
 }
 
-/** Advances the liquid by one step of `dt` seconds. */
+/** Advances the liquid by one step of `dt` seconds.
+ *
+ * @param fluid - The mutable native particle fluid.
+ * @param dt - Elapsed simulated seconds; use STEP for the package’s fixed-step convention.
+ * @param statics - Native static capsule/circle geometry for the fluid collision step.
+ * @param discs - Optional moving or interacting native discs.
+ * @example
+ * ```ts
+ * import { STEP, countOf, createFluid, fillRect, stepFluid } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const fluid=createFluid({radius:2,gravity:0,iterations:1,reacts:false});
+ * fillRect(fluid,"water",0,0,8,8);
+ * console.log((stepFluid(fluid,STEP,[]),countOf(fluid,"water")));
+ * ```
+ */
 export function stepFluid(fluid: Fluid, dt: number, statics: readonly WorldShape[], discs: readonly Disc[] = []): void {
   const r = fluid.radius;
   const list = fluid.particles;
@@ -164,14 +247,41 @@ export function stepFluid(fluid: Fluid, dt: number, statics: readonly WorldShape
   }
 }
 
-/** How many particles of a kind. */
+/** How many particles of a kind.
+ *
+ * @param fluid - The mutable native particle fluid.
+ * @param kind - The native water, lava or stone particle kind.
+ * @returns How many particles of a kind.
+ * @example
+ * ```ts
+ * import { countOf, createFluid, fillRect } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const fluid=createFluid({radius:2,gravity:0,iterations:1,reacts:false});
+ * fillRect(fluid,"water",0,0,8,8);
+ * console.log(countOf(fluid,"water"));
+ * ```
+ */
 export function countOf(fluid: Fluid, kind: FluidKind): number {
   let n = 0;
   for (const p of fluid.particles) if (p.kind === kind) n += 1;
   return n;
 }
 
-/** The nearest distance from a particle of a kind to a disc's surface (negative when it is inside), or Infinity when there is none. */
+/** The nearest distance from a particle of a kind to a disc's surface (negative when it is inside), or Infinity when there is none.
+ *
+ * @param fluid - The mutable native particle fluid.
+ * @param kind - The native water, lava or stone particle kind.
+ * @param disc - The native disc whose surface distance is measured.
+ * @returns The nearest surface gap for the requested particle kind, or Infinity when no such particle exists.
+ * @example
+ * ```ts
+ * import { createFluid, fillRect, nearestTo } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const fluid=createFluid({radius:2,gravity:0,iterations:1,reacts:false});
+ * fillRect(fluid,"water",0,0,8,8);
+ * console.log(nearestTo(fluid,"water",{x:0,y:0,r:1}));
+ * ```
+ */
 export function nearestTo(fluid: Fluid, kind: FluidKind, disc: Disc): number {
   let least = Infinity;
   for (const p of fluid.particles) {
@@ -182,7 +292,19 @@ export function nearestTo(fluid: Fluid, kind: FluidKind, disc: Disc): number {
   return least;
 }
 
-/** Every number of the liquid's particles, for hashing it (kinds as 0, 1, 2). */
+/** Every number of the liquid's particles, for hashing it (kinds as 0, 1, 2).
+ *
+ * @param fluid - The mutable native particle fluid.
+ * @returns Every number of the liquid's particles, for hashing it (kinds as 0, 1, 2).
+ * @example
+ * ```ts
+ * import { createFluid, fillRect, fluidNumbers } from "@johnmorrisdotca/karakuri/physics";
+ *
+ * const fluid=createFluid({radius:2,gravity:0,iterations:1,reacts:false});
+ * fillRect(fluid,"water",0,0,8,8);
+ * console.log(fluidNumbers(fluid));
+ * ```
+ */
 export function fluidNumbers(fluid: Fluid): number[] {
   const out: number[] = [];
   for (const p of fluid.particles) out.push(p.x, p.y, p.px, p.py, p.kind === "water" ? 0 : p.kind === "lava" ? 1 : 2);

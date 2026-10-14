@@ -4,6 +4,8 @@ All notable changes to this package are written here, newest first, in the form 
 
 ## [Unreleased]
 
+- Keep complete resource catalogues on the documentation entry index and the active resource beside core navigation; render valid default imports in HTML and Markdown.
+
 - Add the bilingual documentation site, checked public examples, paired guides, local search and machine-readable pages.
 
 - Add focused keyboard-cursor play using the native pointer controllers, with visible focus/cursor, precision movement, cancellation and spoken coordinates. Preserve touch/mouse and native physics.

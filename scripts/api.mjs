@@ -104,7 +104,7 @@ export const API_WORDS = {
 };
 
 /** The words the demo's own header link to this page needs, for the page that links to it: `pageApi`. */
-export const API_LINK_WORDS = { en: { pageApi: "API reference" }, ja: { pageApi: "API（英語）" } };
+export const API_LINK_WORDS = { en: { pageApi: "API" }, ja: { pageApi: "API（英語）" } };
 
 /** The stylesheet of the reference, written beside the family's own as api.css. It uses the family's variables. */
 export const API_CSS = `/* The API reference page: made by scripts/api.mjs. */

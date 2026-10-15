@@ -9,7 +9,7 @@ import "./dist/element-define.js";
 const WORDS = {
   en: {
     pageDocs: "Docs",
-    pageApi: "API reference",
+    pageApi: "API",
     pitch: "Eight small puzzle games for pointer or keyboard: draw a shield, pull the pins, unscrew the plates, stretch an arm round pegs, slide the blocks, cut the ropes, pour the tubes and choose the tool. Each has levels that step up, and the physics gives the same result in every browser.",
     name: "Karakuri (からくり) is Japanese for a clever mechanism: a trick, a puzzle box, a wind-up toy.",
     nameLink: "About the name",

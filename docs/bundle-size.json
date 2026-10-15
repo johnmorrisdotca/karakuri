@@ -3,27 +3,27 @@
   "entries": {
     ".": {
       "minified": 52454,
-      "gzip": 18827
+      "gzip": 18986
     },
     "./physics": {
       "minified": 11210,
-      "gzip": 4925
+      "gzip": 4966
     },
     "./levels": {
       "minified": 14303,
-      "gzip": 4385
+      "gzip": 4390
     },
     "./play": {
       "minified": 120018,
-      "gzip": 39708
+      "gzip": 39988
     },
     "./element": {
       "minified": 126775,
-      "gzip": 41787
+      "gzip": 42103
     },
     "./element/define": {
       "minified": 126780,
-      "gzip": 41791
+      "gzip": 42107
     }
   }
 }

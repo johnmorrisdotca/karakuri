@@ -4,26 +4,23 @@ All notable changes to this package are written here, newest first, in the form 
 
 ## [Unreleased]
 
-- Synchronize documentation tooling for repository layouts, generated type references, Node entry points and repository-specific README links.
+## [0.2.0] - 2026-10-14
 
-- Keep complete resource catalogues on the documentation entry index and the active resource beside core navigation; render valid default imports in HTML and Markdown.
-
-- Add the bilingual documentation site, checked public examples, paired guides, local search and machine-readable pages.
-
-- Add focused keyboard-cursor play using the native pointer controllers, with visible focus/cursor, precision movement, cancellation and spoken coordinates. Preserve touch/mouse and native physics.
-- Add reflected embed settings, full host options and custom-tag definition; presentation changes retain controllers. Add the shared builder, validated iframe and composed JSON-safe native events.
-
-
-
+The games are custom elements with the family's standard embed attributes and a shared builder, play works from the keyboard, and the package has an English and Japanese documentation site with a checked example for every export. The rules, the physics, the levels and the 0.1 imports are unchanged.
 
 ### Added
 
+- Add the bilingual documentation site, checked public examples, paired guides, local search and machine-readable pages.
+- Add focused keyboard-cursor play using the native pointer controllers, with visible focus/cursor, precision movement, cancellation and spoken coordinates. Preserve touch/mouse and native physics.
+- Add reflected embed settings, full host options and custom-tag definition; presentation changes retain controllers. Add the shared builder, validated iframe and composed JSON-safe native events.
 - Share a package-independent embed builder for option controls, preview adapters, code tabs and shareable links.
 
 ### Changed
 
+- The API link in the header reads "API" in English, so that the header takes the same number of rows in English and in Japanese on a phone, as the demo's test of a language change asks.
+- Synchronize documentation tooling for repository layouts, generated type references, Node entry points and repository-specific README links.
+- Keep complete resource catalogues on the documentation entry index and the active resource beside core navigation; render valid default imports in HTML and Markdown.
 - Group the package family by kind, alphabetize each group, and include the geography packages and REST in Pieces in the shared footer and README.
-
 - Update the shared family description for addresses in all seven supported countries, including France and Germany.
 
 ## [0.1.2] - 2026-10-06
@@ -73,5 +70,6 @@ Nothing that was exported has changed.
 - **Save the Character**: draw one line to shelter the character, let go, and the line falls on the package's physics while bees fly at him and rocks fall; keep him safe for three seconds. Five levels (bees along the ground, rocks, a narrow ledge, a pit, a small ledge with no floor), each with a recorded winning line chosen so that its neighbours also win, and a recorded loss.
 - **Choice Story**: four small stories of three stages each (a rainy walk, a night in a cave, a snow day, treasure island), two tools to choose from at each stage, one of which helps. The right tool plays a little animation and moves on; the wrong one plays a harmless slapstick failure, says why in plain words, and the stage is tried again. Every word and every tool name is in English and Japanese, and a test refuses a failure that harms anyone.
 
-[Unreleased]: https://github.com/johnmorrisdotca/karakuri/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/johnmorrisdotca/karakuri/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/johnmorrisdotca/karakuri/compare/v0.1.2...v0.2.0
 [0.1.1]: https://github.com/johnmorrisdotca/karakuri/compare/v0.1.0...v0.1.1

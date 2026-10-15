@@ -1,6 +1,6 @@
 {
   "name": "@johnmorrisdotca/karakuri",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Karakuri からくり — Physics and hyper-casual puzzle games: eight puzzle games, native rules and solvers, deterministic 2D physics, level lists and pointer/keyboard play in English and Japanese. Zero dependencies.",
   "keywords": [
     "browser",

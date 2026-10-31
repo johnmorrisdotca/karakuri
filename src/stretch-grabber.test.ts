@@ -1,17 +1,16 @@
 import { describe, expect, it } from "vitest";
-
+import { STRETCH_GRABBER_LEVELS } from "./stretch-grabber.levels.ts";
 import {
   ARM_R,
-  TIP_R,
   armLength,
+  type GrabLevel,
   moveTip,
   nearTip,
   newGrabGame,
   playPath,
+  TIP_R,
   tipOf,
-  type GrabLevel,
 } from "./stretch-grabber.ts";
-import { STRETCH_GRABBER_LEVELS } from "./stretch-grabber.levels.ts";
 
 const open: GrabLevel = {
   base: { x: 180, y: 440 },

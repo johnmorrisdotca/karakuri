@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test";
-import { serve } from "./demo.mjs";
-import { TUBE_SORT_LEVELS } from "../dist/tube-sort.levels.js";
 import { solveTubes } from "../dist/tube-sort.js";
+import { TUBE_SORT_LEVELS } from "../dist/tube-sort.levels.js";
+import { serve } from "./demo.mjs";
+
 const moveCursor = async (canvas, x, y) =>
   canvas.evaluate(
     (node, { x, y }) => {
@@ -9,8 +10,8 @@ const moveCursor = async (canvas, x, y) =>
       for (const axis of ["x", "y"]) {
         const wanted = Math.round(axis === "x" ? x : y);
         while (Math.round(position[axis]) !== wanted) {
-          const delta = wanted - position[axis],
-            fine = Math.abs(delta) < 10;
+          const delta = wanted - position[axis];
+          const fine = Math.abs(delta) < 10;
           const key = axis === "x" ? (delta < 0 ? "ArrowLeft" : "ArrowRight") : delta < 0 ? "ArrowUp" : "ArrowDown";
           node.dispatchEvent(
             new globalThis.KeyboardEvent("keydown", { key, shiftKey: fine, bubbles: true, cancelable: true }),
@@ -39,8 +40,8 @@ test("the shared builder covers game options and every host format in Japanese",
 test("a tube-sort level is solved using keyboard input through the native controller", async ({ page }) => {
   await serve(page);
   await page.goto("http://karakuri.test/embed/?game=tube-sort&level=1&clock=manual&size=small");
-  const board = page.locator("karakuri-board"),
-    canvas = board.locator("canvas");
+  const board = page.locator("karakuri-board");
+  const canvas = board.locator("canvas");
   await expect(canvas).toBeVisible();
   await canvas.focus();
   const solution = solveTubes(TUBE_SORT_LEVELS[0].tubes).solution.pours;
@@ -115,8 +116,8 @@ test("status and change events cross a shadow root with JSON-safe native detail"
   await page.goto("http://karakuri.test/embed/");
   await expect(page.locator("canvas")).toBeVisible();
   const result = await page.evaluate(async () => {
-    const host = document.createElement("div"),
-      shadow = host.attachShadow({ mode: "open" });
+    const host = document.createElement("div");
+    const shadow = host.attachShadow({ mode: "open" });
     document.body.append(host);
     const board = document.createElement("karakuri-board");
     board.game = "tube-sort";

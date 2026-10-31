@@ -2,8 +2,8 @@
 // board is drawn on a canvas. The rules are in nutsAndBolts.ts; this holds the level in play and turns taps into screws taken.
 import type { Controller, Point, Say, Status, Theme } from "./controller.ts";
 import { alpha, PIECE_COLOURS, roundRect, shade } from "./draw.ts";
-import { freeScrews, newNutGame, takeScrew, type NutPlate, type NutState, type ScrewRef } from "./nuts-and-bolts.ts";
 import { NUTS_AND_BOLTS_LEVELS } from "./nuts-and-bolts.levels.ts";
+import { freeScrews, type NutPlate, type NutState, newNutGame, type ScrewRef, takeScrew } from "./nuts-and-bolts.ts";
 
 const WIDTH = 360;
 const HEIGHT = 480;
@@ -155,7 +155,7 @@ export function nutsAndBoltsController(level: number): Controller {
 
   function drawPlate(
     g: CanvasRenderingContext2D,
-    theme: Theme,
+    _theme: Theme,
     plate: NutPlate,
     p: number,
     fall: Fall | undefined,
@@ -176,7 +176,9 @@ export function nutsAndBoltsController(level: number): Controller {
     // The shadow it throws on whatever is under it.
     g.lineJoin = "round";
     g.beginPath();
-    plate.polygon.forEach((v, i) => (i === 0 ? g.moveTo(v.x + 3, v.y + 5) : g.lineTo(v.x + 3, v.y + 5)));
+    plate.polygon.forEach((v, i) => {
+      i === 0 ? g.moveTo(v.x + 3, v.y + 5) : g.lineTo(v.x + 3, v.y + 5);
+    });
     g.closePath();
     g.lineWidth = 6;
     g.strokeStyle = "rgba(0,0,0,0.20)";
@@ -185,7 +187,9 @@ export function nutsAndBoltsController(level: number): Controller {
     g.fill();
     // The plate: a dark rim, then the face, rounded at the corners.
     g.beginPath();
-    plate.polygon.forEach((v, i) => (i === 0 ? g.moveTo(v.x, v.y) : g.lineTo(v.x, v.y)));
+    plate.polygon.forEach((v, i) => {
+      i === 0 ? g.moveTo(v.x, v.y) : g.lineTo(v.x, v.y);
+    });
     g.closePath();
     g.lineWidth = 6;
     g.strokeStyle = shade(base, -0.4);

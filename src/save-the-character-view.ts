@@ -2,22 +2,22 @@
 // ledges, the character, the bees, the rocks and the stroke are drawn on a canvas. The rules and the simulation are in saveTheCharacter.ts.
 import type { Controller, Say, Status, Theme } from "./controller.ts";
 import { alpha, disc, shade } from "./draw.ts";
+import { SAVE_THE_CHARACTER_LEVELS } from "./save-the-character.levels.ts";
 import {
   BEE_R,
-  HERO_R,
-  ROCK_R,
-  STROKE_R,
-  SURVIVE_TICKS,
   beginStroke,
   clearStroke,
   extendStroke,
+  HERO_R,
   isCalled,
   newSaveGame,
+  ROCK_R,
   releaseStroke,
-  stepSaveGame,
   type SaveGame,
+  STROKE_R,
+  SURVIVE_TICKS,
+  stepSaveGame,
 } from "./save-the-character.ts";
-import { SAVE_THE_CHARACTER_LEVELS } from "./save-the-character.levels.ts";
 
 const WIDTH = 360;
 const HEIGHT = 480;
@@ -137,7 +137,9 @@ export function saveTheCharacterController(level: number): Controller {
       g.strokeStyle = shade(theme.accent, -0.45);
       g.lineWidth = STROKE_R * 2 + 3;
       g.beginPath();
-      game.drawn.forEach((p, i) => (i === 0 ? g.moveTo(p.x, p.y) : g.lineTo(p.x, p.y)));
+      game.drawn.forEach((p, i) => {
+        i === 0 ? g.moveTo(p.x, p.y) : g.lineTo(p.x, p.y);
+      });
       if (game.drawn.length === 1) g.lineTo(game.drawn[0].x + 0.1, game.drawn[0].y);
       g.stroke();
       g.strokeStyle = theme.accent;

@@ -1,9 +1,8 @@
 // Tube Sort, played in a real browser: every level is won by tapping the tubes of a way the package's own search finds, a level is
 // lost by pouring into a dead end, and picking a tube up and putting it down again is not a pour.
 import { expect, test } from "@playwright/test";
-
-import { TUBE_SORT_LEVELS } from "../dist/tube-sort.levels.js";
 import { findDeadEnd, solveTubes } from "../dist/tube-sort.js";
+import { TUBE_SORT_LEVELS } from "../dist/tube-sort.levels.js";
 import { at, client, open, read, tap } from "./demo.mjs";
 
 const centre = async (page, tube) => {
@@ -25,7 +24,10 @@ for (let level = 1; level <= TUBE_SORT_LEVELS.length; level += 1) {
     const errors = await open(page, `?game=tube-sort&level=${level}`);
     const { solution } = solveTubes(TUBE_SORT_LEVELS[level - 1].tubes);
     let count = 0;
-    for (const [from, to] of solution.pours) await pourBy(page, testInfo, from, to, (count += 1));
+    for (const [from, to] of solution.pours) {
+      count += 1;
+      await pourBy(page, testInfo, from, to, count);
+    }
     await expect(page.locator(`${at("board")} .karakuri`)).toHaveAttribute("data-status", "won");
     await expect(page.locator(`${at("board")} ${at("card")} h3`)).toHaveText("You did it!");
     const snap = await read(page, (m) => m.controller.snapshot());
@@ -39,7 +41,10 @@ for (let level = 1; level <= TUBE_SORT_LEVELS.length; level += 1) {
     const errors = await open(page, `?game=tube-sort&level=${level}`);
     const path = findDeadEnd(TUBE_SORT_LEVELS[level - 1].tubes);
     let count = 0;
-    for (const [from, to] of path) await pourBy(page, testInfo, from, to, (count += 1));
+    for (const [from, to] of path) {
+      count += 1;
+      await pourBy(page, testInfo, from, to, count);
+    }
     await expect(page.locator(`${at("board")} .karakuri`)).toHaveAttribute("data-status", "lost");
     await expect(page.locator(`${at("board")} ${at("card")} h3`)).toHaveText("Not this time");
     await page.locator(`${at("board")} ${at("card-restart")}`).click();

@@ -170,9 +170,10 @@ export function solveGrid(
     return code;
   };
   const decode = (code: number, into: number[]): number[] => {
+    let rest = code;
     for (let i = 0; i < n; i += 1) {
-      into[i] = code % GRID_SIZE;
-      code = Math.floor(code / GRID_SIZE);
+      into[i] = rest % GRID_SIZE;
+      rest = Math.floor(rest / GRID_SIZE);
     }
     return into;
   };

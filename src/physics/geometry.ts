@@ -78,8 +78,7 @@ export const distanceSquared = (ax: number, ay: number, bx: number, by: number):
  * console.log(clamp(20,0,10));
  * ```
  */
-export const clamp = (value: number, low: number, high: number): number =>
-  value < low ? low : value > high ? high : value;
+export const clamp = (value: number, low: number, high: number): number => (value < low ? low : Math.min(value, high));
 
 /** The point on the segment a to b nearest to (px, py), and how far along the segment it is (0 to 1).
  *

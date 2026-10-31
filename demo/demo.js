@@ -1,8 +1,9 @@
 // The demo page's own script: any of the package's games, any of its levels, played by the package's own `mountKarakuri`,
 // with a chooser of game and level, your progress kept on this device between visits, the tag in a second place, and the page
 // spoken in the language the header's chooser picks.
-import { KARAKURI_GAME_IDS, KARAKURI_GAMES, mountKarakuri } from "./dist/play-entry.js";
+
 import { say, wordKey } from "./dist/index.js";
+import { KARAKURI_GAME_IDS, KARAKURI_GAMES, mountKarakuri } from "./dist/play-entry.js";
 import "./dist/element-define.js";
 
 // The page's own words, in the two languages it speaks. Set as text, never as HTML. The names and rules of the games are the package's own.

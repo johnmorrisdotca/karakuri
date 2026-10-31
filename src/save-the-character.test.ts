@@ -1,23 +1,22 @@
 import { describe, expect, it } from "vitest";
-
+import { hashNumbers } from "./physics/geometry.ts";
+import { SAVE_THE_CHARACTER_LEVELS } from "./save-the-character.levels.ts";
 import {
-  MIN_STROKE,
-  SPACING,
-  SURVIVE_TICKS,
   beginStroke,
   clearStroke,
   extendStroke,
   isCalled,
   lengthOf,
+  MIN_STROKE,
   newSaveGame,
+  type Pt,
   playStroke,
   releaseStroke,
+  SPACING,
+  SURVIVE_TICKS,
   saveNumbers,
   stepSaveGame,
-  type Pt,
 } from "./save-the-character.ts";
-import { SAVE_THE_CHARACTER_LEVELS } from "./save-the-character.levels.ts";
-import { hashNumbers } from "./physics/geometry.ts";
 
 const level1 = SAVE_THE_CHARACTER_LEVELS[0];
 

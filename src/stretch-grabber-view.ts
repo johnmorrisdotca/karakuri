@@ -2,8 +2,8 @@
 // pegs, the walls, the hazards and the star are drawn on a canvas. The rules are in stretchGrabber.ts; this turns the pointer into the tip's moves.
 import type { Controller, Say, Status, Theme } from "./controller.ts";
 import { alpha, disc, shade } from "./draw.ts";
-import { ARM_R, TIP_R, armLength, moveTip, nearTip, newGrabGame, tipOf, type GrabGame } from "./stretch-grabber.ts";
 import { STRETCH_GRABBER_LEVELS } from "./stretch-grabber.levels.ts";
+import { ARM_R, armLength, type GrabGame, moveTip, nearTip, newGrabGame, TIP_R, tipOf } from "./stretch-grabber.ts";
 
 const WIDTH = 360;
 const HEIGHT = 480;
@@ -177,7 +177,9 @@ export function stretchGrabberController(level: number): Controller {
     g.strokeStyle = shade(body, -0.45);
     g.lineWidth = thick + 4;
     g.beginPath();
-    game.trail.forEach((p, i) => (i === 0 ? g.moveTo(p.x, p.y) : g.lineTo(p.x, p.y)));
+    game.trail.forEach((p, i) => {
+      i === 0 ? g.moveTo(p.x, p.y) : g.lineTo(p.x, p.y);
+    });
     g.stroke();
     g.strokeStyle = body;
     g.lineWidth = thick;
@@ -185,7 +187,9 @@ export function stretchGrabberController(level: number): Controller {
     g.strokeStyle = "rgba(255,255,255,0.4)";
     g.lineWidth = Math.max(1, thick * 0.25);
     g.beginPath();
-    game.trail.forEach((p, i) => (i === 0 ? g.moveTo(p.x, p.y - thick * 0.22) : g.lineTo(p.x, p.y - thick * 0.22)));
+    game.trail.forEach((p, i) => {
+      i === 0 ? g.moveTo(p.x, p.y - thick * 0.22) : g.lineTo(p.x, p.y - thick * 0.22);
+    });
     g.stroke();
     // The base: a round machine the arm comes out of.
     const b = spec.base;

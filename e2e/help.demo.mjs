@@ -26,8 +26,7 @@ test("Help is off at first, and on it shows a line under each option row, in eit
             ? el.nextElementSibling
             : el.querySelector(":scope > .fam-help");
         return (
-          line !== null &&
-          line.classList.contains("fam-help") &&
+          line?.classList.contains("fam-help") &&
           window.getComputedStyle(line).display !== "none" &&
           line.textContent.length > 10
         );

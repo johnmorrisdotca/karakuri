@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
-
+import { hashNumbers } from "./physics/geometry.ts";
+import { ROPE_CUT_LEVELS } from "./rope-cut.levels.ts";
 import {
+  type CutPlan,
   cutLink,
   cutSwipe,
   isCalled,
@@ -9,10 +11,7 @@ import {
   playCuts,
   ropeNumbers,
   stepRopeGame,
-  type CutPlan,
 } from "./rope-cut.ts";
-import { ROPE_CUT_LEVELS } from "./rope-cut.levels.ts";
-import { hashNumbers } from "./physics/geometry.ts";
 
 const run = (game: ReturnType<typeof newRopeGame>, ticks: number): void => {
   for (let i = 0; i < ticks; i += 1) stepRopeGame(game);

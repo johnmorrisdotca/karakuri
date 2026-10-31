@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
-
+import { GRID_ESCAPE_LEVELS, gridPuzzleOf } from "./grid-escape.levels.ts";
 import {
-  GRID_SIZE,
   cellsOf,
+  GRID_SIZE,
+  type GridPuzzle,
   gridRows,
   keyOut,
   movesAllowed,
@@ -11,9 +12,7 @@ import {
   reach,
   slide,
   solveGrid,
-  type GridPuzzle,
 } from "./grid-escape.ts";
-import { GRID_ESCAPE_LEVELS, gridPuzzleOf } from "./grid-escape.levels.ts";
 
 const parse = (rows: string[]): GridPuzzle => parseGrid(rows) as GridPuzzle;
 

@@ -2,7 +2,7 @@
 // and the position is not already nearly done. The boards it prints are pasted into src/tubeSort.levels.ts and fixed for ever.
 //
 //   node --experimental-strip-types scripts/tube-sort-levels.ts
-import { TUBE_CAPACITY, findDeadEnd, isOneColour, solveTubes } from "../src/tubeSort.ts";
+import { findDeadEnd, isOneColour, solveTubes, TUBE_CAPACITY } from "../src/tubeSort.ts";
 
 let state = 5051005;
 const random = (): number => {

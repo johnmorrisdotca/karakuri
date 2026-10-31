@@ -3,8 +3,7 @@
 // laser, and wins when its tip touches the star. The arm is the path its tip has taken, drawn back in when the tip comes back along it. Nothing
 // depends on time: the same pointer path gives the same arm. The levels are in stretchGrabber.levels.ts, the drawing and the pointer in
 // stretchGrabberView.ts.
-import { closestOnSegment, distance, distanceToSegment } from "./physics/geometry.ts";
-import { closestBetweenSegments } from "./physics/geometry.ts";
+import { closestBetweenSegments, closestOnSegment, distance, distanceToSegment } from "./physics/geometry.ts";
 
 /** A point. */
 export interface Pt {

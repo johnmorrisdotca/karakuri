@@ -1,19 +1,18 @@
 import { describe, expect, it } from "vitest";
-
+import { NUTS_AND_BOLTS_LEVELS } from "./nuts-and-bolts.levels.ts";
 import {
   findLoss,
   freeScrews,
   isCovered,
   isFree,
   isPlain,
-  newNutGame,
-  solveNuts,
-  takeScrew,
   type NutPlate,
   type NutPuzzle,
   type NutState,
+  newNutGame,
+  solveNuts,
+  takeScrew,
 } from "./nuts-and-bolts.ts";
-import { NUTS_AND_BOLTS_LEVELS } from "./nuts-and-bolts.levels.ts";
 import { slotPlace } from "./nuts-and-bolts-view.ts";
 
 const rect = (x: number, y: number, w: number, h: number) => [

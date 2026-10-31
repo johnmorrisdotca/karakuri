@@ -4,7 +4,7 @@
 // deterministic (a seeded stream), so running it again finds the same boards.
 //
 //   node --experimental-strip-types scripts/grid-escape-levels.ts 7 14 22 30 40
-import { GRID_SIZE, gridRows, parseGrid, solveGrid, type GridPuzzle } from "../src/gridEscape.ts";
+import { GRID_SIZE, type GridPuzzle, gridRows, parseGrid, solveGrid } from "../src/gridEscape.ts";
 
 let state = 20261005;
 const random = (): number => {

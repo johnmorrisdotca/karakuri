@@ -1,12 +1,12 @@
 // Builds the static demo for GitHub Pages into ./site: the page, written here from the family's
 // shared header and footer, with the family's stylesheet, Karakuri's own, the page's script and the
 // compiled library beside it.
-import { cpSync, readFileSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 
 import { API_CSS, apiPage } from "./api.mjs";
 import {
-  FAMILY_SCRIPT,
   FAMILY_EMBED_BUILDER_WORDS,
+  FAMILY_SCRIPT,
   familyEmbedBuilder,
   familyFooter,
   familyHead,
@@ -25,7 +25,7 @@ const uses = [
   `<karakuri-board game="grid-escape" level="3"></karakuri-board>`,
   `import { createWorld, createBody, addBody, stepWorld } from "@johnmorrisdotca/karakuri/physics";  // the physics core on its own`,
 ];
-const escape = (text) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const escapeHtml = (text) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
 const page = `<!doctype html>
 <html lang="en">
@@ -71,7 +71,7 @@ const page = `<!doctype html>
         <h2 id="more-title" data-say="moreTitle"></h2>
         <p data-say="moreText"></p>
         <ul class="uses">
-          ${uses.map((line) => `<li><code>${escape(line)}</code></li>`).join("\n          ")}
+          ${uses.map((line) => `<li><code>${escapeHtml(line)}</code></li>`).join("\n          ")}
         </ul>
       </section>
       <section class="more tag" aria-labelledby="tag-title">

@@ -7,13 +7,13 @@
 import { distance, distanceToSegment } from "../src/physics/geometry.ts";
 import {
   ARM_R,
-  TIP_R,
-  newGrabGame,
-  playPath,
   type GrabLevel,
   type Hazard,
+  newGrabGame,
   type Pt,
+  playPath,
   type Solid,
+  TIP_R,
 } from "../src/stretchGrabber.ts";
 
 interface Design {
@@ -131,6 +131,7 @@ function route(level: GrabLevel): Pt[] | null {
         const r = cur.r + dr;
         if (c < 0 || r < 0 || c >= COLS || r >= ROWS) continue;
         if (!clearAt(level, c * CELL, r * CELL, margin) && !(c === start.c && r === start.r)) continue;
+        // biome-ignore lint/suspicious/noApproximativeNumericConstant: 1.4142 is the recorded step cost, shorter than Math.SQRT2
         const cost = (g.get(key(cur.c, cur.r)) ?? 0) + (dc !== 0 && dr !== 0 ? CELL * 1.4142 : CELL);
         const k = key(c, r);
         if (cost < (g.get(k) ?? Infinity)) {

@@ -1,9 +1,8 @@
+import { KARAKURI_GAME_IDS, KARAKURI_GAMES, type KarakuriGame } from "./games.ts";
+import { type KarakuriMount, type MountOptions, mountKarakuri } from "./mount.ts";
+import type { KarakuriLanguage } from "./strings.ts";
 import { KARAKURI_STYLE } from "./style.ts";
 import { KARAKURI_THEMES } from "./theme.ts";
-import { KARAKURI_GAMES } from "./games.ts";
-import { KARAKURI_GAME_IDS, type KarakuriGame } from "./games.ts";
-import { mountKarakuri, type KarakuriMount, type MountOptions } from "./mount.ts";
-import type { KarakuriLanguage } from "./strings.ts";
 
 /**
  * THE `<karakuri-board>` ELEMENT: a game of the package in a tag, with no framework.
@@ -213,8 +212,8 @@ export class KarakuriBoard extends ElementBase {
   #frame(): void {
     this.style.display = "block";
     this.style.maxWidth = "100%";
-    const width = Number(this.getAttribute("width")),
-      size = this.getAttribute("size");
+    const width = Number(this.getAttribute("width"));
+    const size = this.getAttribute("size");
     const pixels =
       this.hasAttribute("width") && width > 0 && Number.isFinite(width)
         ? Math.min(width, 2000)
@@ -236,9 +235,9 @@ export class KarakuriBoard extends ElementBase {
     const theme = this.getAttribute("theme");
     this.style.colorScheme = theme === "light" || theme === "dark" ? theme : "light dark";
     this.setAttribute("data-karakuri-embed", "");
-    const root = this.getRootNode(),
-      target: ParentNode =
-        typeof ShadowRoot !== "undefined" && root instanceof ShadowRoot ? root : this.ownerDocument.head;
+    const root = this.getRootNode();
+    const target: ParentNode =
+      typeof ShadowRoot !== "undefined" && root instanceof ShadowRoot ? root : this.ownerDocument.head;
     if (target.querySelector("style[data-karakuri-embed-style]") === null) {
       const style = this.ownerDocument.createElement("style");
       style.setAttribute("data-karakuri-embed-style", "");
@@ -296,8 +295,8 @@ export class KarakuriBoard extends ElementBase {
         this.getAttribute("clock") === "manual" || (this.#options.clock === "manual" && !this.hasAttribute("clock"))
           ? "manual"
           : "real";
-      const keyboard = on("keyboard", this.#options.keyboard ?? true),
-        keyboardStep = Number(this.getAttribute("keyboard-step") ?? this.#options.keyboardStep ?? 10);
+      const keyboard = on("keyboard", this.#options.keyboard ?? true);
+      const keyboardStep = Number(this.getAttribute("keyboard-step") ?? this.#options.keyboardStep ?? 10);
       if (!Number.isFinite(keyboardStep) || keyboardStep < 1 || keyboardStep > 100)
         throw new RangeError("Choose a keyboard step from 1 to 100.");
       const key = `${game}|${ui}|${clock}|${keyboard}|${keyboardStep}`;
@@ -346,8 +345,8 @@ export class KarakuriBoard extends ElementBase {
       this.#mount?.destroy();
       this.#mount = null;
       this.#key = "";
-      const message = error instanceof Error ? error.message : String(error),
-        status = this.ownerDocument.createElement("p");
+      const message = error instanceof Error ? error.message : String(error);
+      const status = this.ownerDocument.createElement("p");
       status.setAttribute("role", "status");
       status.textContent = message;
       this.replaceChildren(status);

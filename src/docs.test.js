@@ -1,19 +1,18 @@
-import { FAMILY, familyRepo } from "../scripts/family-template.mjs";
 // The documents and the demo, held to the source. Plain JavaScript, so that reading files needs no Node types.
 import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import process from "node:process";
-
 import { describe, expect, it } from "vitest";
+import { FAMILY, familyRepo } from "../scripts/family-template.mjs";
 
 import { KARAKURI_GAME_IDS, KARAKURI_GAMES } from "./games.ts";
-import { movesAllowed } from "./grid-escape.ts";
 import { GRID_ESCAPE_LEVELS } from "./grid-escape.levels.ts";
+import { movesAllowed } from "./grid-escape.ts";
 import { NUTS_AND_BOLTS_LEVELS } from "./nuts-and-bolts.levels.ts";
-import { TUBE_SORT_LEVELS } from "./tube-sort.levels.ts";
 import { STEP } from "./physics/bodies.ts";
 import { KARAKURI_STRINGS } from "./strings.ts";
 import { KARAKURI_STYLE } from "./style.ts";
+import { TUBE_SORT_LEVELS } from "./tube-sort.levels.ts";
 import { VERSION } from "./version.ts";
 
 const pkg = JSON.parse(readFileSync("package.json", "utf8"));

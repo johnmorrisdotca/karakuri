@@ -34,12 +34,15 @@ const SIMULATIONS = `(P, pin, levels) => {
 
 test("the same simulations give the same frames, bit for bit, in the browser as in Node", async ({ page }) => {
   const errors = await open(page);
+  // biome-ignore lint/security/noGlobalEval: SIMULATIONS is this package's own source, run here and in the page
   const run = eval(SIMULATIONS);
   const here = run(physics, { newPinGame, pinNumbers, pullPin, stepPinGame }, PIN_RESCUE_LEVELS);
   const there = await page.evaluate(async (source) => {
     const P = await import("./dist/physics-entry.js");
     const pin = await import("./dist/pin-rescue.js");
     const levels = (await import("./dist/pin-rescue.levels.js")).PIN_RESCUE_LEVELS;
+    // biome-ignore lint/complexity/noCommaOperator: (0, eval) is an indirect eval, so the simulation runs in the page
+    // biome-ignore lint/security/noGlobalEval: the source is this package's own simulation
     return (0, eval)(source)(P, pin, levels);
   }, SIMULATIONS);
   expect(there).toEqual(here);

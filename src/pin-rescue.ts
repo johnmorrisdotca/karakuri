@@ -5,18 +5,18 @@
 // pinRescue.levels.ts, the drawing and the pointer in pinRescueView.ts.
 import {
   addBody,
+  type Body,
+  type CapsuleShape,
   createBody,
   createWorld,
   gap,
   refreshShapes,
+  STEP,
   stepWorld,
-  type Body,
-  type CapsuleShape,
   type World,
   type WorldShape,
 } from "./physics/bodies.ts";
-import { createFluid, fillRect, stepFluid, type Fluid, type FluidKind } from "./physics/fluid.ts";
-import { STEP } from "./physics/bodies.ts";
+import { createFluid, type Fluid, type FluidKind, fillRect, stepFluid } from "./physics/fluid.ts";
 
 /** A thick line: a wall or a spike's edge. */
 export interface Segment {

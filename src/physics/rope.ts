@@ -2,8 +2,9 @@
 // integration and a few relaxation passes). A node may be heavy and round (a load that hangs from a rope and falls on
 // platforms) or light and shapeless (a point of the rope itself). Cutting a rope is switching one link off. Like the
 // rest of the core it uses nothing but arithmetic and square roots, so the same cuts at the same ticks give the same swing.
-import { clamp, closestOnSegment, length, segmentsIntersect } from "./geometry.ts";
+
 import type { WorldShape } from "./bodies.ts";
+import { clamp, closestOnSegment, length, segmentsIntersect } from "./geometry.ts";
 
 /** A point of a chain. `invMass` 0 pins it. `r` above 0 makes it a disc that rests on the rig's statics.
  *

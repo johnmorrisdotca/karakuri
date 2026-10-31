@@ -1,8 +1,9 @@
 // storyScenes.ts: the scenes of Choice Story, drawn in code on a canvas: a sky and a ground, the character, and the problem of each stage in the state it is
 // in: waiting, solved (a progress from 0 to 1), or having beaten the character in a harmless, slapstick way. The area is 360 across and 300 down.
 // Plain shapes and flat colours only; nothing is copied from anywhere.
-import type { Theme } from "./controller.ts";
+
 import type { ProblemId, ToolId } from "./choice-story.ts";
+import type { Theme } from "./controller.ts";
 import { alpha, disc, roundRect, shade } from "./draw.ts";
 import { drawTool } from "./story-tools.ts";
 
@@ -242,7 +243,7 @@ const PROBLEMS: Record<ProblemId, ProblemDrawer> = {
       }
     }
   },
-  puddle(g, theme, solved, t) {
+  puddle(g, _theme, solved, t) {
     g.fillStyle = "#8a6a45";
     g.beginPath();
     g.ellipse(230, GROUND + 14, 78, 15, 0, 0, Math.PI * 2);
@@ -316,7 +317,7 @@ const PROBLEMS: Record<ProblemId, ProblemDrawer> = {
       g.restore();
     }
   },
-  bear(g, theme, solved, t) {
+  bear(g, _theme, solved, t) {
     // A small round bear cub, sitting; hungry until it is given honey.
     const x = 262;
     const y = GROUND - 8;
@@ -456,7 +457,7 @@ const PROBLEMS: Record<ProblemId, ProblemDrawer> = {
     }
     void solved;
   },
-  treasure(g, theme, solved, t) {
+  treasure(g, _theme, solved, t) {
     // Sand with question marks until the map has shown the spot.
     if (solved < 0.5) {
       g.fillStyle = alpha("#3a2f26", 0.55);
@@ -493,7 +494,7 @@ const PROBLEMS: Record<ProblemId, ProblemDrawer> = {
       g.fill();
     }
   },
-  chest(g, theme, solved) {
+  chest(g, _theme, solved) {
     // A wooden chest with a padlock; the lid lifts and gold shines when it is opened.
     const x = 232;
     const y = GROUND - 4;

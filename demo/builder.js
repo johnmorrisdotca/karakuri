@@ -1,9 +1,10 @@
-import { VERSION } from "./dist/index.js";
+import { KARAKURI_EMBED_OPTION_KEYS, KarakuriBoard } from "./dist/element.js";
 import { KARAKURI_GAME_IDS, KARAKURI_GAMES } from "./dist/games.js";
+import { VERSION } from "./dist/index.js";
 import { say, wordKey } from "./dist/strings.js";
-import { KarakuriBoard, KARAKURI_EMBED_OPTION_KEYS } from "./dist/element.js";
 import "./dist/element-define.js";
-import { familyEmbedBuilder, FAMILY_EMBED_BUILDER_WORDS } from "./family-embed-builder.js";
+import { FAMILY_EMBED_BUILDER_WORDS, familyEmbedBuilder } from "./family-embed-builder.js";
+
 const words = {
   en: {
     ...FAMILY_EMBED_BUILDER_WORDS.en,
@@ -157,23 +158,23 @@ const leftOut = {
   "mount.onChange": "Host callbacks belong to options; native change events carry the same detail.",
 };
 function problem(settings) {
-  const game = settings.game ?? "tube-sort",
-    level = Number(settings.level ?? 1),
-    step = Number(settings["keyboard-step"] ?? 10);
+  const game = settings.game ?? "tube-sort";
+  const level = Number(settings.level ?? 1);
+  const step = Number(settings["keyboard-step"] ?? 10);
   if (!Number.isInteger(level) || level < 1 || level > KARAKURI_GAMES[game].levels) return "badLevel";
   if (!Number.isInteger(step) || step < 1 || step > 100) return "badStep";
   return null;
 }
 let mounted;
 const page = globalThis.familyLanguage({
-    id: "karakuri",
-    words,
-    onChange: () => {
-      docsLink();
-      mounted?.draw();
-    },
-  }),
-  heights = {};
+  id: "karakuri",
+  words,
+  onChange: () => {
+    docsLink();
+    mounted?.draw();
+  },
+});
+const heights = {};
 const key = (settings) => JSON.stringify(settings);
 const builder = familyEmbedBuilder({
   id: "karakuri",

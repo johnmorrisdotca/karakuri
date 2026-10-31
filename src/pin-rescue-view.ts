@@ -3,21 +3,21 @@
 // pulls and draws what is there.
 import type { Controller, Point, Say, Status, Theme } from "./controller.ts";
 import { alpha, disc, roundRect, shade } from "./draw.ts";
+import { distanceToSegment } from "./physics/geometry.ts";
+import { PIN_RESCUE_LEVELS } from "./pin-rescue.levels.ts";
 import {
   GOLD_R,
   HERO_R,
-  PARTICLE_R,
   isCalled,
   isMoving,
   newPinGame,
+  PARTICLE_R,
+  type PinGame,
+  type PinLevel,
   pinEnd,
   pullPin,
   stepPinGame,
-  type PinGame,
-  type PinLevel,
 } from "./pin-rescue.ts";
-import { PIN_RESCUE_LEVELS } from "./pin-rescue.levels.ts";
-import { distanceToSegment } from "./physics/geometry.ts";
 
 const WIDTH = 360;
 const HEIGHT = 480;
@@ -182,7 +182,9 @@ export function pinRescueController(level: number): Controller {
     // Liquid.
     drawLiquid(g, theme);
     // Pins.
-    game.pins.forEach((pin, i) => drawPin(g, theme, i));
+    game.pins.forEach((_pin, i) => {
+      drawPin(g, theme, i);
+    });
     // Gold and hero.
     if (game.gold !== null) drawGold(g, theme, game.gold.x, game.gold.y);
     drawHero(g, theme, game.hero.x, game.hero.y);

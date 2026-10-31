@@ -5,12 +5,12 @@
 // browser. The levels are in saveTheCharacter.levels.ts, the drawing and the pointer in saveTheCharacterView.ts.
 import {
   addBody,
+  type Body,
   capsulesAlong,
   createBody,
   createWorld,
-  stepWorld,
   STEP,
-  type Body,
+  stepWorld,
   type World,
   type WorldShape,
 } from "./physics/bodies.ts";

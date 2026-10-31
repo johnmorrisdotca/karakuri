@@ -237,7 +237,7 @@ export function createWorld(options: { gravity?: number; substeps?: number; iter
 /** The area and the second moment of area about the origin of one shape, for a unit density. */
 function shapeMass(shape: Shape): { area: number; inertia: number; cx: number; cy: number } {
   if (shape.kind === "circle") {
-    const area = 3.141592653589793 * shape.r * shape.r;
+    const area = Math.PI * shape.r * shape.r;
     return {
       area,
       inertia: area * (0.5 * shape.r * shape.r + shape.x * shape.x + shape.y * shape.y),
@@ -246,7 +246,7 @@ function shapeMass(shape: Shape): { area: number; inertia: number; cx: number; c
     };
   }
   const len = distance(shape.ax, shape.ay, shape.bx, shape.by);
-  const area = len * 2 * shape.r + 3.141592653589793 * shape.r * shape.r;
+  const area = len * 2 * shape.r + Math.PI * shape.r * shape.r;
   const cx = (shape.ax + shape.bx) / 2;
   const cy = (shape.ay + shape.by) / 2;
   // A thick segment's inertia about its own middle, moved to the origin.

@@ -2,7 +2,7 @@
 // slots asked for, enough screws start covered, and the plates overlap. What it prints is pasted into src/nutsAndBolts.levels.ts and fixed for ever.
 //
 //   node --experimental-strip-types scripts/nuts-and-bolts-levels.ts
-import { findLoss, isCovered, isPlain, newNutGame, solveNuts, type NutPlate } from "../src/nutsAndBolts.ts";
+import { findLoss, isCovered, isPlain, type NutPlate, newNutGame, solveNuts } from "../src/nutsAndBolts.ts";
 import { pointInPolygon } from "../src/physics/geometry.ts";
 
 let state = Number(process.env.SEED ?? 71001005);

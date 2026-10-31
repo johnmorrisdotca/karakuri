@@ -2,8 +2,9 @@
 // each particle falls, overlapping particles are pushed apart, the fixed shapes and round bodies push them out, and
 // the speed is whatever the moves came to. Lava that meets water turns both to stone, which stays where it formed.
 // Neighbours are found with a grid walked in particle order, so the answer never depends on a hash map's ordering.
-import { closestOnSegment, length } from "./geometry.ts";
+
 import type { WorldShape } from "./bodies.ts";
+import { closestOnSegment, length } from "./geometry.ts";
 
 /** What a particle is made of. Stone is lava and water that met: it does not move again.
  *

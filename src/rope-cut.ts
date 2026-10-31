@@ -2,9 +2,10 @@
 // on the package's physics core), a swipe across a rope cuts it, and the load then falls, swings and rolls on the fixed platforms. Getting the
 // load to the target (or onto the button) wins; dropping it into the pit loses. Nothing is random and nothing reads the clock, so the same
 // cuts at the same steps give the same level in every browser. The levels are in ropeCut.levels.ts, the drawing and the pointer in ropeCutView.ts.
-import { addLink, addNode, addRope, createRig, linkCrossed, stepRig, type Rig } from "./physics/rope.ts";
+
 import type { WorldShape } from "./physics/bodies.ts";
 import { STEP } from "./physics/bodies.ts";
+import { addLink, addNode, addRope, createRig, linkCrossed, type Rig, stepRig } from "./physics/rope.ts";
 
 /** A fixed platform, wall or bumper: a thick segment. */
 export interface Platform {

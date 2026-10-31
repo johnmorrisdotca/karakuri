@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
-
+import { TUBE_SORT_LEVELS } from "./tube-sort.levels.ts";
 import {
-  TUBE_CAPACITY,
   canPour,
   findDeadEnd,
   isSolved,
@@ -11,10 +10,10 @@ import {
   pourTubes,
   runOf,
   solveTubes,
-  usefulPours,
+  TUBE_CAPACITY,
   type TubeState,
+  usefulPours,
 } from "./tube-sort.ts";
-import { TUBE_SORT_LEVELS } from "./tube-sort.levels.ts";
 import { tubeLayout } from "./tube-sort-view.ts";
 
 const counts = (tubes: readonly (readonly number[])[]): Record<number, number> => {

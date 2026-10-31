@@ -1,9 +1,8 @@
 // Nuts and Bolts, played in a real browser: every level is won by tapping its screws in the order the package's search found, a
 // level is lost by filling the slots, and a screw under a plate cannot be tapped.
 import { expect, test } from "@playwright/test";
-
-import { NUTS_AND_BOLTS_LEVELS } from "../dist/nuts-and-bolts.levels.js";
 import { findLoss, newNutGame, solveNuts } from "../dist/nuts-and-bolts.js";
+import { NUTS_AND_BOLTS_LEVELS } from "../dist/nuts-and-bolts.levels.js";
 import { at, client, open, read, tap } from "./demo.mjs";
 
 /** Taps one screw and waits until the game has counted it. */
@@ -20,7 +19,10 @@ for (let level = 1; level <= NUTS_AND_BOLTS_LEVELS.length; level += 1) {
     const puzzle = NUTS_AND_BOLTS_LEVELS[level - 1];
     const found = solveNuts(puzzle.plates);
     let count = 0;
-    for (const ref of found.order) await tapScrew(page, testInfo, ref, (count += 1));
+    for (const ref of found.order) {
+      count += 1;
+      await tapScrew(page, testInfo, ref, count);
+    }
     await expect(page.locator(`${at("board")} .karakuri`)).toHaveAttribute("data-status", "won", { timeout: 10000 });
     await expect(page.locator(`${at("board")} ${at("card")} h3`)).toHaveText("You did it!");
     const snap = await read(page, (m) => m.controller.snapshot());
@@ -32,7 +34,10 @@ for (let level = 1; level <= NUTS_AND_BOLTS_LEVELS.length; level += 1) {
     const errors = await open(page, `?game=nuts-and-bolts&level=${level}`);
     const order = findLoss(puzzleOf(level));
     let count = 0;
-    for (const ref of order) await tapScrew(page, testInfo, ref, (count += 1));
+    for (const ref of order) {
+      count += 1;
+      await tapScrew(page, testInfo, ref, count);
+    }
     await expect(page.locator(`${at("board")} .karakuri`)).toHaveAttribute("data-status", "lost", { timeout: 10000 });
     await expect(page.locator(`${at("board")} ${at("card")} h3`)).toHaveText("Not this time");
     await page.locator(`${at("board")} ${at("card-restart")}`).click();

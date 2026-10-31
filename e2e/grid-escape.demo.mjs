@@ -1,9 +1,8 @@
 // Grid Escape, played in a real browser: every level is won by dragging the blocks of its fewest-move solution with a finger (or
 // the mouse), the card says so, and a level can be lost by running out of moves, and started again.
 import { expect, test } from "@playwright/test";
-
-import { GRID_ESCAPE_LEVELS, gridPuzzleOf } from "../dist/grid-escape.levels.js";
 import { cellsOf, newGridGame, reach, slide, solveGrid } from "../dist/grid-escape.js";
+import { GRID_ESCAPE_LEVELS, gridPuzzleOf } from "../dist/grid-escape.levels.js";
 import { at, client, drag, open, read } from "./demo.mjs";
 
 const CELL = 48;
@@ -47,7 +46,7 @@ test("a level is lost when the moves run out, and Try again starts it over", asy
   let state = newGridGame(puzzle, limit + 50);
   // A block that has room, slid to and fro and never towards the exit.
   const b = puzzle.blocks.findIndex(
-    (block, i) =>
+    (_block, i) =>
       i !== puzzle.key &&
       (() => {
         const r = reach(puzzle, state.at, i);
@@ -79,7 +78,7 @@ test("a block that is only touched, or let go where it began, is no move, and on
   const puzzle = gridPuzzleOf(GRID_ESCAPE_LEVELS[1]);
   const start = newGridGame(puzzle, 99);
   const b = puzzle.blocks.findIndex(
-    (block, i) =>
+    (_block, i) =>
       i !== puzzle.key &&
       (() => {
         const r = reach(puzzle, start.at, i);

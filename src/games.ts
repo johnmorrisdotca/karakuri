@@ -1,3 +1,5 @@
+import { STORIES } from "./choice-story.ts";
+import { choiceStoryController } from "./choice-story-view.ts";
 import type { Controller, GameInfo } from "./controller.ts";
 import { GRID_ESCAPE_LEVELS } from "./grid-escape.levels.ts";
 import { gridEscapeController } from "./grid-escape-view.ts";
@@ -7,12 +9,10 @@ import { PIN_RESCUE_LEVELS } from "./pin-rescue.levels.ts";
 import { pinRescueController } from "./pin-rescue-view.ts";
 import { ROPE_CUT_LEVELS } from "./rope-cut.levels.ts";
 import { ropeCutController } from "./rope-cut-view.ts";
-import { STRETCH_GRABBER_LEVELS } from "./stretch-grabber.levels.ts";
-import { stretchGrabberController } from "./stretch-grabber-view.ts";
 import { SAVE_THE_CHARACTER_LEVELS } from "./save-the-character.levels.ts";
 import { saveTheCharacterController } from "./save-the-character-view.ts";
-import { STORIES } from "./choice-story.ts";
-import { choiceStoryController } from "./choice-story-view.ts";
+import { STRETCH_GRABBER_LEVELS } from "./stretch-grabber.levels.ts";
+import { stretchGrabberController } from "./stretch-grabber-view.ts";
 import { TUBE_SORT_LEVELS } from "./tube-sort.levels.ts";
 import { tubeSortController } from "./tube-sort-view.ts";
 

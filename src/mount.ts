@@ -1,9 +1,9 @@
 import type { Controller, Point, Say, Status } from "./controller.ts";
-import { KARAKURI_STYLE } from "./style.ts";
-import { say, wordKey, type KarakuriLanguage } from "./strings.ts";
-import { readTheme } from "./theme.ts";
 import { createController, KARAKURI_GAME_IDS, KARAKURI_GAMES, type KarakuriGame } from "./games.ts";
 import { STEP } from "./physics/bodies.ts";
+import { type KarakuriLanguage, say, wordKey } from "./strings.ts";
+import { KARAKURI_STYLE } from "./style.ts";
+import { readTheme } from "./theme.ts";
 
 /**
  * Initial native controller, level, layout, keyboard, clock and host callbacks.

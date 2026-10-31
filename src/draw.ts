@@ -17,7 +17,15 @@ export function roundRect(g: CanvasRenderingContext2D, x: number, y: number, w: 
 }
 
 /** A filled disc, with an outline when `edge` is given. */
-export function disc(g: CanvasRenderingContext2D, x: number, y: number, r: number, fill: string, edge?: string, edgeWidth = 2): void {
+export function disc(
+  g: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  r: number,
+  fill: string,
+  edge?: string,
+  edgeWidth = 2,
+): void {
   g.beginPath();
   g.arc(x, y, r, 0, Math.PI * 2);
   g.fillStyle = fill;
@@ -30,7 +38,16 @@ export function disc(g: CanvasRenderingContext2D, x: number, y: number, r: numbe
 }
 
 /** Text centred on a point. */
-export function label(g: CanvasRenderingContext2D, text: string, x: number, y: number, size: number, colour: string, font: string, weight = 700): void {
+export function label(
+  g: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  size: number,
+  colour: string,
+  font: string,
+  weight = 700,
+): void {
   g.font = `${weight} ${size}px ${font}`;
   g.fillStyle = colour;
   g.textAlign = "center";
@@ -57,4 +74,15 @@ export function shade(hex: string, amount: number): string {
 }
 
 /** The colours of the plain pieces (blocks, tubes), chosen to be told apart and to read on both the light and the dark floor. */
-export const PIECE_COLOURS = ["#4f86f7", "#e4694b", "#3fae7a", "#9a6fd6", "#f0a53a", "#2fb3c6", "#d95f9b", "#7e8aa3", "#8bb83f", "#c85c3a"] as const;
+export const PIECE_COLOURS = [
+  "#4f86f7",
+  "#e4694b",
+  "#3fae7a",
+  "#9a6fd6",
+  "#f0a53a",
+  "#2fb3c6",
+  "#d95f9b",
+  "#7e8aa3",
+  "#8bb83f",
+  "#c85c3a",
+] as const;

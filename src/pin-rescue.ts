@@ -3,7 +3,18 @@
 // lose; lava that meets water sets to stone; getting the hero (or the gold) to the safe place wins. It runs on the package's physics
 // core at a fixed step, so the same pulls at the same steps give the same level in every browser. The levels are in
 // pinRescue.levels.ts, the drawing and the pointer in pinRescueView.ts.
-import { addBody, createBody, createWorld, gap, refreshShapes, stepWorld, type Body, type CapsuleShape, type World, type WorldShape } from "./physics/bodies.ts";
+import {
+  addBody,
+  createBody,
+  createWorld,
+  gap,
+  refreshShapes,
+  stepWorld,
+  type Body,
+  type CapsuleShape,
+  type World,
+  type WorldShape,
+} from "./physics/bodies.ts";
 import { createFluid, fillRect, stepFluid, type Fluid, type FluidKind } from "./physics/fluid.ts";
 import { STEP } from "./physics/bodies.ts";
 
@@ -107,7 +118,14 @@ export interface PinGame {
   since: number;
 }
 
-const wallShape = (s: Segment): CapsuleShape => ({ kind: "capsule", ax: s.ax, ay: s.ay, bx: s.bx, by: s.by, r: s.r ?? 4 });
+const wallShape = (s: Segment): CapsuleShape => ({
+  kind: "capsule",
+  ax: s.ax,
+  ay: s.ay,
+  bx: s.bx,
+  by: s.by,
+  r: s.r ?? 4,
+});
 
 /** Where a pin's far end is when it is `pull` of the way out. */
 export function pinEnd(spec: PinSpec, pull: number): { x0: number; x1: number } {
@@ -118,20 +136,82 @@ export function pinEnd(spec: PinSpec, pull: number): { x0: number; x1: number } 
 /** Starts a game of a level: builds the bodies and the liquid and runs the first steps, so that it all sits still on its pins. */
 export function newPinGame(level: PinLevel): PinGame {
   const world = createWorld({ gravity: 900, substeps: 2, iterations: 8 });
-  for (const w of level.walls) addBody(world, createBody({ id: "wall", tag: "wall", type: "static", shapes: [wallShape(w)] }));
-  const spikes = addBody(world, createBody({ id: "spikes", tag: "spikes", type: "static", shapes: level.spikes.map((s) => ({ ...wallShape(s), r: s.r ?? 3 })) }));
+  for (const w of level.walls)
+    addBody(world, createBody({ id: "wall", tag: "wall", type: "static", shapes: [wallShape(w)] }));
+  const spikes = addBody(
+    world,
+    createBody({
+      id: "spikes",
+      tag: "spikes",
+      type: "static",
+      shapes: level.spikes.map((s) => ({ ...wallShape(s), r: s.r ?? 3 })),
+    }),
+  );
   const pins = level.pins.map((spec, i): PinInPlay => {
     const { x0, x1 } = pinEnd(spec, 0);
-    const body = addBody(world, createBody({ id: `pin-${i}`, tag: "pin", type: "kinematic", shapes: [{ kind: "capsule", ax: x0, ay: spec.y, bx: x1, by: spec.y, r: 5 }] }));
+    const body = addBody(
+      world,
+      createBody({
+        id: `pin-${i}`,
+        tag: "pin",
+        type: "kinematic",
+        shapes: [{ kind: "capsule", ax: x0, ay: spec.y, bx: x1, by: spec.y, r: 5 }],
+      }),
+    );
     return { spec, pull: 0, pulling: false, body };
   });
-  const hero = addBody(world, createBody({ id: "hero", tag: "hero", type: "dynamic", x: level.hero.x, y: level.hero.y, shapes: [{ kind: "circle", x: 0, y: 0, r: HERO_R }], density: 0.002, friction: 0.5, restitution: 0.05 }));
-  const gold = level.gold === undefined ? null : addBody(world, createBody({ id: "gold", tag: "gold", type: "dynamic", x: level.gold.x, y: level.gold.y, shapes: [{ kind: "circle", x: 0, y: 0, r: GOLD_R }], density: 0.003, friction: 0.5, restitution: 0.1 }));
+  const hero = addBody(
+    world,
+    createBody({
+      id: "hero",
+      tag: "hero",
+      type: "dynamic",
+      x: level.hero.x,
+      y: level.hero.y,
+      shapes: [{ kind: "circle", x: 0, y: 0, r: HERO_R }],
+      density: 0.002,
+      friction: 0.5,
+      restitution: 0.05,
+    }),
+  );
+  const gold =
+    level.gold === undefined
+      ? null
+      : addBody(
+          world,
+          createBody({
+            id: "gold",
+            tag: "gold",
+            type: "dynamic",
+            x: level.gold.x,
+            y: level.gold.y,
+            shapes: [{ kind: "circle", x: 0, y: 0, r: GOLD_R }],
+            density: 0.003,
+            friction: 0.5,
+            restitution: 0.1,
+          }),
+        );
   const fluid = createFluid({ radius: PARTICLE_R, gravity: 900, iterations: 3 });
   for (const f of level.fluids) fillRect(fluid, f.kind, f.x, f.y, f.w, f.h);
   const walls = level.walls.map((w): WorldShape => ({ ax: w.ax, ay: w.ay, bx: w.bx, by: w.by, r: w.r ?? 4 }));
   const stone = addBody(world, createBody({ id: "stone", tag: "stone", type: "static", shapes: [], friction: 0.7 }));
-  const game: PinGame = { level, world, hero, gold, pins, fluid, walls, spikes, stone, stoneSeen: 0, tick: 0, pulled: [], status: "playing", loss: null, since: 0 };
+  const game: PinGame = {
+    level,
+    world,
+    hero,
+    gold,
+    pins,
+    fluid,
+    walls,
+    spikes,
+    stone,
+    stoneSeen: 0,
+    tick: 0,
+    pulled: [],
+    status: "playing",
+    loss: null,
+    since: 0,
+  };
   for (let i = 0; i < SETTLE_TICKS; i += 1) advance(game, true);
   game.tick = 0;
   return game;
@@ -159,7 +239,8 @@ export function pullPin(game: PinGame, index: number): boolean {
 }
 
 /** Whether a point is inside the zone. */
-const inZone = (zone: Zone, x: number, y: number): boolean => x >= zone.x && x <= zone.x + zone.w && y >= zone.y && y <= zone.y + zone.h;
+const inZone = (zone: Zone, x: number, y: number): boolean =>
+  x >= zone.x && x <= zone.x + zone.w && y >= zone.y && y <= zone.y + zone.h;
 
 /** Advances the game by one fixed step. `settling` skips the checks for a win or a loss (the first steps, before anything is pulled). */
 function advance(game: PinGame, settling: boolean): void {
@@ -182,7 +263,9 @@ function advance(game: PinGame, settling: boolean): void {
   let stones = 0;
   for (const p of game.fluid.particles) if (p.kind === "stone") stones += 1;
   if (stones !== game.stoneSeen) {
-    game.stone.shapes = game.fluid.particles.filter((p) => p.kind === "stone").map((p) => ({ kind: "circle", x: p.x, y: p.y, r: PARTICLE_R + 0.5 }));
+    game.stone.shapes = game.fluid.particles
+      .filter((p) => p.kind === "stone")
+      .map((p) => ({ kind: "circle", x: p.x, y: p.y, r: PARTICLE_R + 0.5 }));
     game.stone.world = [];
     refreshShapes(game.stone);
     game.stoneSeen = stones;
@@ -199,7 +282,8 @@ function advance(game: PinGame, settling: boolean): void {
   for (const p of game.fluid.particles) {
     if (p.kind !== "lava") continue;
     const d = Math.sqrt((p.x - game.hero.x) ** 2 + (p.y - game.hero.y) ** 2);
-    const dg = goldMelts && game.gold !== null ? Math.sqrt((p.x - game.gold.x) ** 2 + (p.y - game.gold.y) ** 2) : Infinity;
+    const dg =
+      goldMelts && game.gold !== null ? Math.sqrt((p.x - game.gold.x) ** 2 + (p.y - game.gold.y) ** 2) : Infinity;
     if (d <= HERO_R + PARTICLE_R + 1 || dg <= GOLD_R + PARTICLE_R + 1) {
       game.status = "lost";
       game.loss = d <= HERO_R + PARTICLE_R + 1 ? "lava" : "goldLava";
@@ -242,7 +326,8 @@ export function isMoving(game: PinGame): boolean {
   const fast = (vx: number, vy: number): boolean => vx * vx + vy * vy > 25;
   if (fast(game.hero.vx, game.hero.vy)) return true;
   if (game.gold !== null && fast(game.gold.vx, game.gold.vy)) return true;
-  for (const p of game.fluid.particles) if (p.kind !== "stone" && (p.x - p.px) ** 2 + (p.y - p.py) ** 2 > 0.12) return true;
+  for (const p of game.fluid.particles)
+    if (p.kind !== "stone" && (p.x - p.px) ** 2 + (p.y - p.py) ** 2 > 0.12) return true;
   return false;
 }
 

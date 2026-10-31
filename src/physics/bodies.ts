@@ -226,14 +226,24 @@ const DEFAULT_FRICTION = 0.5;
  * ```
  */
 export function createWorld(options: { gravity?: number; substeps?: number; iterations?: number } = {}): World {
-  return { gravity: options.gravity ?? 900, bodies: [], substeps: options.substeps ?? 2, iterations: options.iterations ?? 10 };
+  return {
+    gravity: options.gravity ?? 900,
+    bodies: [],
+    substeps: options.substeps ?? 2,
+    iterations: options.iterations ?? 10,
+  };
 }
 
 /** The area and the second moment of area about the origin of one shape, for a unit density. */
 function shapeMass(shape: Shape): { area: number; inertia: number; cx: number; cy: number } {
   if (shape.kind === "circle") {
     const area = 3.141592653589793 * shape.r * shape.r;
-    return { area, inertia: area * (0.5 * shape.r * shape.r + shape.x * shape.x + shape.y * shape.y), cx: shape.x, cy: shape.y };
+    return {
+      area,
+      inertia: area * (0.5 * shape.r * shape.r + shape.x * shape.x + shape.y * shape.y),
+      cx: shape.x,
+      cy: shape.y,
+    };
   }
   const len = distance(shape.ax, shape.ay, shape.bx, shape.by);
   const area = len * 2 * shape.r + 3.141592653589793 * shape.r * shape.r;
@@ -352,7 +362,15 @@ export function addBody<T extends Body>(world: World, body: T): T {
  */
 export function capsulesAlong(points: readonly { x: number; y: number }[], radius: number): CapsuleShape[] {
   const out: CapsuleShape[] = [];
-  for (let i = 1; i < points.length; i += 1) out.push({ kind: "capsule", ax: points[i - 1].x, ay: points[i - 1].y, bx: points[i].x, by: points[i].y, r: radius });
+  for (let i = 1; i < points.length; i += 1)
+    out.push({
+      kind: "capsule",
+      ax: points[i - 1].x,
+      ay: points[i - 1].y,
+      bx: points[i].x,
+      by: points[i].y,
+      r: radius,
+    });
   return out;
 }
 
@@ -373,7 +391,8 @@ export function capsulesAlong(points: readonly { x: number; y: number }[], radiu
  */
 export function refreshShapes(body: Body): void {
   const { x, y, c, s } = body;
-  if (body.world.length !== body.shapes.length) body.world = body.shapes.map(() => ({ ax: 0, ay: 0, bx: 0, by: 0, r: 0 }));
+  if (body.world.length !== body.shapes.length)
+    body.world = body.shapes.map(() => ({ ax: 0, ay: 0, bx: 0, by: 0, r: 0 }));
   for (let i = 0; i < body.shapes.length; i += 1) {
     const shape = body.shapes[i];
     const out = body.world[i];
@@ -404,7 +423,11 @@ function turn(body: Body, theta: number): void {
 }
 
 /** The gap between two world shapes: the distance between their surfaces, negative when they overlap; with the nearest points and the unit direction from a to b. */
-function shapeGap(a: WorldShape, b: WorldShape, hint: { x: number; y: number }): { gap: number; nx: number; ny: number; px: number; py: number; qx: number; qy: number } {
+function shapeGap(
+  a: WorldShape,
+  b: WorldShape,
+  hint: { x: number; y: number },
+): { gap: number; nx: number; ny: number; px: number; py: number; qx: number; qy: number } {
   let pax: number;
   let pay: number;
   let pbx: number;
@@ -475,7 +498,12 @@ function shapeGap(a: WorldShape, b: WorldShape, hint: { x: number; y: number }):
 
 /** The bounding box of a world shape, grown by `r` and a margin. */
 function shapeBox(s: WorldShape, margin: number): [number, number, number, number] {
-  return [Math.min(s.ax, s.bx) - s.r - margin, Math.min(s.ay, s.by) - s.r - margin, Math.max(s.ax, s.bx) + s.r + margin, Math.max(s.ay, s.by) + s.r + margin];
+  return [
+    Math.min(s.ax, s.bx) - s.r - margin,
+    Math.min(s.ay, s.by) - s.r - margin,
+    Math.max(s.ax, s.bx) + s.r + margin,
+    Math.max(s.ay, s.by) + s.r + margin,
+  ];
 }
 
 /** The gap between two bodies: the smallest gap of any pair of their shapes (negative when they overlap).
@@ -501,7 +529,13 @@ export function gap(a: Body, b: Body): number {
     for (const sb of b.world) {
       const boxA = shapeBox(sa, 0);
       const boxB = shapeBox(sb, 0);
-      if (boxA[0] > boxB[2] + least || boxB[0] > boxA[2] + least || boxA[1] > boxB[3] + least || boxB[1] > boxA[3] + least) continue;
+      if (
+        boxA[0] > boxB[2] + least ||
+        boxB[0] > boxA[2] + least ||
+        boxA[1] > boxB[3] + least ||
+        boxB[1] > boxA[3] + least
+      )
+        continue;
       const found = shapeGap(sa, sb, hint).gap;
       if (found < least) least = found;
     }

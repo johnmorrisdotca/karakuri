@@ -13,7 +13,9 @@ async function draw(page, testInfo, points) {
 }
 
 for (let level = 1; level <= SAVE_THE_CHARACTER_LEVELS.length; level += 1) {
-  test(`level ${level} is won by drawing the recorded line and keeping him safe for three seconds`, async ({ page }, testInfo) => {
+  test(`level ${level} is won by drawing the recorded line and keeping him safe for three seconds`, async ({
+    page,
+  }, testInfo) => {
     const errors = await open(page, `?game=save-the-character&level=${level}`);
     await draw(page, testInfo, SAVE_THE_CHARACTER_LEVELS[level - 1].solution);
     await expect.poll(async () => (await read(page, (m) => m.controller.snapshot())).phase).toBe("run");
@@ -22,7 +24,9 @@ for (let level = 1; level <= SAVE_THE_CHARACTER_LEVELS.length; level += 1) {
     expect(errors).toEqual([]);
   });
 
-  test(`level ${level} is lost by drawing a line that does not help, and Try again starts it over`, async ({ page }, testInfo) => {
+  test(`level ${level} is lost by drawing a line that does not help, and Try again starts it over`, async ({
+    page,
+  }, testInfo) => {
     const errors = await open(page, `?game=save-the-character&level=${level}`);
     await draw(page, testInfo, SAVE_THE_CHARACTER_LEVELS[level - 1].loss);
     await expect(page.locator(`${at("board")} .karakuri`)).toHaveAttribute("data-status", "lost", { timeout: 15000 });
@@ -36,9 +40,15 @@ for (let level = 1; level <= SAVE_THE_CHARACTER_LEVELS.length; level += 1) {
   });
 }
 
-test("a line too short to count is thrown away and the level waits for another, and the ink is shown", async ({ page }, testInfo) => {
+test("a line too short to count is thrown away and the level waits for another, and the ink is shown", async ({
+  page,
+}, testInfo) => {
   await open(page, "?game=save-the-character&level=1");
-  await draw(page, testInfo, [{ x: 100, y: 200 }, { x: 108, y: 200 }, { x: 116, y: 200 }]);
+  await draw(page, testInfo, [
+    { x: 100, y: 200 },
+    { x: 108, y: 200 },
+    { x: 116, y: 200 },
+  ]);
   const snap = await read(page, (m) => m.controller.snapshot());
   expect(snap.phase).toBe("draw");
   expect(snap.points).toBe(0);
@@ -47,10 +57,17 @@ test("a line too short to count is thrown away and the level waits for another, 
 
 test("there is only one line: once it is let go, drawing another does nothing", async ({ page }, testInfo) => {
   await open(page, "?game=save-the-character&level=2");
-  await draw(page, testInfo, [{ x: 60, y: 300 }, { x: 90, y: 280 }, { x: 120, y: 300 }]);
+  await draw(page, testInfo, [
+    { x: 60, y: 300 },
+    { x: 90, y: 280 },
+    { x: 120, y: 300 },
+  ]);
   await expect.poll(async () => (await read(page, (m) => m.controller.snapshot())).phase).toBe("run");
   const before = await read(page, (m) => m.controller.snapshot());
-  await draw(page, testInfo, [{ x: 200, y: 100 }, { x: 260, y: 100 }]);
+  await draw(page, testInfo, [
+    { x: 200, y: 100 },
+    { x: 260, y: 100 },
+  ]);
   const after = await read(page, (m) => m.controller.snapshot());
   expect(after.points).toBe(before.points);
 });

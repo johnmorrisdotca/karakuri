@@ -2,7 +2,9 @@ import { KARAKURI_THEMES } from "./theme.ts";
 
 const vars = (scheme: "light" | "dark"): string => {
   const set = KARAKURI_THEMES[scheme];
-  return `--kk-scheme: ${scheme}; ${Object.entries(set).map(([name, value]) => `--kk-${name}: ${value};`).join(" ")}`;
+  return `--kk-scheme: ${scheme}; ${Object.entries(set)
+    .map(([name, value]) => `--kk-${name}: ${value};`)
+    .join(" ")}`;
 };
 
 /**

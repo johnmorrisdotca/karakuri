@@ -10,7 +10,8 @@ const WORDS = {
   en: {
     pageDocs: "Docs",
     pageApi: "API",
-    pitch: "Eight small puzzle games for pointer or keyboard: draw a shield, pull the pins, unscrew the plates, stretch an arm round pegs, slide the blocks, cut the ropes, pour the tubes and choose the tool. Each has levels that step up, and the physics gives the same result in every browser.",
+    pitch:
+      "Eight small puzzle games for pointer or keyboard: draw a shield, pull the pins, unscrew the plates, stretch an arm round pegs, slide the blocks, cut the ropes, pour the tubes and choose the tool. Each has levels that step up, and the physics gives the same result in every browser.",
     name: "Karakuri (からくり) is Japanese for a clever mechanism: a trick, a puzzle box, a wind-up toy.",
     nameLink: "About the name",
     game: "Game",
@@ -18,7 +19,8 @@ const WORDS = {
     keepTitle: "Your progress",
     keep: "The levels you win, and the game and level you were on, stay on this device.",
     moreTitle: "Using it",
-    moreText: "The board above is the package itself: the rules, the physics, the drawing and every level. Each line below is all it takes.",
+    moreText:
+      "The board above is the package itself: the rules, the physics, the drawing and every level. Each line below is all it takes.",
     tagTitle: "As a tag",
     tagText: "The same player in one element, with no framework: Tube Sort, level 2.",
     foot: "Every level can be won, and the tests play each one to a win by finger and by mouse in Chromium and WebKit. Your progress stays on this device.",
@@ -27,7 +29,8 @@ const WORDS = {
   ja: {
     pageDocs: "ドキュメント",
     pageApi: "API（英語）",
-    pitch: "指、マウス、キーボードで遊べる、小さなパズルゲームが8つ。盾を描く、ピンを抜く、ネジを外す、アームを伸ばす、ブロックをすべらせる、ロープを切る、チューブに注ぐ、道具を選ぶ。どのゲームもレベルが順に難しくなり、物理演算はどのブラウザでも同じ結果になります。",
+    pitch:
+      "指、マウス、キーボードで遊べる、小さなパズルゲームが8つ。盾を描く、ピンを抜く、ネジを外す、アームを伸ばす、ブロックをすべらせる、ロープを切る、チューブに注ぐ、道具を選ぶ。どのゲームもレベルが順に難しくなり、物理演算はどのブラウザでも同じ結果になります。",
     name: "「からくり」は、巧みな仕掛けのこと。仕掛け箱やぜんまいじかけのおもちゃのことです。",
     nameLink: "名前について（英語）",
     game: "ゲーム",
@@ -35,7 +38,8 @@ const WORDS = {
     keepTitle: "進み具合",
     keep: "クリアしたレベルと、最後に遊んだゲームとレベルは、この端末に残ります。",
     moreTitle: "使い方",
-    moreText: "上の盤面は、このパッケージそのもの（ルール、物理演算、描き方、すべてのレベル）で動いています。下の各行がそれぞれ必要なコードのすべてです。",
+    moreText:
+      "上の盤面は、このパッケージそのもの（ルール、物理演算、描き方、すべてのレベル）で動いています。下の各行がそれぞれ必要なコードのすべてです。",
     tagTitle: "タグとして",
     tagText: "同じプレーヤーを、フレームワークなしの一つの要素で。チューブ仕分けのレベル2です。",
     foot: "どのレベルもクリアできることを、テストが指とマウスでChromiumとWebKitの両方で確かめています。進み具合はこの端末に残ります。",
@@ -61,7 +65,11 @@ const write = (value) => {
 };
 
 const kept = read();
-let game = KARAKURI_GAME_IDS.includes(params.get("game")) ? params.get("game") : KARAKURI_GAME_IDS.includes(kept.game) ? kept.game : KARAKURI_GAME_IDS[0];
+let game = KARAKURI_GAME_IDS.includes(params.get("game"))
+  ? params.get("game")
+  : KARAKURI_GAME_IDS.includes(kept.game)
+    ? kept.game
+    : KARAKURI_GAME_IDS[0];
 const levels = { ...(kept.levels ?? {}) };
 const won = { ...(kept.won ?? {}) };
 const manual = params.get("clock") === "manual";
@@ -72,10 +80,18 @@ const rulesLine = document.getElementById("rules");
 const boardBox = document.getElementById("board");
 const tagBox = document.getElementById("tag");
 
-const language = familyLanguage({ id: "karakuri", words: WORDS, onChange: () => { docsLink(); draw(); } });
+const language = familyLanguage({
+  id: "karakuri",
+  words: WORDS,
+  onChange: () => {
+    docsLink();
+    draw();
+  },
+});
 const lang = () => language.lang;
 const levelOf = (id) => Math.min(Math.max(1, Number(levels[id] ?? 1) || 1), KARAKURI_GAMES[id].levels);
-if (params.get("level") !== null) levels[game] = levelOf(game) && Math.min(Math.max(1, Number(params.get("level")) || 1), KARAKURI_GAMES[game].levels);
+if (params.get("level") !== null)
+  levels[game] = levelOf(game) && Math.min(Math.max(1, Number(params.get("level")) || 1), KARAKURI_GAMES[game].levels);
 
 let mount = null;
 const save = () => write({ game, levels, won });
@@ -92,12 +108,22 @@ function button(label, pressed, onClick, testid, title) {
 }
 
 function draw() {
-  gamesBox.replaceChildren(...KARAKURI_GAME_IDS.map((id) => button(say(lang(), `game_${wordKey(id)}`), id === game, () => choose(id, levelOf(id)), `game-${id}`)));
+  gamesBox.replaceChildren(
+    ...KARAKURI_GAME_IDS.map((id) =>
+      button(say(lang(), `game_${wordKey(id)}`), id === game, () => choose(id, levelOf(id)), `game-${id}`),
+    ),
+  );
   levelsBox.replaceChildren(
     ...Array.from({ length: KARAKURI_GAMES[game].levels }, (_, i) => {
       const n = i + 1;
       const done = (won[game] ?? []).includes(n);
-      return button(done ? `${n} ✓` : String(n), n === levelOf(game), () => choose(game, n), `level-${n}`, done ? WORDS[lang()].won : undefined);
+      return button(
+        done ? `${n} ✓` : String(n),
+        n === levelOf(game),
+        () => choose(game, n),
+        `level-${n}`,
+        done ? WORDS[lang()].won : undefined,
+      );
     }),
   );
   rulesLine.textContent = say(lang(), `rules_${wordKey(game)}`);
@@ -134,5 +160,9 @@ function start() {
 start();
 tagBox.innerHTML = '<karakuri-board game="tube-sort" level="2"></karakuri-board>';
 
-function docsLink(){document.querySelector('[data-say="pageDocs"]')?.setAttribute("href",language.lang==="ja"?"docs/ja/index.html":"docs/index.html");}
+function docsLink() {
+  document
+    .querySelector('[data-say="pageDocs"]')
+    ?.setAttribute("href", language.lang === "ja" ? "docs/ja/index.html" : "docs/index.html");
+}
 docsLink();

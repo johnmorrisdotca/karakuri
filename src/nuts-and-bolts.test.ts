@@ -1,10 +1,27 @@
 import { describe, expect, it } from "vitest";
 
-import { findLoss, freeScrews, isCovered, isFree, isPlain, newNutGame, solveNuts, takeScrew, type NutPlate, type NutPuzzle, type NutState } from "./nuts-and-bolts.ts";
+import {
+  findLoss,
+  freeScrews,
+  isCovered,
+  isFree,
+  isPlain,
+  newNutGame,
+  solveNuts,
+  takeScrew,
+  type NutPlate,
+  type NutPuzzle,
+  type NutState,
+} from "./nuts-and-bolts.ts";
 import { NUTS_AND_BOLTS_LEVELS } from "./nuts-and-bolts.levels.ts";
 import { slotPlace } from "./nuts-and-bolts-view.ts";
 
-const rect = (x: number, y: number, w: number, h: number) => [{ x, y }, { x: x + w, y }, { x: x + w, y: y + h }, { x, y: y + h }];
+const rect = (x: number, y: number, w: number, h: number) => [
+  { x, y },
+  { x: x + w, y },
+  { x: x + w, y: y + h },
+  { x, y: y + h },
+];
 
 // The search of a level is worth doing once for all the tests that read it.
 const solved = new Map<number, ReturnType<typeof solveNuts>>();
@@ -14,8 +31,22 @@ const solveLevel = (i: number): ReturnType<typeof solveNuts> => {
 };
 
 // Plate B lies over the right end of plate A and hides one of A's two screws.
-const A: NutPlate = { colour: 0, polygon: rect(20, 100, 160, 40), screws: [{ x: 35, y: 120 }, { x: 165, y: 120 }] };
-const B: NutPlate = { colour: 1, polygon: rect(120, 90, 100, 60), screws: [{ x: 135, y: 105 }, { x: 205, y: 135 }] };
+const A: NutPlate = {
+  colour: 0,
+  polygon: rect(20, 100, 160, 40),
+  screws: [
+    { x: 35, y: 120 },
+    { x: 165, y: 120 },
+  ],
+};
+const B: NutPlate = {
+  colour: 1,
+  polygon: rect(120, 90, 100, 60),
+  screws: [
+    { x: 135, y: 105 },
+    { x: 205, y: 135 },
+  ],
+};
 const SMALL: NutPuzzle = { plates: [A, B], slots: 2 };
 
 describe("which screws can be tapped", () => {
@@ -53,7 +84,13 @@ describe("taking screws", () => {
 
   it("is won when every plate has fallen", () => {
     let state: NutState = newNutGame(SMALL);
-    for (const [p, s] of [[1, 0], [1, 1], [0, 0], [0, 1]]) state = takeScrew(state, p, s);
+    for (const [p, s] of [
+      [1, 0],
+      [1, 1],
+      [0, 0],
+      [0, 1],
+    ])
+      state = takeScrew(state, p, s);
     expect(state.status).toBe("won");
     expect(state.taps).toBe(4);
     expect(takeScrew(state, 0, 0)).toBe(state);
@@ -145,9 +182,17 @@ describe("the levels", () => {
         expect(s.y).toBeGreaterThanOrEqual(20);
         expect(s.y).toBeLessThanOrEqual(340);
       }
-      for (let a = 0; a < screws.length; a += 1) for (let b = a + 1; b < screws.length; b += 1) expect(Math.hypot(screws[a].x - screws[b].x, screws[a].y - screws[b].y), `level ${i + 1}`).toBeGreaterThanOrEqual(28);
+      for (let a = 0; a < screws.length; a += 1)
+        for (let b = a + 1; b < screws.length; b += 1)
+          expect(
+            Math.hypot(screws[a].x - screws[b].x, screws[a].y - screws[b].y),
+            `level ${i + 1}`,
+          ).toBeGreaterThanOrEqual(28);
       const game = newNutGame(level);
-      const covered = level.plates.reduce((sum, p, pi) => sum + p.screws.filter((_, si) => isCovered(level, game.fallen, pi, si)).length, 0);
+      const covered = level.plates.reduce(
+        (sum, p, pi) => sum + p.screws.filter((_, si) => isCovered(level, game.fallen, pi, si)).length,
+        0,
+      );
       if (i >= 1) expect(covered, `level ${i + 1}`).toBeGreaterThanOrEqual(1);
     }
   });
@@ -159,10 +204,11 @@ describe("the levels", () => {
   });
 
   it("have a tray that holds the slots inside the box", () => {
-    for (const level of NUTS_AND_BOLTS_LEVELS) for (let s = 0; s < level.slots; s += 1) {
-      const c = slotPlace(s, level.slots);
-      expect(c.x).toBeGreaterThan(30);
-      expect(c.x).toBeLessThan(330);
-    }
+    for (const level of NUTS_AND_BOLTS_LEVELS)
+      for (let s = 0; s < level.slots; s += 1) {
+        const c = slotPlace(s, level.slots);
+        expect(c.x).toBeGreaterThan(30);
+        expect(c.x).toBeLessThan(330);
+      }
   });
 });

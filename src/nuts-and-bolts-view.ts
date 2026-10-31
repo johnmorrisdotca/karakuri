@@ -48,7 +48,10 @@ export function nutsAndBoltsController(level: number): Controller {
   let dropped: Dropped[] = [];
   let ended = 0;
 
-  const where = (ref: ScrewRef): Point => ({ x: puzzle.plates[ref.plate].screws[ref.screw].x, y: puzzle.plates[ref.plate].screws[ref.screw].y + TOP });
+  const where = (ref: ScrewRef): Point => ({
+    x: puzzle.plates[ref.plate].screws[ref.screw].x,
+    y: puzzle.plates[ref.plate].screws[ref.screw].y + TOP,
+  });
   const busy = (): boolean => flights.length > 0 || falls.length > 0 || dropped.length > 0;
   const left = (): number => state.fallen.filter((gone) => !gone).length;
 
@@ -150,7 +153,13 @@ export function nutsAndBoltsController(level: number): Controller {
     },
   };
 
-  function drawPlate(g: CanvasRenderingContext2D, theme: Theme, plate: NutPlate, p: number, fall: Fall | undefined): void {
+  function drawPlate(
+    g: CanvasRenderingContext2D,
+    theme: Theme,
+    plate: NutPlate,
+    p: number,
+    fall: Fall | undefined,
+  ): void {
     const base = PIECE_COLOURS[plate.colour % PIECE_COLOURS.length];
     g.save();
     g.translate(0, TOP);
@@ -249,7 +258,12 @@ export function nutsAndBoltsController(level: number): Controller {
       if (flying !== undefined) {
         const t = flying.t / FLIGHT_TICKS;
         const e = 1 - (1 - t) * (1 - t);
-        drawScrew(g, flying.from.x + (c.x - flying.from.x) * e, flying.from.y + (c.y - flying.from.y) * e - Math.sin(t * Math.PI) * 24, base);
+        drawScrew(
+          g,
+          flying.from.x + (c.x - flying.from.x) * e,
+          flying.from.y + (c.y - flying.from.y) * e - Math.sin(t * Math.PI) * 24,
+          base,
+        );
       } else {
         drawScrew(g, c.x, c.y, base);
       }

@@ -3,7 +3,19 @@
 // pulls and draws what is there.
 import type { Controller, Point, Say, Status, Theme } from "./controller.ts";
 import { alpha, disc, roundRect, shade } from "./draw.ts";
-import { GOLD_R, HERO_R, PARTICLE_R, isCalled, isMoving, newPinGame, pinEnd, pullPin, stepPinGame, type PinGame, type PinLevel } from "./pin-rescue.ts";
+import {
+  GOLD_R,
+  HERO_R,
+  PARTICLE_R,
+  isCalled,
+  isMoving,
+  newPinGame,
+  pinEnd,
+  pullPin,
+  stepPinGame,
+  type PinGame,
+  type PinLevel,
+} from "./pin-rescue.ts";
 import { PIN_RESCUE_LEVELS } from "./pin-rescue.levels.ts";
 import { distanceToSegment } from "./physics/geometry.ts";
 
@@ -33,7 +45,10 @@ export function pinRescueController(level: number): Controller {
     game.pins.forEach((pin, i) => {
       if (pin.pulling) return;
       const { x0, x1 } = pinEnd(pin.spec, pin.pull);
-      const d = Math.min(distanceToSegment(p.x, p.y, x0, pin.spec.y, x1, pin.spec.y), Math.hypot(p.x - handleOf(game, i).x, p.y - handleOf(game, i).y) - 4);
+      const d = Math.min(
+        distanceToSegment(p.x, p.y, x0, pin.spec.y, x1, pin.spec.y),
+        Math.hypot(p.x - handleOf(game, i).x, p.y - handleOf(game, i).y) - 4,
+      );
       if (d < bestD) {
         bestD = d;
         best = i;
@@ -51,7 +66,8 @@ export function pinRescueController(level: number): Controller {
     },
     get result(): Say | null {
       if (controller.status === "won") return { key: "pinWon", values: { n: game.pulled.length } };
-      if (controller.status === "lost") return { key: game.loss === "spikes" ? "pinLostSpikes" : game.loss === "fell" ? "pinLostFell" : "pinLostLava" };
+      if (controller.status === "lost")
+        return { key: game.loss === "spikes" ? "pinLostSpikes" : game.loss === "fell" ? "pinLostFell" : "pinLostLava" };
       return null;
     },
     get info(): Say {
@@ -94,7 +110,15 @@ export function pinRescueController(level: number): Controller {
         moving: isMoving(game),
         pulled: game.pulled.map((p) => ({ ...p })),
         hero: { x: game.hero.x, y: game.hero.y },
-        pins: game.pins.map((p, i) => ({ pull: p.pull, pulling: p.pulling, handle: handleOf(game, i), y: p.spec.y, side: p.spec.side, x: p.spec.x, length: p.spec.length })),
+        pins: game.pins.map((p, i) => ({
+          pull: p.pull,
+          pulling: p.pulling,
+          handle: handleOf(game, i),
+          y: p.spec.y,
+          side: p.spec.side,
+          x: p.spec.x,
+          length: p.spec.length,
+        })),
         stones: game.fluid.particles.filter((p) => p.kind === "stone").length,
       };
     },

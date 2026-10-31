@@ -13,12 +13,17 @@ async function pull(page, testInfo, index) {
   await expect.poll(async () => (await read(page, (m) => m.controller.snapshot())).pins[index].pulling).toBe(true);
   // Settled: nothing moving for a good while (a half second), or the level decided.
   let calm = 0;
-  await expect.poll(async () => {
-    const s = await read(page, (m) => m.controller.snapshot());
-    if (s.status !== "playing") return true;
-    calm = s.moving ? 0 : calm + 1;
-    return calm >= 8;
-  }, { timeout: 30000, intervals: [60] }).toBe(true);
+  await expect
+    .poll(
+      async () => {
+        const s = await read(page, (m) => m.controller.snapshot());
+        if (s.status !== "playing") return true;
+        calm = s.moving ? 0 : calm + 1;
+        return calm >= 8;
+      },
+      { timeout: 30000, intervals: [60] },
+    )
+    .toBe(true);
 }
 
 for (let level = 1; level <= PIN_RESCUE_LEVELS.length; level += 1) {

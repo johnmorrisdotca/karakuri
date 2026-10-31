@@ -128,7 +128,13 @@ export function tubeSortController(level: number): Controller {
       ended = 0;
     },
     snapshot() {
-      return { tubes: state.tubes.map((t) => t.slice()), pours: state.pours, status: state.status, picked, centres: places.map((p) => ({ x: p.x + TUBE_W / 2, y: p.y + TUBE_H / 2 })) };
+      return {
+        tubes: state.tubes.map((t) => t.slice()),
+        pours: state.pours,
+        status: state.status,
+        picked,
+        centres: places.map((p) => ({ x: p.x + TUBE_W / 2, y: p.y + TUBE_H / 2 })),
+      };
     },
   };
 
@@ -271,7 +277,16 @@ function mark(g: CanvasRenderingContext2D, colour: number, cx: number, cy: numbe
   }
 }
 
-function drawLayer(g: CanvasRenderingContext2D, theme: Theme, x: number, y: number, w: number, h: number, colour: number, done: boolean): void {
+function drawLayer(
+  g: CanvasRenderingContext2D,
+  theme: Theme,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  colour: number,
+  done: boolean,
+): void {
   const base = PIECE_COLOURS[colour % PIECE_COLOURS.length];
   roundRect(g, x, y, w, h, 8);
   const grad = g.createLinearGradient(x, y, x + w, y);

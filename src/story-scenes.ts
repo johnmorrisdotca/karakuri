@@ -49,7 +49,18 @@ const SKY: Record<ProblemId, [string, string]> = {
   chest: ["#8fd0ee", "#d8f0fb"],
 };
 const GROUND_COLOUR: Record<ProblemId, string> = {
-  rain: "#7fa56a", puddle: "#7fa56a", door: "#8cb273", dark: "#5b5a66", gap: "#57546a", bear: "#57546a", snow: "#f4f9fc", wind: "#f4f9fc", hill: "#f4f9fc", sea: "#e8d49b", treasure: "#e8d49b", chest: "#e8d49b",
+  rain: "#7fa56a",
+  puddle: "#7fa56a",
+  door: "#8cb273",
+  dark: "#5b5a66",
+  gap: "#57546a",
+  bear: "#57546a",
+  snow: "#f4f9fc",
+  wind: "#f4f9fc",
+  hill: "#f4f9fc",
+  sea: "#e8d49b",
+  treasure: "#e8d49b",
+  chest: "#e8d49b",
 };
 
 /** Draws the whole scene: backdrop, problem, character. */
@@ -106,7 +117,10 @@ function drawHero(g: CanvasRenderingContext2D, theme: Theme, pose: Pose, oops: n
   let squash = 1;
   if (oops >= 0) {
     // Flattened, then wobbling back up.
-    squash = oops < 0.25 ? 1 - oops * 2.2 : 0.45 + Math.min(0.55, (oops - 0.25) * 1.2) + Math.sin(oops * 28) * 0.04 * (1 - oops);
+    squash =
+      oops < 0.25
+        ? 1 - oops * 2.2
+        : 0.45 + Math.min(0.55, (oops - 0.25) * 1.2) + Math.sin(oops * 28) * 0.04 * (1 - oops);
     y = GROUND;
   }
   // Shadow.
@@ -240,7 +254,14 @@ const PROBLEMS: Record<ProblemId, ProblemDrawer> = {
     g.stroke();
     if (solved > 0 && solved < 1) {
       g.fillStyle = "#8a6a45";
-      for (let k = 0; k < 6; k += 1) disc(g, 200 + k * 12 + Math.sin(solved * 20 + k) * 3, GROUND - 4 - Math.abs(Math.sin(solved * 9 + k)) * 24 * (1 - solved), 4, "#8a6a45");
+      for (let k = 0; k < 6; k += 1)
+        disc(
+          g,
+          200 + k * 12 + Math.sin(solved * 20 + k) * 3,
+          GROUND - 4 - Math.abs(Math.sin(solved * 9 + k)) * 24 * (1 - solved),
+          4,
+          "#8a6a45",
+        );
     }
   },
   door(g, theme, solved) {
@@ -389,7 +410,10 @@ const PROBLEMS: Record<ProblemId, ProblemDrawer> = {
     g.fill();
     g.stroke();
     // The village below: two small houses.
-    for (const [x, c] of [[262, "#d98f5a"], [310, "#b98fd0"]] as [number, string][]) {
+    for (const [x, c] of [
+      [262, "#d98f5a"],
+      [310, "#b98fd0"],
+    ] as [number, string][]) {
       g.fillStyle = c;
       g.fillRect(x, GROUND - 26, 32, 28);
       g.fillStyle = "#8b4b36";
@@ -438,7 +462,12 @@ const PROBLEMS: Record<ProblemId, ProblemDrawer> = {
       g.fillStyle = alpha("#3a2f26", 0.55);
       g.font = "bold 34px system-ui, sans-serif";
       g.textAlign = "center";
-      for (const [x, y] of [[190, GROUND + 38], [250, GROUND + 52], [310, GROUND + 36]] as [number, number][]) g.fillText("?", x, y + Math.sin(t * 0.07 + x) * 3);
+      for (const [x, y] of [
+        [190, GROUND + 38],
+        [250, GROUND + 52],
+        [310, GROUND + 36],
+      ] as [number, number][])
+        g.fillText("?", x, y + Math.sin(t * 0.07 + x) * 3);
     } else {
       g.strokeStyle = "#e4584b";
       g.lineWidth = 8;

@@ -47,7 +47,9 @@ for (let level = 1; level <= ROPE_CUT_LEVELS.length; level += 1) {
 }
 
 for (let level = 2; level <= ROPE_CUT_LEVELS.length; level += 1) {
-  test(`level ${level} is lost when every rope is cut at once, and Try again starts it over`, async ({ page }, testInfo) => {
+  test(`level ${level} is lost when every rope is cut at once, and Try again starts it over`, async ({
+    page,
+  }, testInfo) => {
     const errors = await open(page, `?game=rope-cut&level=${level}&clock=manual`);
     for (const cut of ROPE_CUT_LEVELS[level - 1].loss) await swipeAcross(page, testInfo, cut.rope, cut.link);
     for (let i = 0; i < 40; i += 1) {
@@ -66,7 +68,9 @@ for (let level = 2; level <= ROPE_CUT_LEVELS.length; level += 1) {
   });
 }
 
-test("a swipe that crosses no rope cuts nothing, and one that crosses a rope cuts it, on the real clock", async ({ page }, testInfo) => {
+test("a swipe that crosses no rope cuts nothing, and one that crosses a rope cuts it, on the real clock", async ({
+  page,
+}, testInfo) => {
   const errors = await open(page, "?game=rope-cut&level=1");
   const snap = await read(page, (m) => m.controller.snapshot());
   const load = snap.load;

@@ -97,19 +97,27 @@ export interface KarakuriMount {
 
 function ensureStyle(host: HTMLElement): void {
   const root = host.getRootNode();
-  const target: ParentNode = typeof ShadowRoot !== "undefined" && root instanceof ShadowRoot ? root : host.ownerDocument.head;
+  const target: ParentNode =
+    typeof ShadowRoot !== "undefined" && root instanceof ShadowRoot ? root : host.ownerDocument.head;
   if (target.querySelector("style[data-karakuri]") !== null) return;
-  const style = host.ownerDocument.createElement("style"); style.setAttribute("data-karakuri", ""); style.textContent = KARAKURI_STYLE; target.append(style);
+  const style = host.ownerDocument.createElement("style");
+  style.setAttribute("data-karakuri", "");
+  style.textContent = KARAKURI_STYLE;
+  target.append(style);
 }
 
 let keyboardCounter = 0;
 
-const pageLanguage = (): KarakuriLanguage => (typeof document !== "undefined" && document.documentElement.lang.toLowerCase().startsWith("ja") ? "ja" : "en");
+const pageLanguage = (): KarakuriLanguage =>
+  typeof document !== "undefined" && document.documentElement.lang.toLowerCase().startsWith("ja") ? "ja" : "en";
 
 /** Where a pointer event is in the controller's own units. */
 function toWorld(canvas: HTMLCanvasElement, c: Controller, event: PointerEvent): Point {
   const box = canvas.getBoundingClientRect();
-  return { x: ((event.clientX - box.left) * c.width) / box.width, y: ((event.clientY - box.top) * c.height) / box.height };
+  return {
+    x: ((event.clientX - box.left) * c.width) / box.width,
+    y: ((event.clientY - box.top) * c.height) / box.height,
+  };
 }
 
 /**
@@ -228,7 +236,14 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
 
   const labels = (): void => {
     title.textContent = say(lang, `game_${wordKey(game)}`);
-    canvas.setAttribute("aria-label", say(lang, "boardLabel", { game: say(lang, `game_${wordKey(game)}`), n: level, rules: say(lang, `rules_${wordKey(game)}`) }));
+    canvas.setAttribute(
+      "aria-label",
+      say(lang, "boardLabel", {
+        game: say(lang, `game_${wordKey(game)}`),
+        n: level,
+        rules: say(lang, `rules_${wordKey(game)}`),
+      }),
+    );
     restartButton.textContent = say(lang, "restart");
     previousButton.textContent = "‹";
     previousButton.setAttribute("aria-label", say(lang, "previousLevel"));
@@ -248,7 +263,21 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     g.clearRect(0, 0, controller.width, controller.height);
     controller.draw(g, { ...theme, lang });
     if (keyboard.visible && options.keyboard !== false) {
-      g.save(); g.strokeStyle = theme.paper; g.lineWidth = 3; g.beginPath(); g.arc(keyboard.x, keyboard.y, 8, 0, Math.PI * 2); g.stroke(); g.strokeStyle = theme.accent; g.lineWidth = 2; g.beginPath(); g.moveTo(keyboard.x - 12, keyboard.y); g.lineTo(keyboard.x + 12, keyboard.y); g.moveTo(keyboard.x, keyboard.y - 12); g.lineTo(keyboard.x, keyboard.y + 12); g.stroke(); g.restore();
+      g.save();
+      g.strokeStyle = theme.paper;
+      g.lineWidth = 3;
+      g.beginPath();
+      g.arc(keyboard.x, keyboard.y, 8, 0, Math.PI * 2);
+      g.stroke();
+      g.strokeStyle = theme.accent;
+      g.lineWidth = 2;
+      g.beginPath();
+      g.moveTo(keyboard.x - 12, keyboard.y);
+      g.lineTo(keyboard.x + 12, keyboard.y);
+      g.moveTo(keyboard.x, keyboard.y - 12);
+      g.lineTo(keyboard.x, keyboard.y + 12);
+      g.stroke();
+      g.restore();
     }
   };
 
@@ -275,19 +304,40 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
       lastStatus = controller.status;
       root.dataset.status = lastStatus;
       showCard();
-      live.textContent = lastStatus === "playing" ? "" : `${say(lang, lastStatus === "won" ? "statusWon" : "statusLost")} ${controller.result === null ? "" : words(controller.result)}`;
+      live.textContent =
+        lastStatus === "playing"
+          ? ""
+          : `${say(lang, lastStatus === "won" ? "statusWon" : "statusLost")} ${controller.result === null ? "" : words(controller.result)}`;
       const event = eventNow();
       options.onStatus?.(event);
-      host.dispatchEvent(new CustomEvent("karakuri-status", { detail: JSON.parse(JSON.stringify(event)), bubbles: true, composed: true }));
+      host.dispatchEvent(
+        new CustomEvent("karakuri-status", {
+          detail: JSON.parse(JSON.stringify(event)),
+          bubbles: true,
+          composed: true,
+        }),
+      );
     }
-    if (changed) { const event = eventNow(); options.onChange?.(event); host.dispatchEvent(new CustomEvent("karakuri-change", { detail: JSON.parse(JSON.stringify(event)), bubbles: true, composed: true })); }
+    if (changed) {
+      const event = eventNow();
+      options.onChange?.(event);
+      host.dispatchEvent(
+        new CustomEvent("karakuri-change", {
+          detail: JSON.parse(JSON.stringify(event)),
+          bubbles: true,
+          composed: true,
+        }),
+      );
+    }
   };
 
   /** Tells the page a level has begun (or begun again). */
   const announce = (): void => {
     const event = eventNow();
     options.onStatus?.(event);
-    host.dispatchEvent(new CustomEvent("karakuri-status", { detail: JSON.parse(JSON.stringify(event)), bubbles: true, composed: true }));
+    host.dispatchEvent(
+      new CustomEvent("karakuri-status", { detail: JSON.parse(JSON.stringify(event)), bubbles: true, composed: true }),
+    );
   };
 
   const showCard = (): void => {
@@ -297,7 +347,12 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     if (status === "playing") return;
     const lastLevel = level >= info.levels;
     cardTitle.textContent = say(lang, status === "won" ? "won" : "lost");
-    cardText.textContent = [controller.result === null ? "" : words(controller.result), status === "won" && lastLevel ? say(lang, "wonLast") : ""].filter((part) => part !== "").join(" ");
+    cardText.textContent = [
+      controller.result === null ? "" : words(controller.result),
+      status === "won" && lastLevel ? say(lang, "wonLast") : "",
+    ]
+      .filter((part) => part !== "")
+      .join(" ");
     cardButtons.replaceChildren();
     if (status === "won" && !lastLevel) {
       const next = button("card-next", () => api.setLevel(level + 1));
@@ -340,7 +395,8 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
   };
 
   const onDown = (event: PointerEvent): void => {
-    cancelKeyboard(); keyboard.visible = false;
+    cancelKeyboard();
+    keyboard.visible = false;
     if (event.button !== 0 && event.pointerType === "mouse") return;
     pointers.add(event.pointerId);
     try {
@@ -355,7 +411,8 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     if (!pointers.has(event.pointerId)) return;
     // A fast finger delivers its path in pieces: read each, so that a stroke is not cut short.
     const pieces = typeof event.getCoalescedEvents === "function" ? event.getCoalescedEvents() : [];
-    for (const piece of pieces.length > 0 ? pieces : [event]) controller.pointerMove(toWorld(canvas, controller, piece), event.pointerId);
+    for (const piece of pieces.length > 0 ? pieces : [event])
+      controller.pointerMove(toWorld(canvas, controller, piece), event.pointerId);
     refresh();
   };
   const onUp = (event: PointerEvent): void => {
@@ -378,39 +435,104 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
 
   const keyboardId = -1;
   const keyboardStep = options.keyboardStep ?? 10;
-  if (!Number.isFinite(keyboardStep) || keyboardStep < 1 || keyboardStep > 100) throw new RangeError("karakuri: keyboardStep must be from 1 to 100");
+  if (!Number.isFinite(keyboardStep) || keyboardStep < 1 || keyboardStep > 100)
+    throw new RangeError("karakuri: keyboardStep must be from 1 to 100");
   const keyboard = { x: controller.width / 2, y: controller.height / 2, active: false, visible: false };
-  const keyboardLive = document.createElement("p"); keyboardLive.className = "kk-live"; keyboardLive.setAttribute("aria-live", "polite"); root.append(keyboardLive);
-  const keyboardHelp = document.createElement("p"); keyboardHelp.className = full ? "kk-keyboard-help" : "kk-live"; keyboardHelp.hidden = options.keyboard === false; keyboardHelp.id = `karakuri-keyboard-${++keyboardCounter}`; root.append(keyboardHelp); if (options.keyboard !== false) canvas.setAttribute("aria-describedby", keyboardHelp.id);
+  const keyboardLive = document.createElement("p");
+  keyboardLive.className = "kk-live";
+  keyboardLive.setAttribute("aria-live", "polite");
+  root.append(keyboardLive);
+  const keyboardHelp = document.createElement("p");
+  keyboardHelp.className = full ? "kk-keyboard-help" : "kk-live";
+  keyboardHelp.hidden = options.keyboard === false;
+  keyboardHelp.id = `karakuri-keyboard-${++keyboardCounter}`;
+  root.append(keyboardHelp);
+  if (options.keyboard !== false) canvas.setAttribute("aria-describedby", keyboardHelp.id);
   canvas.tabIndex = options.keyboard === false ? -1 : 0;
-  const updateKeyboard = (): void => { canvas.dataset.keyX = String(keyboard.x); canvas.dataset.keyY = String(keyboard.y); canvas.dataset.keyActive = String(keyboard.active); keyboardHelp.textContent = say(lang, "keyboardHelp"); keyboardLive.textContent = keyboard.visible ? say(lang, keyboard.active ? "keyboardPressed" : "keyboardPosition", { x: Math.round(keyboard.x), y: Math.round(keyboard.y) }) : ""; };
-  const cancelKeyboard = (): void => { if (keyboard.active) controller.pointerCancel(keyboardId); keyboard.active = false; pointers.delete(keyboardId); };
+  const updateKeyboard = (): void => {
+    canvas.dataset.keyX = String(keyboard.x);
+    canvas.dataset.keyY = String(keyboard.y);
+    canvas.dataset.keyActive = String(keyboard.active);
+    keyboardHelp.textContent = say(lang, "keyboardHelp");
+    keyboardLive.textContent = keyboard.visible
+      ? say(lang, keyboard.active ? "keyboardPressed" : "keyboardPosition", {
+          x: Math.round(keyboard.x),
+          y: Math.round(keyboard.y),
+        })
+      : "";
+  };
+  const cancelKeyboard = (): void => {
+    if (keyboard.active) controller.pointerCancel(keyboardId);
+    keyboard.active = false;
+    pointers.delete(keyboardId);
+  };
   const onKeyboard = (event: KeyboardEvent): void => {
     if (options.keyboard === false || event.ctrlKey || event.metaKey || event.altKey) return;
-    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Enter", " ", "Escape", "Home"].includes(event.key)) return;
-    event.preventDefault(); keyboard.visible = true;
+    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Enter", " ", "Escape", "Home"].includes(event.key))
+      return;
+    event.preventDefault();
+    keyboard.visible = true;
     if (event.key.startsWith("Arrow")) {
       const distance = event.shiftKey ? 1 : keyboardStep;
-      keyboard.x = Math.max(0, Math.min(controller.width, keyboard.x + (event.key === "ArrowLeft" ? -distance : event.key === "ArrowRight" ? distance : 0)));
-      keyboard.y = Math.max(0, Math.min(controller.height, keyboard.y + (event.key === "ArrowUp" ? -distance : event.key === "ArrowDown" ? distance : 0)));
+      keyboard.x = Math.max(
+        0,
+        Math.min(
+          controller.width,
+          keyboard.x + (event.key === "ArrowLeft" ? -distance : event.key === "ArrowRight" ? distance : 0),
+        ),
+      );
+      keyboard.y = Math.max(
+        0,
+        Math.min(
+          controller.height,
+          keyboard.y + (event.key === "ArrowUp" ? -distance : event.key === "ArrowDown" ? distance : 0),
+        ),
+      );
       if (keyboard.active) controller.pointerMove(keyboard, keyboardId);
     } else if (event.key === "Escape") cancelKeyboard();
-    else if (event.key === "Home") { cancelKeyboard(); keyboard.x = controller.width / 2; keyboard.y = controller.height / 2; }
-    else if (!event.repeat) {
-      if (controller.gesture === "tap") { controller.pointerDown(keyboard, keyboardId); controller.pointerUp(keyboard, keyboardId); }
-      else if (keyboard.active) { controller.pointerUp(keyboard, keyboardId); keyboard.active = false; pointers.delete(keyboardId); }
-      else { controller.pointerDown(keyboard, keyboardId); keyboard.active = true; pointers.add(keyboardId); }
+    else if (event.key === "Home") {
+      cancelKeyboard();
+      keyboard.x = controller.width / 2;
+      keyboard.y = controller.height / 2;
+    } else if (!event.repeat) {
+      if (controller.gesture === "tap") {
+        controller.pointerDown(keyboard, keyboardId);
+        controller.pointerUp(keyboard, keyboardId);
+      } else if (keyboard.active) {
+        controller.pointerUp(keyboard, keyboardId);
+        keyboard.active = false;
+        pointers.delete(keyboardId);
+      } else {
+        controller.pointerDown(keyboard, keyboardId);
+        keyboard.active = true;
+        pointers.add(keyboardId);
+      }
     }
-    updateKeyboard(); refresh();
+    updateKeyboard();
+    refresh();
   };
   canvas.addEventListener("keydown", onKeyboard);
-  canvas.addEventListener("focus", () => { if (options.keyboard !== false) { keyboard.visible = true; updateKeyboard(); draw(); } });
-  canvas.addEventListener("blur", () => { cancelKeyboard(); keyboard.visible = false; updateKeyboard(); refresh(); });
-
-  const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => {
-    fit();
-    draw();
+  canvas.addEventListener("focus", () => {
+    if (options.keyboard !== false) {
+      keyboard.visible = true;
+      updateKeyboard();
+      draw();
+    }
   });
+  canvas.addEventListener("blur", () => {
+    cancelKeyboard();
+    keyboard.visible = false;
+    updateKeyboard();
+    refresh();
+  });
+
+  const observer =
+    typeof ResizeObserver === "undefined"
+      ? null
+      : new ResizeObserver(() => {
+          fit();
+          draw();
+        });
   observer?.observe(stage);
   const onWindow = (): void => {
     fit();
@@ -429,7 +551,9 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     level = Math.min(Math.max(1, Math.round(next)), info.levels);
     cancelKeyboard();
     controller = createController(game, level);
-    keyboard.x = controller.width / 2; keyboard.y = controller.height / 2; updateKeyboard();
+    keyboard.x = controller.width / 2;
+    keyboard.y = controller.height / 2;
+    updateKeyboard();
     root.dataset.gesture = controller.gesture;
     lastStatus = "playing";
     lastInfo = "";
@@ -457,8 +581,11 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     },
     canvas,
     restart() {
-      cancelKeyboard(); controller.restart();
-      keyboard.x = controller.width / 2; keyboard.y = controller.height / 2; updateKeyboard();
+      cancelKeyboard();
+      controller.restart();
+      keyboard.x = controller.width / 2;
+      keyboard.y = controller.height / 2;
+      updateKeyboard();
       lastStatus = "playing";
       lastInfo = "";
       root.dataset.status = "playing";
@@ -473,7 +600,9 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
     setLang(next) {
       lang = next;
       lastInfo = "";
-      labels(); updateKeyboard(); draw();
+      labels();
+      updateKeyboard();
+      draw();
       showCard();
       sync();
     },
@@ -492,7 +621,10 @@ export function mountKarakuri(host: HTMLElement, options: MountOptions): Karakur
       draw();
     },
     destroy() {
-      cancelKeyboard(); for (const id of pointers) controller.pointerCancel(id); pointers.clear(); destroyed = true;
+      cancelKeyboard();
+      for (const id of pointers) controller.pointerCancel(id);
+      pointers.clear();
+      destroyed = true;
       if (raf !== 0) cancelAnimationFrame(raf);
       observer?.disconnect();
       window.removeEventListener("resize", onWindow);

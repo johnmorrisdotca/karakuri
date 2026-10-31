@@ -47,21 +47,36 @@ export function isUseful(tubes: readonly (readonly number[])[], from: number, to
 /** The pours that do something, as [from, to] pairs, in order of tube. */
 export function usefulPours(tubes: readonly (readonly number[])[]): [number, number][] {
   const out: [number, number][] = [];
-  for (let from = 0; from < tubes.length; from += 1) for (let to = 0; to < tubes.length; to += 1) if (isUseful(tubes, from, to)) out.push([from, to]);
+  for (let from = 0; from < tubes.length; from += 1)
+    for (let to = 0; to < tubes.length; to += 1) if (isUseful(tubes, from, to)) out.push([from, to]);
   return out;
 }
 
 /** The tubes after pouring `from` into `to`: the whole top run that fits. Returns the same tubes when the pour is not allowed. */
-export function pourTubes(tubes: readonly (readonly number[])[], from: number, to: number): readonly (readonly number[])[] {
+export function pourTubes(
+  tubes: readonly (readonly number[])[],
+  from: number,
+  to: number,
+): readonly (readonly number[])[] {
   if (!canPour(tubes, from, to)) return tubes;
   const moving = Math.min(runOf(tubes[from]), TUBE_CAPACITY - tubes[to].length);
   const colour = topOf(tubes[from]);
-  return tubes.map((tube, i) => (i === from ? tube.slice(0, tube.length - moving) : i === to ? [...tube, ...Array<number>(moving).fill(colour)] : tube));
+  return tubes.map((tube, i) =>
+    i === from
+      ? tube.slice(0, tube.length - moving)
+      : i === to
+        ? [...tube, ...Array<number>(moving).fill(colour)]
+        : tube,
+  );
 }
 
 /** A new game of a puzzle. */
 export function newTubeGame(puzzle: TubePuzzle): TubeState {
-  return { tubes: puzzle.tubes.map((tube) => tube.slice()), pours: 0, status: isSolved(puzzle.tubes) ? "won" : "playing" };
+  return {
+    tubes: puzzle.tubes.map((tube) => tube.slice()),
+    pours: 0,
+    status: isSolved(puzzle.tubes) ? "won" : "playing",
+  };
 }
 
 /** Pours `from` into `to`. Refused (the state is returned as it was) when the game is over or the pour is not allowed. A pour that leaves nothing useful and no win is a loss. */
@@ -73,7 +88,11 @@ export function pour(state: TubeState, from: number, to: number): TubeState {
 }
 
 /** A position as text, the same for tubes in any order, so that a search sees two boards that differ only by which tube is which as one. */
-const keyOf = (tubes: readonly (readonly number[])[]): string => tubes.map((tube) => tube.join("")).sort().join("|");
+const keyOf = (tubes: readonly (readonly number[])[]): string =>
+  tubes
+    .map((tube) => tube.join(""))
+    .sort()
+    .join("|");
 
 /** What a search found. `pours` is one way to win; `nodes` is how many positions were looked at. */
 export interface TubeSolution {
@@ -86,7 +105,10 @@ export interface TubeSolution {
  * visiting a position twice). Gives the pours of the first win found, or null when the search has looked at `limit` positions
  * without one, or has looked at all of them: `exhausted` says which.
  */
-export function solveTubes(tubes: readonly (readonly number[])[], limit = 400000): { solution: TubeSolution | null; exhausted: boolean } {
+export function solveTubes(
+  tubes: readonly (readonly number[])[],
+  limit = 400000,
+): { solution: TubeSolution | null; exhausted: boolean } {
   const seen = new Set<string>([keyOf(tubes)]);
   let nodes = 0;
   const path: [number, number][] = [];

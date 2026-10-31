@@ -69,7 +69,14 @@ export function stretchGrabberController(level: number): Controller {
     },
     snapshot() {
       const tip = tipOf(game);
-      return { status: game.status, tip: { x: tip.x, y: tip.y }, length: armLength(game), maxLength: spec.maxLength, points: game.trail.length, base: spec.base };
+      return {
+        status: game.status,
+        tip: { x: tip.x, y: tip.y },
+        length: armLength(game),
+        maxLength: spec.maxLength,
+        points: game.trail.length,
+        base: spec.base,
+      };
     },
   };
 
@@ -210,7 +217,15 @@ export function stretchGrabberController(level: number): Controller {
     }
   }
 
-  function drawTip(g: CanvasRenderingContext2D, theme: Theme, x: number, y: number, held: boolean, lost: boolean, won: boolean): void {
+  function drawTip(
+    g: CanvasRenderingContext2D,
+    theme: Theme,
+    x: number,
+    y: number,
+    held: boolean,
+    lost: boolean,
+    won: boolean,
+  ): void {
     const body = lost ? theme.bad : theme.accent;
     disc(g, x, y, TIP_R + (held ? 3 : 0), alpha(body, 0.25));
     disc(g, x, y, TIP_R, shade(body, 0.15), shade(body, -0.5), 2.5);

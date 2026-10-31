@@ -13,10 +13,14 @@ export interface Pt {
 }
 
 /** Something the tip cannot enter: a round peg, or a wall (a thick segment). */
-export type Solid = { kind: "peg"; x: number; y: number; r: number } | { kind: "wall"; ax: number; ay: number; bx: number; by: number; r?: number };
+export type Solid =
+  | { kind: "peg"; x: number; y: number; r: number }
+  | { kind: "wall"; ax: number; ay: number; bx: number; by: number; r?: number };
 
 /** Something that loses on touch: a red blob, or a laser beam between two emitters. */
-export type Hazard = { kind: "blob"; x: number; y: number; r: number } | { kind: "laser"; ax: number; ay: number; bx: number; by: number };
+export type Hazard =
+  | { kind: "blob"; x: number; y: number; r: number }
+  | { kind: "laser"; ax: number; ay: number; bx: number; by: number };
 
 /** A level: where the arm starts, the star, how long the arm can stretch, and what is in the way. The play area is 360 across and 480 down. */
 export interface GrabLevel {
@@ -59,7 +63,8 @@ export const tipOf = (game: GrabGame): Pt => game.trail[game.trail.length - 1];
 /** How long the arm is now. */
 export function armLength(game: GrabGame): number {
   let sum = 0;
-  for (let i = 1; i < game.trail.length; i += 1) sum += distance(game.trail[i - 1].x, game.trail[i - 1].y, game.trail[i].x, game.trail[i].y);
+  for (let i = 1; i < game.trail.length; i += 1)
+    sum += distance(game.trail[i - 1].x, game.trail[i - 1].y, game.trail[i].x, game.trail[i].y);
   return sum;
 }
 
@@ -132,9 +137,17 @@ export function moveTip(game: GrabGame, tx: number, ty: number): void {
     if (distance(next.x, next.y, tip.x, tip.y) < 0.05) return;
     // The arm's length if the tip goes there.
     const prev = trail.length >= 2 ? trail[trail.length - 2] : tip;
-    const retracting = trail.length >= 3 && distance(next.x, next.y, trail[trail.length - 3].x, trail[trail.length - 3].y) < distance(prev.x, prev.y, trail[trail.length - 3].x, trail[trail.length - 3].y) - 0.5;
+    const retracting =
+      trail.length >= 3 &&
+      distance(next.x, next.y, trail[trail.length - 3].x, trail[trail.length - 3].y) <
+        distance(prev.x, prev.y, trail[trail.length - 3].x, trail[trail.length - 3].y) - 0.5;
     const length = armLength(game) - distance(prev.x, prev.y, tip.x, tip.y) + distance(prev.x, prev.y, next.x, next.y);
-    if (!retracting && length > level.maxLength && distance(next.x, next.y, prev.x, prev.y) > distance(tip.x, tip.y, prev.x, prev.y)) return;
+    if (
+      !retracting &&
+      length > level.maxLength &&
+      distance(next.x, next.y, prev.x, prev.y) > distance(tip.x, tip.y, prev.x, prev.y)
+    )
+      return;
     const hit = hazardOnSegment(level, tip, next, TIP_R);
     trail[trail.length - 1] = next;
     if (hit !== null) {
@@ -156,7 +169,8 @@ export function moveTip(game: GrabGame, tx: number, ty: number): void {
 }
 
 /** Whether a point is close enough to the tip to take hold of it. */
-export const nearTip = (game: GrabGame, p: Pt, reach = 34): boolean => distance(p.x, p.y, tipOf(game).x, tipOf(game).y) <= reach;
+export const nearTip = (game: GrabGame, p: Pt, reach = 34): boolean =>
+  distance(p.x, p.y, tipOf(game).x, tipOf(game).y) <= reach;
 
 /** Plays a path of pointer positions on a fresh game, as a finger that took hold of the tip at its start would. */
 export function playPath(level: GrabLevel, path: readonly Pt[]): GrabGame {

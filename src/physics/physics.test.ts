@@ -1,11 +1,36 @@
 import { describe, expect, it } from "vitest";
 
-import { addBody, capsulesAlong, contactsBetween, createBody, createWorld, gap, isSettled, STEP, stepWorld, worldNumbers } from "./bodies.ts";
+import {
+  addBody,
+  capsulesAlong,
+  contactsBetween,
+  createBody,
+  createWorld,
+  gap,
+  isSettled,
+  STEP,
+  stepWorld,
+  worldNumbers,
+} from "./bodies.ts";
 import { countOf, createFluid, fillRect, fluidNumbers, stepFluid } from "./fluid.ts";
-import { closestBetweenSegments, closestOnSegment, hashNumbers, pointInPolygon, segmentsIntersect } from "./geometry.ts";
+import {
+  closestBetweenSegments,
+  closestOnSegment,
+  hashNumbers,
+  pointInPolygon,
+  segmentsIntersect,
+} from "./geometry.ts";
 import { addLink, addNode, addRope, createRig, linkCrossed, rigNumbers, stepRig } from "./rope.ts";
 
-const ground = (world: ReturnType<typeof createWorld>) => addBody(world, createBody({ id: "ground", type: "static", shapes: [{ kind: "capsule", ax: -200, ay: 400, bx: 600, by: 400, r: 10 }] }));
+const ground = (world: ReturnType<typeof createWorld>) =>
+  addBody(
+    world,
+    createBody({
+      id: "ground",
+      type: "static",
+      shapes: [{ kind: "capsule", ax: -200, ay: 400, bx: 600, by: 400, r: 10 }],
+    }),
+  );
 
 describe("the geometry", () => {
   it("finds the nearest point of a segment, and the nearest points of two", () => {
@@ -20,7 +45,12 @@ describe("the geometry", () => {
     expect(segmentsIntersect(0, 0, 10, 10, 0, 10, 10, 0)).toBe(true);
     expect(segmentsIntersect(0, 0, 10, 0, 0, 1, 10, 1)).toBe(false);
     expect(segmentsIntersect(0, 0, 10, 0, 10, 0, 20, 5)).toBe(true);
-    const square = [{ x: 0, y: 0 }, { x: 10, y: 0 }, { x: 10, y: 10 }, { x: 0, y: 10 }];
+    const square = [
+      { x: 0, y: 0 },
+      { x: 10, y: 0 },
+      { x: 10, y: 10 },
+      { x: 0, y: 10 },
+    ];
     expect(pointInPolygon(5, 5, square)).toBe(true);
     expect(pointInPolygon(15, 5, square)).toBe(false);
   });
@@ -35,7 +65,17 @@ describe("rigid bodies", () => {
   it("a ball dropped on the ground comes to rest on it, a little above its surface", () => {
     const world = createWorld();
     ground(world);
-    const ball = addBody(world, createBody({ id: "ball", type: "dynamic", x: 100, y: 100, shapes: [{ kind: "circle", x: 0, y: 0, r: 12 }], restitution: 0.3 }));
+    const ball = addBody(
+      world,
+      createBody({
+        id: "ball",
+        type: "dynamic",
+        x: 100,
+        y: 100,
+        shapes: [{ kind: "circle", x: 0, y: 0, r: 12 }],
+        restitution: 0.3,
+      }),
+    );
     for (let i = 0; i < 240; i += 1) stepWorld(world);
     expect(isSettled(world)).toBe(true);
     // The ground's top is y 390; the ball's centre rests a radius above it.
@@ -47,7 +87,17 @@ describe("rigid bodies", () => {
   it("a bounce loses height", () => {
     const world = createWorld();
     ground(world);
-    const ball = addBody(world, createBody({ id: "ball", type: "dynamic", x: 100, y: 100, shapes: [{ kind: "circle", x: 0, y: 0, r: 12 }], restitution: 0.5 }));
+    const ball = addBody(
+      world,
+      createBody({
+        id: "ball",
+        type: "dynamic",
+        x: 100,
+        y: 100,
+        shapes: [{ kind: "circle", x: 0, y: 0, r: 12 }],
+        restitution: 0.5,
+      }),
+    );
     let highest = Infinity;
     let bounced = false;
     for (let i = 0; i < 200; i += 1) {
@@ -63,7 +113,10 @@ describe("rigid bodies", () => {
     const world = createWorld();
     ground(world);
     const points = Array.from({ length: 9 }, (_, i) => ({ x: 100 + i * 10, y: 200 + (i % 2) * 3 }));
-    const stroke = addBody(world, createBody({ id: "stroke", type: "dynamic", shapes: capsulesAlong(points, 3), friction: 0.8 }));
+    const stroke = addBody(
+      world,
+      createBody({ id: "stroke", type: "dynamic", shapes: capsulesAlong(points, 3), friction: 0.8 }),
+    );
     for (let i = 0; i < 400; i += 1) stepWorld(world);
     expect(isSettled(world)).toBe(true);
     expect(stroke.y).toBeGreaterThan(370);
@@ -73,8 +126,28 @@ describe("rigid bodies", () => {
 
   it("a ball rolls down a slope and keeps going to the bottom", () => {
     const world = createWorld();
-    addBody(world, createBody({ id: "slope", type: "static", shapes: [{ kind: "capsule", ax: 0, ay: 100, bx: 300, by: 250, r: 4 }, { kind: "capsule", ax: 300, ay: 250, bx: 500, by: 250, r: 4 }] }));
-    const ball = addBody(world, createBody({ id: "ball", type: "dynamic", x: 20, y: 70, shapes: [{ kind: "circle", x: 0, y: 0, r: 10 }], friction: 0.6 }));
+    addBody(
+      world,
+      createBody({
+        id: "slope",
+        type: "static",
+        shapes: [
+          { kind: "capsule", ax: 0, ay: 100, bx: 300, by: 250, r: 4 },
+          { kind: "capsule", ax: 300, ay: 250, bx: 500, by: 250, r: 4 },
+        ],
+      }),
+    );
+    const ball = addBody(
+      world,
+      createBody({
+        id: "ball",
+        type: "dynamic",
+        x: 20,
+        y: 70,
+        shapes: [{ kind: "circle", x: 0, y: 0, r: 10 }],
+        friction: 0.6,
+      }),
+    );
     for (let i = 0; i < 300; i += 1) stepWorld(world);
     expect(ball.x).toBeGreaterThan(150);
   });
@@ -82,7 +155,10 @@ describe("rigid bodies", () => {
   it("finds a gap and contacts between bodies", () => {
     const world = createWorld();
     const a = addBody(world, createBody({ id: "a", type: "static", shapes: [{ kind: "circle", x: 0, y: 0, r: 10 }] }));
-    const b = addBody(world, createBody({ id: "b", type: "static", x: 30, shapes: [{ kind: "circle", x: 0, y: 0, r: 10 }] }));
+    const b = addBody(
+      world,
+      createBody({ id: "b", type: "static", x: 30, shapes: [{ kind: "circle", x: 0, y: 0, r: 10 }] }),
+    );
     expect(gap(a, b)).toBe(10);
     expect(contactsBetween(a, b, 0).length).toBe(0);
     expect(contactsBetween(a, b, 11).length).toBe(1);
@@ -95,7 +171,17 @@ describe("rigid bodies", () => {
       ground(world);
       const points = Array.from({ length: 12 }, (_, i) => ({ x: 80 + i * 8, y: 150 - (i % 3) * 4 }));
       addBody(world, createBody({ id: "stroke", type: "dynamic", shapes: capsulesAlong(points, 3.5), friction: 0.7 }));
-      addBody(world, createBody({ id: "rock", type: "dynamic", x: 120, y: 20, shapes: [{ kind: "circle", x: 0, y: 0, r: 9 }], restitution: 0.4 }));
+      addBody(
+        world,
+        createBody({
+          id: "rock",
+          type: "dynamic",
+          x: 120,
+          y: 20,
+          shapes: [{ kind: "circle", x: 0, y: 0, r: 9 }],
+          restitution: 0.4,
+        }),
+      );
       for (let i = 0; i < 300; i += 1) stepWorld(world, STEP);
       return hashNumbers(worldNumbers(world));
     };
@@ -111,7 +197,10 @@ describe("ropes", () => {
     const load = addNode(rig, 200, 80, 0.2, 12);
     addRope(rig, 150, 50, 200, 80, 6, load);
     // Start it off to one side.
-    rig.nodes.forEach((n) => { n.x += 40; n.px += 40; });
+    rig.nodes.forEach((n) => {
+      n.x += 40;
+      n.px += 40;
+    });
     let crossed = false;
     for (let i = 0; i < 900; i += 1) {
       stepRig(rig, STEP);
@@ -192,7 +281,12 @@ describe("the liquid", () => {
     expect(stones()).toBeGreaterThan(4);
     const first = fluid.particles.filter((p) => p.kind === "stone").map((p) => [p.x, p.y]);
     for (let i = 0; i < 60; i += 1) stepFluid(fluid, STEP, walls);
-    expect(fluid.particles.filter((p) => p.kind === "stone").slice(0, first.length).map((p) => [p.x, p.y])).toEqual(first);
+    expect(
+      fluid.particles
+        .filter((p) => p.kind === "stone")
+        .slice(0, first.length)
+        .map((p) => [p.x, p.y]),
+    ).toEqual(first);
   });
 
   it("the same inputs give the same pool, bit for bit", () => {

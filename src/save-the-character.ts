@@ -3,7 +3,17 @@
 // danger starts to come: bees that fly straight at the character, rocks that fall. If the character is not touched, and has not fallen off,
 // for three seconds, the level is won. Nothing is random and nothing reads the clock: the same stroke gives the same level in every
 // browser. The levels are in saveTheCharacter.levels.ts, the drawing and the pointer in saveTheCharacterView.ts.
-import { addBody, capsulesAlong, createBody, createWorld, stepWorld, STEP, type Body, type World, type WorldShape } from "./physics/bodies.ts";
+import {
+  addBody,
+  capsulesAlong,
+  createBody,
+  createWorld,
+  stepWorld,
+  STEP,
+  type Body,
+  type World,
+  type WorldShape,
+} from "./physics/bodies.ts";
 import { closestOnSegment, distance } from "./physics/geometry.ts";
 
 /** A point. */
@@ -94,9 +104,48 @@ const ledgeShape = (l: Ledge): WorldShape => ({ ax: l.ax, ay: l.ay, bx: l.bx, by
 /** Starts a game of a level: the character at rest where he stands, the stroke still to be drawn. */
 export function newSaveGame(level: SaveLevel): SaveGame {
   const world = createWorld({ gravity: 900, substeps: 2, iterations: 8 });
-  for (const l of level.ledges) addBody(world, createBody({ id: "ledge", tag: "ledge", type: "static", shapes: [{ kind: "capsule", ax: l.ax, ay: l.ay, bx: l.bx, by: l.by, r: l.r ?? 5 }], friction: 0.9 }));
-  const hero = addBody(world, createBody({ id: "hero", tag: "hero", type: "dynamic", x: level.hero.x, y: level.hero.y, shapes: [{ kind: "circle", x: 0, y: 0, r: HERO_R }], density: 0.0012, friction: 0.9, restitution: 0.02, fixedRotation: true }));
-  const game: SaveGame = { level, world, hero, stroke: null, drawn: [], inkUsed: 0, phase: "draw", tick: 0, bees: [], rocks: [], arrived: level.dangers.map(() => false), status: "playing", loss: null, since: 0 };
+  for (const l of level.ledges)
+    addBody(
+      world,
+      createBody({
+        id: "ledge",
+        tag: "ledge",
+        type: "static",
+        shapes: [{ kind: "capsule", ax: l.ax, ay: l.ay, bx: l.bx, by: l.by, r: l.r ?? 5 }],
+        friction: 0.9,
+      }),
+    );
+  const hero = addBody(
+    world,
+    createBody({
+      id: "hero",
+      tag: "hero",
+      type: "dynamic",
+      x: level.hero.x,
+      y: level.hero.y,
+      shapes: [{ kind: "circle", x: 0, y: 0, r: HERO_R }],
+      density: 0.0012,
+      friction: 0.9,
+      restitution: 0.02,
+      fixedRotation: true,
+    }),
+  );
+  const game: SaveGame = {
+    level,
+    world,
+    hero,
+    stroke: null,
+    drawn: [],
+    inkUsed: 0,
+    phase: "draw",
+    tick: 0,
+    bees: [],
+    rocks: [],
+    arrived: level.dangers.map(() => false),
+    status: "playing",
+    loss: null,
+    since: 0,
+  };
   // Let him settle on his feet before the player draws: the world is stepped, the dangers are not.
   for (let i = 0; i < 40; i += 1) stepWorld(world, STEP);
   hero.vx = 0;
@@ -107,7 +156,8 @@ export function newSaveGame(level: SaveLevel): SaveGame {
 /** The length of a line of points. */
 export function lengthOf(points: readonly Pt[]): number {
   let sum = 0;
-  for (let i = 1; i < points.length; i += 1) sum += distance(points[i - 1].x, points[i - 1].y, points[i].x, points[i].y);
+  for (let i = 1; i < points.length; i += 1)
+    sum += distance(points[i - 1].x, points[i - 1].y, points[i].x, points[i].y);
   return sum;
 }
 
@@ -150,7 +200,18 @@ export function releaseStroke(game: SaveGame): boolean {
     game.inkUsed = 0;
     return false;
   }
-  game.stroke = addBody(game.world, createBody({ id: "stroke", tag: "stroke", type: "dynamic", shapes: capsulesAlong(game.drawn, STROKE_R), density: 0.0025, friction: 0.8, restitution: 0.05 }));
+  game.stroke = addBody(
+    game.world,
+    createBody({
+      id: "stroke",
+      tag: "stroke",
+      type: "dynamic",
+      shapes: capsulesAlong(game.drawn, STROKE_R),
+      density: 0.0025,
+      friction: 0.8,
+      restitution: 0.05,
+    }),
+  );
   game.phase = "run";
   game.tick = 0;
   return true;
@@ -178,7 +239,23 @@ export function stepSaveGame(game: SaveGame): void {
     if (game.arrived[i] || game.tick < danger.at) return;
     game.arrived[i] = true;
     if (danger.kind === "bee") game.bees.push({ x: danger.x, y: danger.y, climb: 0 });
-    else game.rocks.push(addBody(game.world, createBody({ id: "rock", tag: "rock", type: "dynamic", x: danger.x, y: danger.y, shapes: [{ kind: "circle", x: 0, y: 0, r: ROCK_R }], density: 0.004, friction: 0.4, restitution: 0.25 })));
+    else
+      game.rocks.push(
+        addBody(
+          game.world,
+          createBody({
+            id: "rock",
+            tag: "rock",
+            type: "dynamic",
+            x: danger.x,
+            y: danger.y,
+            shapes: [{ kind: "circle", x: 0, y: 0, r: ROCK_R }],
+            density: 0.004,
+            friction: 0.4,
+            restitution: 0.25,
+          }),
+        ),
+      );
   });
   stepWorld(game.world, STEP);
   game.tick += 1;

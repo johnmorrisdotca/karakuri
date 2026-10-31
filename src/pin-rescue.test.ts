@@ -1,6 +1,15 @@
 import { describe, expect, it } from "vitest";
 
-import { isCalled, isMoving, newPinGame, pinNumbers, playPulls, pullPin, stepPinGame, type PinGame } from "./pin-rescue.ts";
+import {
+  isCalled,
+  isMoving,
+  newPinGame,
+  pinNumbers,
+  playPulls,
+  pullPin,
+  stepPinGame,
+  type PinGame,
+} from "./pin-rescue.ts";
 import { PIN_RESCUE_LEVELS } from "./pin-rescue.levels.ts";
 import { hashNumbers } from "./physics/geometry.ts";
 
@@ -56,7 +65,10 @@ describe("the levels", () => {
   it("are won however long the wait between pulls once things have come to rest, and lost the same", () => {
     for (const [i, level] of PIN_RESCUE_LEVELS.entries()) {
       for (const wait of [450]) {
-        for (const [order, want] of [[level.solution, "won"], [level.loss, "lost"]] as const) {
+        for (const [order, want] of [
+          [level.solution, "won"],
+          [level.loss, "lost"],
+        ] as const) {
           const game = newPinGame(level);
           for (const pin of order) {
             pullPin(game, pin);
@@ -126,7 +138,12 @@ describe("water and lava", () => {
     expect(stones.length).toBeGreaterThan(20);
     const first = stones.map((p) => [p.x, p.y]);
     run(game, 120);
-    expect(game.fluid.particles.filter((p) => p.kind === "stone").slice(0, first.length).map((p) => [p.x, p.y])).toEqual(first);
+    expect(
+      game.fluid.particles
+        .filter((p) => p.kind === "stone")
+        .slice(0, first.length)
+        .map((p) => [p.x, p.y]),
+    ).toEqual(first);
     pullPin(game, 0);
     run(game, 400);
     expect(game.status).toBe("won");

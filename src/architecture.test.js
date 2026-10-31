@@ -10,7 +10,7 @@ describe("the preserved architecture guide", () => {
     const section = guide.slice(guide.indexOf("## Architecture"));
     const tree = section.slice(section.indexOf("```text"), section.indexOf("```", section.indexOf("```text") + 7));
     const named = [...tree.matchAll(/[├└]── ([\w.-]+\.ts)\b/g)].map((match) => match[1]).sort();
-    const files = (readdirSync("src", { recursive: true }))
+    const files = readdirSync("src", { recursive: true })
       .filter((path) => path.endsWith(".ts") && !/\.(test|fixture)\./.test(path))
       .map((path) => path.split(/[\\/]/).at(-1))
       .sort();

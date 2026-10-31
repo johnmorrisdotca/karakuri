@@ -2,7 +2,21 @@
 // ledges, the character, the bees, the rocks and the stroke are drawn on a canvas. The rules and the simulation are in saveTheCharacter.ts.
 import type { Controller, Say, Status, Theme } from "./controller.ts";
 import { alpha, disc, shade } from "./draw.ts";
-import { BEE_R, HERO_R, ROCK_R, STROKE_R, SURVIVE_TICKS, beginStroke, clearStroke, extendStroke, isCalled, newSaveGame, releaseStroke, stepSaveGame, type SaveGame } from "./save-the-character.ts";
+import {
+  BEE_R,
+  HERO_R,
+  ROCK_R,
+  STROKE_R,
+  SURVIVE_TICKS,
+  beginStroke,
+  clearStroke,
+  extendStroke,
+  isCalled,
+  newSaveGame,
+  releaseStroke,
+  stepSaveGame,
+  type SaveGame,
+} from "./save-the-character.ts";
 import { SAVE_THE_CHARACTER_LEVELS } from "./save-the-character.levels.ts";
 
 const WIDTH = 360;
@@ -25,11 +39,13 @@ export function saveTheCharacterController(level: number): Controller {
     },
     get result(): Say | null {
       if (controller.status === "won") return { key: "saveWon" };
-      if (controller.status === "lost") return { key: game.loss === "rock" ? "saveLostRock" : game.loss === "fell" ? "saveLostFell" : "saveLostBee" };
+      if (controller.status === "lost")
+        return { key: game.loss === "rock" ? "saveLostRock" : game.loss === "fell" ? "saveLostFell" : "saveLostBee" };
       return null;
     },
     get info(): Say {
-      if (game.phase === "draw") return { key: "saveDraw", values: { ink: Math.max(0, Math.round((1 - game.inkUsed / spec.ink) * 100)) } };
+      if (game.phase === "draw")
+        return { key: "saveDraw", values: { ink: Math.max(0, Math.round((1 - game.inkUsed / spec.ink) * 100)) } };
       return { key: "saveSafe", values: { s: (Math.max(0, SURVIVE_TICKS - game.tick) / 60).toFixed(1) } };
     },
     get animating(): boolean {
@@ -73,7 +89,8 @@ export function saveTheCharacterController(level: number): Controller {
         loss: game.loss,
         tick: game.tick,
         hero: { x: game.hero.x, y: game.hero.y },
-        stroke: game.stroke === null ? null : { x: game.stroke.x, y: game.stroke.y, c: game.stroke.c, s: game.stroke.s },
+        stroke:
+          game.stroke === null ? null : { x: game.stroke.x, y: game.stroke.y, c: game.stroke.c, s: game.stroke.s },
         bees: game.bees.map((b) => ({ x: b.x, y: b.y })),
         rocks: game.rocks.map((r) => ({ x: r.x, y: r.y })),
         inkUsed: game.inkUsed,
@@ -164,7 +181,14 @@ export function saveTheCharacterController(level: number): Controller {
     g.fillRect(20, 466, Math.max(0, Math.min(1, fraction)) * w, 8);
   }
 
-  function drawBee(g: CanvasRenderingContext2D, theme: Theme, x: number, y: number, scale: number, facing: number): void {
+  function drawBee(
+    g: CanvasRenderingContext2D,
+    theme: Theme,
+    x: number,
+    y: number,
+    scale: number,
+    facing: number,
+  ): void {
     const flap = Math.sin(clock * 1.6 + x) * 0.5 + 0.5;
     g.save();
     g.translate(x, y);

@@ -31,7 +31,8 @@ const BASE_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
     lost: "Not this time",
     wonLast: "That was the last level. Well done!",
     boardLabel: "{game}, level {n}. {rules}",
-    keyboardHelp: "Focus the board: arrows move the cursor, Shift moves one unit, Enter or Space taps or starts/ends a drag, Escape cancels, Home centres the cursor.",
+    keyboardHelp:
+      "Focus the board: arrows move the cursor, Shift moves one unit, Enter or Space taps or starts/ends a drag, Escape cancels, Home centres the cursor.",
     keyboardPosition: "Cursor {x}, {y}.",
     keyboardPressed: "Cursor {x}, {y}, pressing.",
     statusPlaying: "Playing.",
@@ -58,7 +59,8 @@ const BASE_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
     pinLostFell: "The hero fell out of the shaft.",
     nutsSlots: "Slots {used} of {slots} · plates left {left}",
     nutsWon: "Every plate has fallen, in {n} screws.",
-    nutsLost: "All {slots} slots are full and plates are still on. Finish one plate at a time, so its screws fall with it and free their slots.",
+    nutsLost:
+      "All {slots} slots are full and plates are still on. Finish one plate at a time, so its screws fall with it and free their slots.",
     tubePours: "Pours {n}",
     tubeWonOne: "Every tube is one colour, in 1 pour.",
     tubeWon: "Every tube is one colour, in {n} pours.",
@@ -75,11 +77,16 @@ const BASE_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
     game_rope_cut: "Rope Cut",
     game_tube_sort: "Tube Sort",
     game_choice_story: "Choice Story",
-    rules_save_the_character: "Draw one line to shield the character, then let go. The line falls and the danger comes. Keep the character safe for three seconds.",
-    rules_pin_rescue: "Pull the pins in the right order. Keep the hero away from the lava, and get the hero or the gold to the safe place.",
-    rules_nuts_and_bolts: "Tap a screw to move it to a free slot. A plate with no screw left falls away. Drop every plate before the slots fill up.",
-    rules_stretch_grabber: "Drag the stretchy arm round the pegs and walls to grab the star. Touch a red hazard or a laser and you lose.",
-    rules_grid_escape: "Slide the blocks along their lanes to clear the way, and take the key block out through the exit.",
+    rules_save_the_character:
+      "Draw one line to shield the character, then let go. The line falls and the danger comes. Keep the character safe for three seconds.",
+    rules_pin_rescue:
+      "Pull the pins in the right order. Keep the hero away from the lava, and get the hero or the gold to the safe place.",
+    rules_nuts_and_bolts:
+      "Tap a screw to move it to a free slot. A plate with no screw left falls away. Drop every plate before the slots fill up.",
+    rules_stretch_grabber:
+      "Drag the stretchy arm round the pegs and walls to grab the star. Touch a red hazard or a laser and you lose.",
+    rules_grid_escape:
+      "Slide the blocks along their lanes to clear the way, and take the key block out through the exit.",
     rules_rope_cut: "Swipe across a rope to cut it. Bring the load to the target, and do not let it fall into the pit.",
     rules_tube_sort: "Tap a tube, then another, to pour the top colour across. Make every tube hold one colour.",
     rules_choice_story: "Pick the right tool at each of the three stages to finish the story.",
@@ -95,7 +102,8 @@ const BASE_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
     lost: "残念！",
     wonLast: "これが最後のレベルでした。おめでとう！",
     boardLabel: "{game}、レベル{n}。{rules}",
-    keyboardHelp: "盤にフォーカスを合わせます。矢印キーで移動、Shiftで1単位ずつ移動、EnterまたはSpaceでタップやドラッグの開始・終了、Escapeで取り消し、Homeで中央に戻ります。",
+    keyboardHelp:
+      "盤にフォーカスを合わせます。矢印キーで移動、Shiftで1単位ずつ移動、EnterまたはSpaceでタップやドラッグの開始・終了、Escapeで取り消し、Homeで中央に戻ります。",
     keyboardPosition: "カーソル{x}、{y}。",
     keyboardPressed: "カーソル{x}、{y}、押しています。",
     statusPlaying: "プレイ中。",
@@ -122,7 +130,8 @@ const BASE_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
     pinLostFell: "ヒーローが縦穴の外へ落ちました。",
     nutsSlots: "スロット {used}／{slots}・残りの板 {left}",
     nutsWon: "{n}本のネジで、すべての板が落ちました。",
-    nutsLost: "{slots}個のスロットがすべて埋まり、板が残っています。板を一枚ずつ片づけると、ネジも一緒に落ちてスロットが空きます。",
+    nutsLost:
+      "{slots}個のスロットがすべて埋まり、板が残っています。板を一枚ずつ片づけると、ネジも一緒に落ちてスロットが空きます。",
     tubePours: "注いだ回数 {n}",
     tubeWonOne: "1回で、どのチューブも一つの色になりました。",
     tubeWon: "{n}回で、どのチューブも一つの色になりました。",
@@ -139,13 +148,17 @@ const BASE_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
     game_rope_cut: "ロープをきれ",
     game_tube_sort: "チューブ仕分け",
     game_choice_story: "えらんでストーリー",
-    rules_save_the_character: "線を一本だけ描いてキャラを守り、指を離します。線が落ちて、危険が近づきます。3秒間、キャラを守りきりましょう。",
+    rules_save_the_character:
+      "線を一本だけ描いてキャラを守り、指を離します。線が落ちて、危険が近づきます。3秒間、キャラを守りきりましょう。",
     rules_pin_rescue: "ピンを正しい順番で抜きます。ヒーローを溶岩から守り、ヒーローか金を安全な場所まで運びましょう。",
-    rules_nuts_and_bolts: "ネジをタップして空いているスロットに移します。ネジがなくなった板は落ちます。スロットが埋まる前に、すべての板を落としましょう。",
-    rules_stretch_grabber: "のびるアームをドラッグして、杭や壁をよけながら星をつかみます。赤い危険物やレーザーにふれたら負けです。",
+    rules_nuts_and_bolts:
+      "ネジをタップして空いているスロットに移します。ネジがなくなった板は落ちます。スロットが埋まる前に、すべての板を落としましょう。",
+    rules_stretch_grabber:
+      "のびるアームをドラッグして、杭や壁をよけながら星をつかみます。赤い危険物やレーザーにふれたら負けです。",
     rules_grid_escape: "ブロックをレーンにそってすべらせて道をあけ、カギのブロックを出口から外へ出します。",
     rules_rope_cut: "ロープをなぞるように切ります。荷物をターゲットまで運び、穴に落とさないようにしましょう。",
-    rules_tube_sort: "チューブを一つ、次にもう一つタップして、いちばん上の色を注ぎます。どのチューブも一つの色にしましょう。",
+    rules_tube_sort:
+      "チューブを一つ、次にもう一つタップして、いちばん上の色を注ぎます。どのチューブも一つの色にしましょう。",
     rules_choice_story: "3つの場面で、それぞれ正しい道具を選んで、物語をクリアしましょう。",
   },
 };
@@ -159,7 +172,10 @@ const BASE_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
  * console.log(KARAKURI_STRINGS.en.keyboardPosition);
  * ```
  */
-export const KARAKURI_STRINGS: Record<KarakuriLanguage, Record<string, string>> = { en: { ...BASE_STRINGS.en, ...STORY_STRINGS.en }, ja: { ...BASE_STRINGS.ja, ...STORY_STRINGS.ja } };
+export const KARAKURI_STRINGS: Record<KarakuriLanguage, Record<string, string>> = {
+  en: { ...BASE_STRINGS.en, ...STORY_STRINGS.en },
+  ja: { ...BASE_STRINGS.ja, ...STORY_STRINGS.ja },
+};
 
 /** The words for `key` in `lang`, with each `{name}` filled from `values`; English when the language has none; the key itself when nobody has.
  *

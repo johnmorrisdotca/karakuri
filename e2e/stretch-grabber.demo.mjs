@@ -36,7 +36,9 @@ for (let level = 1; level <= STRETCH_GRABBER_LEVELS.length; level += 1) {
   });
 }
 
-test("a finger that does not start on the tip does not move the arm, and the arm stays when the finger lifts", async ({ page }, testInfo) => {
+test("a finger that does not start on the tip does not move the arm, and the arm stays when the finger lifts", async ({
+  page,
+}, testInfo) => {
   await open(page, "?game=stretch-grabber&level=1");
   const base = (await read(page, (m) => m.controller.snapshot())).base;
   const far = await client(page, 300, 200);

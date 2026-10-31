@@ -1,9 +1,25 @@
 import { describe, expect, it } from "vitest";
 
-import { ARM_R, TIP_R, armLength, moveTip, nearTip, newGrabGame, playPath, tipOf, type GrabLevel } from "./stretch-grabber.ts";
+import {
+  ARM_R,
+  TIP_R,
+  armLength,
+  moveTip,
+  nearTip,
+  newGrabGame,
+  playPath,
+  tipOf,
+  type GrabLevel,
+} from "./stretch-grabber.ts";
 import { STRETCH_GRABBER_LEVELS } from "./stretch-grabber.levels.ts";
 
-const open: GrabLevel = { base: { x: 180, y: 440 }, star: { x: 180, y: 60, r: 13 }, maxLength: 500, solids: [], hazards: [] };
+const open: GrabLevel = {
+  base: { x: 180, y: 440 },
+  star: { x: 180, y: 60, r: 13 },
+  maxLength: 500,
+  solids: [],
+  hazards: [],
+};
 
 describe("leading the tip", () => {
   it("moves the tip where the pointer goes, and the arm follows the way the tip went", () => {
@@ -112,17 +128,21 @@ describe("the levels", () => {
   });
 
   it("can each be won: the recorded route, played on the rules, takes the tip to the star", () => {
-    for (const [i, level] of STRETCH_GRABBER_LEVELS.entries()) expect(playPath(level, level.solution).status, `level ${i + 1}`).toBe("won");
+    for (const [i, level] of STRETCH_GRABBER_LEVELS.entries())
+      expect(playPath(level, level.solution).status, `level ${i + 1}`).toBe("won");
   });
 
   it("can each be lost: the recorded loss touches a hazard", () => {
-    for (const [i, level] of STRETCH_GRABBER_LEVELS.entries()) expect(playPath(level, level.loss).status, `level ${i + 1}`).toBe("lost");
+    for (const [i, level] of STRETCH_GRABBER_LEVELS.entries())
+      expect(playPath(level, level.loss).status, `level ${i + 1}`).toBe("lost");
   });
 
   it("have too little arm to go straight at the star where a wall is in the way, and can be led a little off the recorded route and still win", () => {
     for (const [i, level] of STRETCH_GRABBER_LEVELS.entries()) {
       // Shifting the middle waypoints a few units sideways (and any that then lie in a wall are pushed out by the tip itself) still wins.
-      const way = level.solution.map((p, k) => (k === 0 || k === level.solution.length - 1 ? p : { x: p.x + (k % 2 === 0 ? 3 : -3), y: p.y }));
+      const way = level.solution.map((p, k) =>
+        k === 0 || k === level.solution.length - 1 ? p : { x: p.x + (k % 2 === 0 ? 3 : -3), y: p.y },
+      );
       expect(playPath(level, way).status, `level ${i + 1}`).toBe("won");
     }
   });

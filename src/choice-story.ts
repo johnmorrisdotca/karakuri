@@ -4,11 +4,41 @@
 
 /** A tool the player may choose. */
 export type ToolId =
-  | "umbrella" | "sunglasses" | "boots" | "sandals" | "key" | "balloon" | "flashlight" | "spoon" | "plank" | "pillow" | "honey" | "ball"
-  | "shovel" | "kite" | "scarf" | "sunhat" | "sled" | "raft" | "map" | "sandwich";
+  | "umbrella"
+  | "sunglasses"
+  | "boots"
+  | "sandals"
+  | "key"
+  | "balloon"
+  | "flashlight"
+  | "spoon"
+  | "plank"
+  | "pillow"
+  | "honey"
+  | "ball"
+  | "shovel"
+  | "kite"
+  | "scarf"
+  | "sunhat"
+  | "sled"
+  | "raft"
+  | "map"
+  | "sandwich";
 
 /** What is in the way. */
-export type ProblemId = "rain" | "puddle" | "door" | "dark" | "gap" | "bear" | "snow" | "wind" | "hill" | "sea" | "treasure" | "chest";
+export type ProblemId =
+  | "rain"
+  | "puddle"
+  | "door"
+  | "dark"
+  | "gap"
+  | "bear"
+  | "snow"
+  | "wind"
+  | "hill"
+  | "sea"
+  | "treasure"
+  | "chest";
 
 /** One stage: what is in the way, the two tools, and which of them (0 or 1) helps. */
 export interface Stage {
@@ -79,7 +109,13 @@ export interface StoryState {
 export const stageKey = (story: number, stage: number): string => `s${story + 1}${stage + 1}`;
 
 /** A new play of a story. */
-export const newStory = (story: number): StoryState => ({ story, stage: 0, slips: 0, failed: false, status: "playing" });
+export const newStory = (story: number): StoryState => ({
+  story,
+  stage: 0,
+  slips: 0,
+  failed: false,
+  status: "playing",
+});
 
 /** The stage now being played. */
 export const stageOf = (state: StoryState): Stage => STORIES[state.story].stages[state.stage];

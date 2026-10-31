@@ -33,7 +33,9 @@ for (let level = 1; level <= TUBE_SORT_LEVELS.length; level += 1) {
     expect(errors).toEqual([]);
   });
 
-  test(`level ${level} is lost by pouring into a dead end, and Try again starts it over`, async ({ page }, testInfo) => {
+  test(`level ${level} is lost by pouring into a dead end, and Try again starts it over`, async ({
+    page,
+  }, testInfo) => {
     const errors = await open(page, `?game=tube-sort&level=${level}`);
     const path = findDeadEnd(TUBE_SORT_LEVELS[level - 1].tubes);
     let count = 0;
@@ -47,7 +49,9 @@ for (let level = 1; level <= TUBE_SORT_LEVELS.length; level += 1) {
   });
 }
 
-test("a tube picked up goes down again when tapped again, and a tube that cannot take the pour is not poured into", async ({ page }, testInfo) => {
+test("a tube picked up goes down again when tapped again, and a tube that cannot take the pour is not poured into", async ({
+  page,
+}, testInfo) => {
   await open(page, "?game=tube-sort&level=3");
   const start = TUBE_SORT_LEVELS[2].tubes;
   await tap(page, testInfo, await centre(page, 0));
@@ -55,7 +59,9 @@ test("a tube picked up goes down again when tapped again, and a tube that cannot
   await tap(page, testInfo, await centre(page, 0));
   expect((await read(page, (m) => m.controller.snapshot())).picked).toBe(-1);
   // Tube 0's top is 0; tube 1's top is 0 too in level 3 (its last layer), so look for one that differs.
-  const other = start.findIndex((tube, i) => i !== 0 && tube.length > 0 && tube[tube.length - 1] !== start[0][start[0].length - 1]);
+  const other = start.findIndex(
+    (tube, i) => i !== 0 && tube.length > 0 && tube[tube.length - 1] !== start[0][start[0].length - 1],
+  );
   await tap(page, testInfo, await centre(page, 0));
   await tap(page, testInfo, await centre(page, other));
   const snap = await read(page, (m) => m.controller.snapshot());

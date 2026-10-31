@@ -282,7 +282,10 @@ const PICTURES: Record<ToolId, (g: CanvasRenderingContext2D) => void> = {
     g.quadraticCurveTo(-12, 34, 0, 40);
     g.quadraticCurveTo(12, 46, 0, 52);
     g.stroke();
-    for (const [x, y] of [[-4, 36], [4, 47]]) {
+    for (const [x, y] of [
+      [-4, 36],
+      [4, 47],
+    ]) {
       g.fillStyle = "#3d6fb5";
       g.beginPath();
       g.moveTo(x - 8, y - 5);

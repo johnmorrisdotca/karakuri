@@ -74,8 +74,17 @@ export interface Fluid {
  * console.log(createFluid({radius:2,gravity:0}).particles.length);
  * ```
  */
-export function createFluid(options: { radius?: number; gravity?: number; damping?: number; iterations?: number; reacts?: boolean } = {}): Fluid {
-  return { particles: [], radius: options.radius ?? 4, gravity: options.gravity ?? 900, damping: options.damping ?? 0.995, iterations: options.iterations ?? 3, reacts: options.reacts ?? true };
+export function createFluid(
+  options: { radius?: number; gravity?: number; damping?: number; iterations?: number; reacts?: boolean } = {},
+): Fluid {
+  return {
+    particles: [],
+    radius: options.radius ?? 4,
+    gravity: options.gravity ?? 900,
+    damping: options.damping ?? 0.995,
+    iterations: options.iterations ?? 3,
+    reacts: options.reacts ?? true,
+  };
 }
 
 /** Fills the rectangle from (x, y) to (x + w, y + h) with particles of one kind on a grid a little looser than they settle.

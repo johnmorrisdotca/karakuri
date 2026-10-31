@@ -32,7 +32,8 @@ export function ropeCutController(level: number): Controller {
       return isCalled(game) ? game.status : "playing";
     },
     get result(): Say | null {
-      if (controller.status === "won") return { key: game.cuts.length === 1 ? "ropeWonOne" : "ropeWon", values: { n: game.cuts.length } };
+      if (controller.status === "won")
+        return { key: game.cuts.length === 1 ? "ropeWonOne" : "ropeWon", values: { n: game.cuts.length } };
       if (controller.status === "lost") return { key: "ropeLost" };
       return null;
     },
@@ -87,7 +88,10 @@ export function ropeCutController(level: number): Controller {
         cuts: game.cuts.map((c) => ({ ...c })),
         moving: isMoving(game),
         load: { x: load.x, y: load.y },
-        ropes: game.ropes.map((r) => ({ nodes: r.nodes.map((n) => ({ x: game.rig.nodes[n].x, y: game.rig.nodes[n].y })), alive: r.links.map((l) => game.rig.links[l].alive) })),
+        ropes: game.ropes.map((r) => ({
+          nodes: r.nodes.map((n) => ({ x: game.rig.nodes[n].x, y: game.rig.nodes[n].y })),
+          alive: r.links.map((l) => game.rig.links[l].alive),
+        })),
       };
     },
   };

@@ -11,7 +11,9 @@ const MARGIN = 36;
 /** The centre of a block's cell, in the game's units, with the block `b` at offset `offset`. */
 const centre = (puzzle, b, offset, cell = 0) => {
   const block = puzzle.blocks[b];
-  return block.dir === "h" ? { x: MARGIN + (offset + cell + 0.5) * CELL, y: MARGIN + (block.row + 0.5) * CELL } : { x: MARGIN + (block.col + 0.5) * CELL, y: MARGIN + (offset + cell + 0.5) * CELL };
+  return block.dir === "h"
+    ? { x: MARGIN + (offset + cell + 0.5) * CELL, y: MARGIN + (block.row + 0.5) * CELL }
+    : { x: MARGIN + (block.col + 0.5) * CELL, y: MARGIN + (offset + cell + 0.5) * CELL };
 };
 
 for (let level = 1; level <= GRID_ESCAPE_LEVELS.length; level += 1) {
@@ -44,7 +46,14 @@ test("a level is lost when the moves run out, and Try again starts it over", asy
   const limit = (await read(page, (m) => m.controller.snapshot())).limit;
   let state = newGridGame(puzzle, limit + 50);
   // A block that has room, slid to and fro and never towards the exit.
-  const b = puzzle.blocks.findIndex((block, i) => i !== puzzle.key && (() => { const r = reach(puzzle, state.at, i); return r.high > r.low; })());
+  const b = puzzle.blocks.findIndex(
+    (block, i) =>
+      i !== puzzle.key &&
+      (() => {
+        const r = reach(puzzle, state.at, i);
+        return r.high > r.low;
+      })(),
+  );
   for (let i = 0; i < limit; i += 1) {
     const r = reach(puzzle, state.at, b);
     const to = state.at[b] === r.low ? r.low + 1 : r.low;
@@ -63,11 +72,20 @@ test("a level is lost when the moves run out, and Try again starts it over", asy
   expect(errors).toEqual([]);
 });
 
-test("a block that is only touched, or let go where it began, is no move, and one that cannot pass another stops there", async ({ page }, testInfo) => {
+test("a block that is only touched, or let go where it began, is no move, and one that cannot pass another stops there", async ({
+  page,
+}, testInfo) => {
   await open(page, "?game=grid-escape&level=2");
   const puzzle = gridPuzzleOf(GRID_ESCAPE_LEVELS[1]);
   const start = newGridGame(puzzle, 99);
-  const b = puzzle.blocks.findIndex((block, i) => i !== puzzle.key && (() => { const r = reach(puzzle, start.at, i); return r.high > r.low; })());
+  const b = puzzle.blocks.findIndex(
+    (block, i) =>
+      i !== puzzle.key &&
+      (() => {
+        const r = reach(puzzle, start.at, i);
+        return r.high > r.low;
+      })(),
+  );
   const here = await client(page, ...Object.values(centre(puzzle, b, start.at[b])));
   await drag(page, testInfo, [here, { x: here.x + 2, y: here.y + 2 }]);
   expect((await read(page, (m) => m.controller.snapshot())).moves).toBe(0);

@@ -39,25 +39,40 @@ export interface NutState {
 
 /** A new game of a puzzle. */
 export function newNutGame(puzzle: NutPuzzle): NutState {
-  return { puzzle, removed: puzzle.plates.map((p) => p.screws.map(() => false)), fallen: puzzle.plates.map(() => false), held: [], taps: 0, status: "playing" };
+  return {
+    puzzle,
+    removed: puzzle.plates.map((p) => p.screws.map(() => false)),
+    fallen: puzzle.plates.map(() => false),
+    held: [],
+    taps: 0,
+    status: "playing",
+  };
 }
 
 /** Whether screw `s` of plate `p` is hidden under a plate above it that is still on the board. */
 export function isCovered(puzzle: NutPuzzle, fallen: readonly boolean[], p: number, s: number): boolean {
   const at = puzzle.plates[p].screws[s];
-  for (let above = p + 1; above < puzzle.plates.length; above += 1) if (!fallen[above] && pointInPolygon(at.x, at.y, puzzle.plates[above].polygon)) return true;
+  for (let above = p + 1; above < puzzle.plates.length; above += 1)
+    if (!fallen[above] && pointInPolygon(at.x, at.y, puzzle.plates[above].polygon)) return true;
   return false;
 }
 
 /** Whether a screw can be tapped now: it is still in, its plate is still on the board, and nothing covers it. */
 export function isFree(state: NutState, p: number, s: number): boolean {
-  return state.status === "playing" && !state.fallen[p] && !state.removed[p][s] && !isCovered(state.puzzle, state.fallen, p, s);
+  return (
+    state.status === "playing" &&
+    !state.fallen[p] &&
+    !state.removed[p][s] &&
+    !isCovered(state.puzzle, state.fallen, p, s)
+  );
 }
 
 /** Every screw that can be tapped now. */
 export function freeScrews(state: NutState): ScrewRef[] {
   const out: ScrewRef[] = [];
-  for (let p = 0; p < state.puzzle.plates.length; p += 1) for (let s = 0; s < state.puzzle.plates[p].screws.length; s += 1) if (isFree(state, p, s)) out.push({ plate: p, screw: s });
+  for (let p = 0; p < state.puzzle.plates.length; p += 1)
+    for (let s = 0; s < state.puzzle.plates[p].screws.length; s += 1)
+      if (isFree(state, p, s)) out.push({ plate: p, screw: s });
   return out;
 }
 
@@ -107,7 +122,8 @@ export function solveNuts(plates: readonly NutPlate[]): NutSolution | null {
   const coveredBy = refs.map(({ plate, screw }) => {
     let above = 0;
     const at = plates[plate].screws[screw];
-    for (let q = plate + 1; q < plates.length; q += 1) if (pointInPolygon(at.x, at.y, plates[q].polygon)) above |= 1 << q;
+    for (let q = plate + 1; q < plates.length; q += 1)
+      if (pointInPolygon(at.x, at.y, plates[q].polygon)) above |= 1 << q;
     return above;
   });
   const everything = screwsOf.reduce((a, b) => a | b, 0);

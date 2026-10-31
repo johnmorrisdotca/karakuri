@@ -30,7 +30,24 @@ function make(kind: Kind, colour: number): NutPlate {
     h = between(34, 44);
     angle = n === 4 ? angleOf([0, 0, 90]) : angleOf([0, 0, 20, -20, 35, -35, 90, 70, -70]);
     const k = w / 2 - 18;
-    pts = n === 2 ? [[-k, 0], [k, 0]] : n === 3 ? [[-k, 0], [0, 0], [k, 0]] : [[-k, 0], [-k / 3, 0], [k / 3, 0], [k, 0]];
+    pts =
+      n === 2
+        ? [
+            [-k, 0],
+            [k, 0],
+          ]
+        : n === 3
+          ? [
+              [-k, 0],
+              [0, 0],
+              [k, 0],
+            ]
+          : [
+              [-k, 0],
+              [-k / 3, 0],
+              [k / 3, 0],
+              [k, 0],
+            ];
   } else {
     const n = Number(kind.slice(5));
     w = n >= 4 ? between(120, 170) : between(90, 130);
@@ -38,14 +55,43 @@ function make(kind: Kind, colour: number): NutPlate {
     angle = angleOf([0, 15, -15, 30, -30]);
     const a = w / 2 - 18;
     const b = h / 2 - 18;
-    pts = n === 2 ? [[-a, -b], [a, b]] : n === 3 ? [[-a, -b], [a, -b], [-a, b]] : n === 4 ? [[-a, -b], [a, -b], [a, b], [-a, b]] : [[-a, -b], [a, -b], [a, b], [-a, b], [0, 0]];
+    pts =
+      n === 2
+        ? [
+            [-a, -b],
+            [a, b],
+          ]
+        : n === 3
+          ? [
+              [-a, -b],
+              [a, -b],
+              [-a, b],
+            ]
+          : n === 4
+            ? [
+                [-a, -b],
+                [a, -b],
+                [a, b],
+                [-a, b],
+              ]
+            : [
+                [-a, -b],
+                [a, -b],
+                [a, b],
+                [-a, b],
+                [0, 0],
+              ];
   }
   const cx = between(w / 2 + 20, 360 - w / 2 - 20);
   const cy = between(h / 2 + 20, 360 - h / 2 - 20);
   const c = Math.cos(angle);
   const s = Math.sin(angle);
   const at = (x: number, y: number) => ({ x: r1(cx + x * c - y * s), y: r1(cy + x * s + y * c) });
-  return { colour, polygon: [at(-w / 2, -h / 2), at(w / 2, -h / 2), at(w / 2, h / 2), at(-w / 2, h / 2)], screws: pts.map(([x, y]) => at(x, y)) };
+  return {
+    colour,
+    polygon: [at(-w / 2, -h / 2), at(w / 2, -h / 2), at(w / 2, h / 2), at(-w / 2, h / 2)],
+    screws: pts.map(([x, y]) => at(x, y)),
+  };
 }
 
 const LEVELS: { kinds: Kind[]; slots: number; covered: number }[] = [
@@ -76,7 +122,9 @@ for (const [index, want] of LEVELS.entries()) {
         if (!plate.polygon.every((v) => v.x >= 6 && v.x <= 354 && v.y >= 6 && v.y <= 354)) continue;
         const others = plates.flatMap((p) => p.screws);
         let near = false;
-        for (const a of plate.screws) for (const b of [...others, ...plate.screws.filter((s) => s !== a)]) if (Math.hypot(a.x - b.x, a.y - b.y) < 30) near = true;
+        for (const a of plate.screws)
+          for (const b of [...others, ...plate.screws.filter((s) => s !== a)])
+            if (Math.hypot(a.x - b.x, a.y - b.y) < 30) near = true;
         if (near) continue;
         plates.push(plate);
         ok = true;
@@ -87,16 +135,25 @@ for (const [index, want] of LEVELS.entries()) {
     if (!isPlain(puzzle)) continue;
     const game = newNutGame(puzzle);
     let covered = 0;
-    for (let p = 0; p < plates.length; p += 1) for (let s = 0; s < plates[p].screws.length; s += 1) if (isCovered(puzzle, game.fallen, p, s)) covered += 1;
+    for (let p = 0; p < plates.length; p += 1)
+      for (let s = 0; s < plates[p].screws.length; s += 1) if (isCovered(puzzle, game.fallen, p, s)) covered += 1;
     if (covered < want.covered || covered > want.covered + 4) continue;
     let overlaps = 0;
-    for (let a = 0; a < plates.length; a += 1) for (let b = a + 1; b < plates.length; b += 1) if (plates[b].polygon.some((v) => pointInPolygon(v.x, v.y, plates[a].polygon)) || plates[a].polygon.some((v) => pointInPolygon(v.x, v.y, plates[b].polygon))) overlaps += 1;
+    for (let a = 0; a < plates.length; a += 1)
+      for (let b = a + 1; b < plates.length; b += 1)
+        if (
+          plates[b].polygon.some((v) => pointInPolygon(v.x, v.y, plates[a].polygon)) ||
+          plates[a].polygon.some((v) => pointInPolygon(v.x, v.y, plates[b].polygon))
+        )
+          overlaps += 1;
     if (overlaps < plates.length - 1) continue;
     if (plates.flatMap((p) => p.screws).length > 22) continue;
     const solved = solveNuts(plates);
     if (solved === null || solved.fewestSlots !== want.slots) continue;
     if (findLoss({ plates, slots: solved.fewestSlots }) === null) continue;
-    console.error(`level ${index + 1}: attempt ${attempt}, ${plates.flatMap((p) => p.screws).length} screws, ${covered} covered, ${solved.fewestSlots} slots, ${overlaps} overlaps`);
+    console.error(
+      `level ${index + 1}: attempt ${attempt}, ${plates.flatMap((p) => p.screws).length} screws, ${covered} covered, ${solved.fewestSlots} slots, ${overlaps} overlaps`,
+    );
     out.push(JSON.stringify({ plates, slots: solved.fewestSlots }));
     found = true;
   }

@@ -5,7 +5,16 @@
 //
 //   node --experimental-strip-types scripts/stretch-grabber-levels.ts
 import { distance, distanceToSegment } from "../src/physics/geometry.ts";
-import { ARM_R, TIP_R, newGrabGame, playPath, type GrabLevel, type Hazard, type Pt, type Solid } from "../src/stretchGrabber.ts";
+import {
+  ARM_R,
+  TIP_R,
+  newGrabGame,
+  playPath,
+  type GrabLevel,
+  type Hazard,
+  type Pt,
+  type Solid,
+} from "../src/stretchGrabber.ts";
 
 interface Design {
   name: string;
@@ -63,7 +72,11 @@ const DESIGNS: Design[] = [
     solids: [wall(0, 390, 290, 390), wall(70, 290, 360, 290), wall(0, 190, 290, 190), wall(70, 100, 360, 100)],
     hazards: [laser(180, 384, 180, 345), laser(160, 196, 160, 238), laser(200, 184, 200, 145)],
     slack: 0.08,
-    loss: [{ x: 325, y: 430 }, { x: 325, y: 345 }, { x: 175, y: 360 }],
+    loss: [
+      { x: 325, y: 430 },
+      { x: 325, y: 345 },
+      { x: 175, y: 360 },
+    ],
   },
 ];
 
@@ -74,11 +87,13 @@ const ROWS = 480 / CELL;
 function clearAt(level: GrabLevel, x: number, y: number, margin: number): boolean {
   if (x < TIP_R || x > 360 - TIP_R || y < TIP_R || y > 480 - TIP_R) return false;
   for (const s of level.solids) {
-    const d = s.kind === "peg" ? distance(x, y, s.x, s.y) - s.r : distanceToSegment(x, y, s.ax, s.ay, s.bx, s.by) - (s.r ?? 4);
+    const d =
+      s.kind === "peg" ? distance(x, y, s.x, s.y) - s.r : distanceToSegment(x, y, s.ax, s.ay, s.bx, s.by) - (s.r ?? 4);
     if (d < TIP_R + margin) return false;
   }
   for (const h of level.hazards) {
-    const d = h.kind === "blob" ? distance(x, y, h.x, h.y) - h.r : distanceToSegment(x, y, h.ax, h.ay, h.bx, h.by) - 1.5;
+    const d =
+      h.kind === "blob" ? distance(x, y, h.x, h.y) - h.r : distanceToSegment(x, y, h.ax, h.ay, h.bx, h.by) - 1.5;
     if (d < TIP_R + margin) return false;
   }
   return true;
@@ -88,12 +103,14 @@ function clearAt(level: GrabLevel, x: number, y: number, margin: number): boolea
 function route(level: GrabLevel): Pt[] | null {
   const margin = 4;
   const start = { c: Math.round(level.base.x / CELL), r: Math.round(level.base.y / CELL) };
-  const goal = (c: number, r: number): boolean => distance(c * CELL, r * CELL, level.star.x, level.star.y) <= level.star.r + TIP_R - 3;
+  const goal = (c: number, r: number): boolean =>
+    distance(c * CELL, r * CELL, level.star.x, level.star.y) <= level.star.r + TIP_R - 3;
   const key = (c: number, r: number): number => r * COLS + c;
   const g = new Map<number, number>([[key(start.c, start.r), 0]]);
   const from = new Map<number, number>();
   const open: { c: number; r: number; f: number }[] = [{ ...start, f: 0 }];
-  const h = (c: number, r: number): number => Math.max(0, distance(c * CELL, r * CELL, level.star.x, level.star.y) - level.star.r - TIP_R);
+  const h = (c: number, r: number): number =>
+    Math.max(0, distance(c * CELL, r * CELL, level.star.x, level.star.y) - level.star.r - TIP_R);
   while (open.length > 0) {
     open.sort((a, b) => a.f - b.f);
     const cur = open.shift() as { c: number; r: number; f: number };
@@ -131,7 +148,8 @@ function route(level: GrabLevel): Pt[] | null {
 function simplify(level: GrabLevel, cells: Pt[]): Pt[] {
   const free = (a: Pt, b: Pt): boolean => {
     const n = Math.ceil(distance(a.x, a.y, b.x, b.y) / 2);
-    for (let i = 0; i <= n; i += 1) if (!clearAt(level, a.x + ((b.x - a.x) * i) / n, a.y + ((b.y - a.y) * i) / n, 2)) return false;
+    for (let i = 0; i <= n; i += 1)
+      if (!clearAt(level, a.x + ((b.x - a.x) * i) / n, a.y + ((b.y - a.y) * i) / n, 2)) return false;
     return true;
   };
   const out: Pt[] = [cells[0]];
@@ -147,7 +165,13 @@ function simplify(level: GrabLevel, cells: Pt[]): Pt[] {
 
 const result: string[] = [];
 for (const design of DESIGNS) {
-  const draft: GrabLevel = { base: design.base, star: design.star, maxLength: 9999, solids: design.solids, hazards: design.hazards };
+  const draft: GrabLevel = {
+    base: design.base,
+    star: design.star,
+    maxLength: 9999,
+    solids: design.solids,
+    hazards: design.hazards,
+  };
   const cells = route(draft);
   if (cells === null) {
     console.error(`${design.name}: no route`);
@@ -162,7 +186,14 @@ for (const design of DESIGNS) {
   let loss: Pt[] = design.loss ?? [];
   for (const h of design.hazards) {
     if (loss.length > 0) break;
-    const targets = h.kind === "blob" ? [{ x: h.x, y: h.y }] : [{ x: (h.ax + h.bx) / 2, y: (h.ay + h.by) / 2 }, { x: h.ax, y: h.ay }, { x: h.bx, y: h.by }];
+    const targets =
+      h.kind === "blob"
+        ? [{ x: h.x, y: h.y }]
+        : [
+            { x: (h.ax + h.bx) / 2, y: (h.ay + h.by) / 2 },
+            { x: h.ax, y: h.ay },
+            { x: h.bx, y: h.by },
+          ];
     for (const t of targets) {
       if (playPath(level, [t]).status === "lost") {
         loss = [t];
@@ -172,8 +203,21 @@ for (const design of DESIGNS) {
     if (loss.length > 0) break;
   }
   const played = playPath(level, way);
-  console.error(`${design.name} route ${Math.round(length)} long in ${way.length} waypoints, arm ${maxLength}: ${played.status}`);
-  result.push(JSON.stringify({ name: design.name, base: design.base, star: design.star, maxLength, solids: design.solids, hazards: design.hazards, loss: loss.map((p) => ({ x: Math.round(p.x), y: Math.round(p.y) })), solution: way.map((p) => ({ x: Math.round(p.x), y: Math.round(p.y) })) }));
+  console.error(
+    `${design.name} route ${Math.round(length)} long in ${way.length} waypoints, arm ${maxLength}: ${played.status}`,
+  );
+  result.push(
+    JSON.stringify({
+      name: design.name,
+      base: design.base,
+      star: design.star,
+      maxLength,
+      solids: design.solids,
+      hazards: design.hazards,
+      loss: loss.map((p) => ({ x: Math.round(p.x), y: Math.round(p.y) })),
+      solution: way.map((p) => ({ x: Math.round(p.x), y: Math.round(p.y) })),
+    }),
+  );
 }
 console.log(result.join("\n"));
 void ARM_R;

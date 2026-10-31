@@ -12,7 +12,13 @@ const random = (): number => {
   return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
 };
 
-const sizes: [number, number][] = [[3, 4], [4, 5], [5, 6], [6, 7], [7, 8]];
+const sizes: [number, number][] = [
+  [3, 4],
+  [4, 5],
+  [5, 6],
+  [6, 7],
+  [7, 8],
+];
 for (const [colours, tubes] of sizes) {
   for (let attempt = 1; ; attempt += 1) {
     const layers: number[] = [];

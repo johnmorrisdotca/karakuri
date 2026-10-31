@@ -58,7 +58,10 @@ test("a screw under another plate cannot be tapped, and can once that plate has 
     for (let s = 0; s < puzzle.plates[p].screws.length; s += 1) {
       const here = snap.screws[p][s];
       // A covered screw with no free one near enough to be taken instead.
-      if (!free.has(`${p}.${s}`) && freePlaces.every((f) => Math.hypot(f.x - here.x, f.y - here.y) > 30)) { covered = { plate: p, screw: s }; break; }
+      if (!free.has(`${p}.${s}`) && freePlaces.every((f) => Math.hypot(f.x - here.x, f.y - here.y) > 30)) {
+        covered = { plate: p, screw: s };
+        break;
+      }
     }
   }
   expect(covered).not.toBeNull();

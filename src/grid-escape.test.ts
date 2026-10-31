@@ -1,6 +1,18 @@
 import { describe, expect, it } from "vitest";
 
-import { GRID_SIZE, cellsOf, gridRows, keyOut, movesAllowed, newGridGame, parseGrid, reach, slide, solveGrid, type GridPuzzle } from "./grid-escape.ts";
+import {
+  GRID_SIZE,
+  cellsOf,
+  gridRows,
+  keyOut,
+  movesAllowed,
+  newGridGame,
+  parseGrid,
+  reach,
+  slide,
+  solveGrid,
+  type GridPuzzle,
+} from "./grid-escape.ts";
 import { GRID_ESCAPE_LEVELS, gridPuzzleOf } from "./grid-escape.levels.ts";
 
 const parse = (rows: string[]): GridPuzzle => parseGrid(rows) as GridPuzzle;
@@ -11,7 +23,12 @@ const SMALL = ["......", "......", "KKa...", "..a...", "......", "......"];
 describe("reading a board", () => {
   it("reads blocks, their lengths and which way they lie", () => {
     const puzzle = parse(["bb.ccc", "......", "KK.d..", "...d..", "......", "......"]);
-    expect(puzzle.blocks.map((b) => [b.len, b.dir])).toEqual([[2, "h"], [2, "h"], [3, "h"], [2, "v"]]);
+    expect(puzzle.blocks.map((b) => [b.len, b.dir])).toEqual([
+      [2, "h"],
+      [2, "h"],
+      [3, "h"],
+      [2, "v"],
+    ]);
     expect(puzzle.blocks[puzzle.key].dir).toBe("h");
     expect(puzzle.exitRow).toBe(2);
   });
@@ -53,7 +70,10 @@ describe("sliding", () => {
   });
 
   it("every cell of a block is where its offset says", () => {
-    expect(cellsOf(puzzle.blocks[a], 3)).toEqual([[3, 2], [4, 2]]);
+    expect(cellsOf(puzzle.blocks[a], 3)).toEqual([
+      [3, 2],
+      [4, 2],
+    ]);
   });
 
   it("the key reaching the exit wins, and nothing moves after", () => {
@@ -129,7 +149,12 @@ describe("the levels", () => {
     for (const level of GRID_ESCAPE_LEVELS) {
       expect(level.rows).toHaveLength(GRID_SIZE);
       const puzzle = gridPuzzleOf(level);
-      expect(keyOut(puzzle, puzzle.blocks.map((b) => (b.dir === "h" ? b.col : b.row)))).toBe(false);
+      expect(
+        keyOut(
+          puzzle,
+          puzzle.blocks.map((b) => (b.dir === "h" ? b.col : b.row)),
+        ),
+      ).toBe(false);
     }
   });
 });

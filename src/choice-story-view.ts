@@ -42,7 +42,12 @@ export function choiceStoryController(level: number): Controller {
       return "playing";
     },
     get result(): Say | null {
-      if (controller.status === "won") return state.slips === 0 ? { key: "storyWon" } : state.slips === 1 ? { key: "storyWonSlipsOne" } : { key: "storyWonSlips", values: { n: state.slips } };
+      if (controller.status === "won")
+        return state.slips === 0
+          ? { key: "storyWon" }
+          : state.slips === 1
+            ? { key: "storyWonSlipsOne" }
+            : { key: "storyWonSlips", values: { n: state.slips } };
       if (controller.status === "lost") return { key: `${stageKey(index, state.stage)}_wrong` };
       return null;
     },
@@ -127,7 +132,8 @@ export function choiceStoryController(level: number): Controller {
   };
 
   const cardAt = (p: Point): 0 | 1 | -1 => {
-    for (let i = 0; i < 2; i += 1) if (p.x >= CARDS[i] && p.x <= CARDS[i] + CARD_W && p.y >= CARD_Y && p.y <= CARD_Y + CARD_H) return i as 0 | 1;
+    for (let i = 0; i < 2; i += 1)
+      if (p.x >= CARDS[i] && p.x <= CARDS[i] + CARD_W && p.y >= CARD_Y && p.y <= CARD_Y + CARD_H) return i as 0 | 1;
     return -1;
   };
 
@@ -136,10 +142,26 @@ export function choiceStoryController(level: number): Controller {
     const stage = stageOf(state);
     if (phase === "right") {
       const k = t / RIGHT_TICKS;
-      return { mood: k > 0.35 ? "cheer" : "idle", t: clock, dx: ease(k / 0.9) * 54, hop: k > 0.6 ? Math.abs(Math.sin((k - 0.6) * 12)) * 14 : 0, tool: stage.tools[picked === 1 ? 1 : 0], use: Math.min(1, t / 14) };
+      return {
+        mood: k > 0.35 ? "cheer" : "idle",
+        t: clock,
+        dx: ease(k / 0.9) * 54,
+        hop: k > 0.6 ? Math.abs(Math.sin((k - 0.6) * 12)) * 14 : 0,
+        tool: stage.tools[picked === 1 ? 1 : 0],
+        use: Math.min(1, t / 14),
+      };
     }
-    if (phase === "oops" || phase === "waiting") return { mood: t > 6 || phase === "waiting" ? "oops" : "idle", t: clock, dx: 0, hop: 0, tool: picked === -1 ? null : stage.tools[picked], use: phase === "waiting" ? 0 : Math.min(1, t / 10) * (t > 40 ? Math.max(0, 1 - (t - 40) / 16) : 1) };
-    if (phase === "done") return { mood: "cheer", t: clock, dx: 54, hop: Math.abs(Math.sin(t * 0.22)) * 18, tool: null, use: 0 };
+    if (phase === "oops" || phase === "waiting")
+      return {
+        mood: t > 6 || phase === "waiting" ? "oops" : "idle",
+        t: clock,
+        dx: 0,
+        hop: 0,
+        tool: picked === -1 ? null : stage.tools[picked],
+        use: phase === "waiting" ? 0 : Math.min(1, t / 10) * (t > 40 ? Math.max(0, 1 - (t - 40) / 16) : 1),
+      };
+    if (phase === "done")
+      return { mood: "cheer", t: clock, dx: 54, hop: Math.abs(Math.sin(t * 0.22)) * 18, tool: null, use: 0 };
     return { mood: "idle", t: clock, dx: 0, hop: 0, tool: null, use: 0 };
   }
 
@@ -183,7 +205,12 @@ export function choiceStoryController(level: number): Controller {
     for (let i = 0; i < 2; i += 1) drawCard(g, theme, i as 0 | 1, stage.tools[i]);
   }
 
-  function drawCard(g: CanvasRenderingContext2D, theme: Theme, i: 0 | 1, tool: (typeof STORIES)[number]["stages"][number]["tools"][number]): void {
+  function drawCard(
+    g: CanvasRenderingContext2D,
+    theme: Theme,
+    i: 0 | 1,
+    tool: (typeof STORIES)[number]["stages"][number]["tools"][number],
+  ): void {
     let x = CARDS[i];
     const isPicked = picked === i && phase !== "ask";
     const wrong = isPicked && phase !== "right";

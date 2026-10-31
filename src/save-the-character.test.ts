@@ -1,6 +1,21 @@
 import { describe, expect, it } from "vitest";
 
-import { MIN_STROKE, SPACING, SURVIVE_TICKS, beginStroke, clearStroke, extendStroke, isCalled, lengthOf, newSaveGame, playStroke, releaseStroke, saveNumbers, stepSaveGame, type Pt } from "./save-the-character.ts";
+import {
+  MIN_STROKE,
+  SPACING,
+  SURVIVE_TICKS,
+  beginStroke,
+  clearStroke,
+  extendStroke,
+  isCalled,
+  lengthOf,
+  newSaveGame,
+  playStroke,
+  releaseStroke,
+  saveNumbers,
+  stepSaveGame,
+  type Pt,
+} from "./save-the-character.ts";
 import { SAVE_THE_CHARACTER_LEVELS } from "./save-the-character.levels.ts";
 import { hashNumbers } from "./physics/geometry.ts";
 
@@ -122,7 +137,12 @@ describe("the levels", () => {
 
   it("are forgiving: moving each point of the recorded line a few units still wins", () => {
     for (const [i, level] of SAVE_THE_CHARACTER_LEVELS.entries()) {
-      for (const [dx, dy] of [[4, 0], [-4, 0], [0, -4], [0, 3]]) {
+      for (const [dx, dy] of [
+        [4, 0],
+        [-4, 0],
+        [0, -4],
+        [0, 3],
+      ]) {
         const moved: Pt[] = level.solution.map((p) => ({ x: p.x + dx, y: p.y + dy }));
         expect(playStroke(level, moved).status, `level ${i + 1} moved ${dx},${dy}`).toBe("won");
       }
@@ -132,7 +152,9 @@ describe("the levels", () => {
   it("have every danger arrive within the three seconds, and the character on a ledge", () => {
     for (const level of SAVE_THE_CHARACTER_LEVELS) {
       for (const d of level.dangers) expect(d.at).toBeLessThan(SURVIVE_TICKS - 30);
-      const ledge = level.ledges.find((l) => Math.min(l.ax, l.bx) - 20 <= level.hero.x && level.hero.x <= Math.max(l.ax, l.bx) + 20);
+      const ledge = level.ledges.find(
+        (l) => Math.min(l.ax, l.bx) - 20 <= level.hero.x && level.hero.x <= Math.max(l.ax, l.bx) + 20,
+      );
       expect(ledge).toBeDefined();
     }
   });
@@ -147,7 +169,8 @@ describe("the levels", () => {
 
 describe("determinism", () => {
   it("the same line gives the same level, bit for bit", () => {
-    const play = (): string => hashNumbers(saveNumbers(playStroke(SAVE_THE_CHARACTER_LEVELS[3], SAVE_THE_CHARACTER_LEVELS[3].solution, 150)));
+    const play = (): string =>
+      hashNumbers(saveNumbers(playStroke(SAVE_THE_CHARACTER_LEVELS[3], SAVE_THE_CHARACTER_LEVELS[3].solution, 150)));
     expect(play()).toBe(play());
     expect(play()).toBe("d67c0e05");
   });

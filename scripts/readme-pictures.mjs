@@ -17,7 +17,15 @@ const play = (lines) => (page) =>
     ${lines} })()`);
 
 /** One game, as it looks a moment after its first move. */
-const game = (id, level, lines = "m.advance(30);", extra = {}) => ({ subject: id, views: ["desk"], url: address(id, level), ready: READY, target: BOARD, prepare: play(lines), ...extra });
+const game = (id, level, lines = "m.advance(30);", extra = {}) => ({
+  subject: id,
+  views: ["desk"],
+  url: address(id, level),
+  ready: READY,
+  target: BOARD,
+  prepare: play(lines),
+  ...extra,
+});
 
 await takePictures({
   shots: [
@@ -33,7 +41,9 @@ await takePictures({
           await page.goto(`http://karakuri.test${address("tube-sort", 3, "ja")}`);
           await page.waitForSelector(READY);
           await play(`const c = m.controller.snapshot().centres[0]; press(c.x, c.y);`)(page);
-          await page.locator("#rules").evaluate((element) => window.scrollTo(0, element.getBoundingClientRect().top + window.scrollY - 8));
+          await page
+            .locator("#rules")
+            .evaluate((element) => window.scrollTo(0, element.getBoundingClientRect().top + window.scrollY - 8));
         } else {
           await play(`const p = m.controller.snapshot().pins[1].handle; press(p.x, p.y); m.advance(40);`)(page);
           await page.evaluate(() => window.scrollTo(0, 0));

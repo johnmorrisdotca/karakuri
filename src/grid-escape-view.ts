@@ -42,12 +42,14 @@ export function gridEscapeController(level: number): Controller {
     exiting = 0;
   };
 
-  const axis = (p: Point, b: number): number => (puzzle.blocks[b].dir === "h" ? (p.x - MARGIN) / CELL : (p.y - MARGIN) / CELL);
+  const axis = (p: Point, b: number): number =>
+    puzzle.blocks[b].dir === "h" ? (p.x - MARGIN) / CELL : (p.y - MARGIN) / CELL;
 
   const blockAt = (p: Point): number => {
     const col = Math.floor((p.x - MARGIN) / CELL);
     const row = Math.floor((p.y - MARGIN) / CELL);
-    for (let b = 0; b < puzzle.blocks.length; b += 1) for (const [r, c] of cellsOf(puzzle.blocks[b], state.at[b])) if (r === row && c === col) return b;
+    for (let b = 0; b < puzzle.blocks.length; b += 1)
+      for (const [r, c] of cellsOf(puzzle.blocks[b], state.at[b])) if (r === row && c === col) return b;
     return -1;
   };
 
@@ -60,7 +62,8 @@ export function gridEscapeController(level: number): Controller {
       return state.status;
     },
     get result(): Say | null {
-      if (controller.status === "won") return { key: state.moves <= fewest ? "gridWonBest" : "gridWon", values: { used: state.moves, fewest } };
+      if (controller.status === "won")
+        return { key: state.moves <= fewest ? "gridWonBest" : "gridWon", values: { used: state.moves, fewest } };
       if (controller.status === "lost") return { key: "gridLost", values: { limit } };
       return null;
     },
@@ -117,7 +120,18 @@ export function gridEscapeController(level: number): Controller {
         const w = (block.dir === "h" ? block.len : 1) * CELL;
         const h = (block.dir === "h" ? 1 : block.len) * CELL;
         const held = drag !== null && drag.block === b;
-        drawBlock(g, theme, x + 3, y + 3, w - 6, h - 6, b === puzzle.key, PIECE_COLOURS[b % PIECE_COLOURS.length], held, block.dir === "h");
+        drawBlock(
+          g,
+          theme,
+          x + 3,
+          y + 3,
+          w - 6,
+          h - 6,
+          b === puzzle.key,
+          PIECE_COLOURS[b % PIECE_COLOURS.length],
+          held,
+          block.dir === "h",
+        );
       }
       // The frame's lip is drawn over the key as it leaves, so that it seems to pass out through the wall.
       if (done) {
@@ -127,7 +141,15 @@ export function gridEscapeController(level: number): Controller {
     },
     restart: reset,
     snapshot() {
-      return { at: state.at.slice(), moves: state.moves, limit, fewest, status: state.status, keyOut: keyOut(puzzle, state.at), blocks: puzzle.blocks.length };
+      return {
+        at: state.at.slice(),
+        moves: state.moves,
+        limit,
+        fewest,
+        status: state.status,
+        keyOut: keyOut(puzzle, state.at),
+        blocks: puzzle.blocks.length,
+      };
     },
   };
 
@@ -167,7 +189,18 @@ export function gridEscapeController(level: number): Controller {
   return controller;
 }
 
-function drawBlock(g: CanvasRenderingContext2D, theme: Theme, x: number, y: number, w: number, h: number, isKey: boolean, colour: string, held: boolean, across: boolean): void {
+function drawBlock(
+  g: CanvasRenderingContext2D,
+  theme: Theme,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  isKey: boolean,
+  colour: string,
+  held: boolean,
+  across: boolean,
+): void {
   const base = isKey ? theme.gold : colour;
   // A soft shadow made of two plain rounded rectangles: a blurred shadow costs a great deal on a phone and in software rendering.
   const lift = held ? 5 : 2;

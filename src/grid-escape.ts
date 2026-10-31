@@ -47,7 +47,8 @@ export const startAt = (block: GridBlock): number => (block.dir === "h" ? block.
 /** The grid of block indices (or -1) for blocks at the given offsets. */
 function occupancy(blocks: readonly GridBlock[], at: readonly number[]): Int8Array {
   const grid = new Int8Array(GRID_SIZE * GRID_SIZE).fill(-1);
-  for (let b = 0; b < blocks.length; b += 1) for (const [r, c] of cellsOf(blocks[b], at[b])) grid[r * GRID_SIZE + c] = b;
+  for (let b = 0; b < blocks.length; b += 1)
+    for (const [r, c] of cellsOf(blocks[b], at[b])) grid[r * GRID_SIZE + c] = b;
   return grid;
 }
 
@@ -72,14 +73,22 @@ export function parseGrid(rows: readonly string[]): GridPuzzle | null {
   const blocks: GridBlock[] = [];
   let key = -1;
   let exitRow = -1;
-  for (const [ch, list] of [...cells.entries()].sort((a, b) => (a[0] === "K" ? -1 : b[0] === "K" ? 1 : a[0] < b[0] ? -1 : 1))) {
+  for (const [ch, list] of [...cells.entries()].sort((a, b) =>
+    a[0] === "K" ? -1 : b[0] === "K" ? 1 : a[0] < b[0] ? -1 : 1,
+  )) {
     if (list.length < 2 || list.length > 3) return null;
     const horizontal = list.every(([r]) => r === list[0][0]);
     const vertical = list.every(([, c]) => c === list[0][1]);
     if (horizontal === vertical) return null;
     const line = list.map(([r, c]) => (horizontal ? c : r)).sort((a, b) => a - b);
     for (let i = 1; i < line.length; i += 1) if (line[i] !== line[i - 1] + 1) return null;
-    const block: GridBlock = { id: blocks.length, row: Math.min(...list.map(([r]) => r)), col: Math.min(...list.map(([, c]) => c)), len: list.length as 2 | 3, dir: horizontal ? "h" : "v" };
+    const block: GridBlock = {
+      id: blocks.length,
+      row: Math.min(...list.map(([r]) => r)),
+      col: Math.min(...list.map(([, c]) => c)),
+      len: list.length as 2 | 3,
+      dir: horizontal ? "h" : "v",
+    };
     if (ch === "K") {
       if (!horizontal || list.length !== 2) return null;
       key = block.id;
@@ -104,13 +113,15 @@ export function gridRows(puzzle: GridPuzzle, at: readonly number[] = puzzle.bloc
 }
 
 /** Whether the key is at the exit at these offsets. */
-export const keyOut = (puzzle: GridPuzzle, at: readonly number[]): boolean => at[puzzle.key] + puzzle.blocks[puzzle.key].len === GRID_SIZE;
+export const keyOut = (puzzle: GridPuzzle, at: readonly number[]): boolean =>
+  at[puzzle.key] + puzzle.blocks[puzzle.key].len === GRID_SIZE;
 
 /** How far each way a block can slide from where it is: the lowest and highest offset it can reach along its lane. */
 export function reach(puzzle: GridPuzzle, at: readonly number[], b: number): { low: number; high: number } {
   const block = puzzle.blocks[b];
   const grid = occupancy(puzzle.blocks, at);
-  const cellAt = (offset: number): number => (block.dir === "h" ? grid[block.row * GRID_SIZE + offset] : grid[offset * GRID_SIZE + block.col]);
+  const cellAt = (offset: number): number =>
+    block.dir === "h" ? grid[block.row * GRID_SIZE + offset] : grid[offset * GRID_SIZE + block.col];
   let low = at[b];
   while (low > 0 && cellAt(low - 1) === -1) low -= 1;
   let high = at[b];
@@ -148,7 +159,10 @@ export interface GridSolution {
  * the key out. Exhaustive, so the number is a proof. A move is one block slid any number of cells. A position is one number (its
  * offsets in base 6), so that a million positions cost a few megabytes and a second.
  */
-export function solveGrid(puzzle: GridPuzzle, from: readonly number[] = puzzle.blocks.map(startAt)): GridSolution | null {
+export function solveGrid(
+  puzzle: GridPuzzle,
+  from: readonly number[] = puzzle.blocks.map(startAt),
+): GridSolution | null {
   const n = puzzle.blocks.length;
   const encode = (at: readonly number[]): number => {
     let code = 0;

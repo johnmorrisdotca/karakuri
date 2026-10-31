@@ -62,7 +62,8 @@ function mutate(rows: string[]): string[] | null {
     // Move one block along its lane, or turn the key.
     const which = random() < 0.12 ? "K" : letters[pick(letters.length)];
     const cells: [number, number][] = [];
-    for (let y = 0; y < GRID_SIZE; y += 1) for (let x = 0; x < GRID_SIZE; x += 1) if (grid[y][x] === which) cells.push([y, x]);
+    for (let y = 0; y < GRID_SIZE; y += 1)
+      for (let x = 0; x < GRID_SIZE; x += 1) if (grid[y][x] === which) cells.push([y, x]);
     for (const [y, x] of cells) grid[y][x] = ".";
     const horizontal = cells.every(([y]) => y === cells[0][0]);
     const len = cells.length;
@@ -83,11 +84,12 @@ function mutate(rows: string[]): string[] | null {
     for (const [y, x] of placed) grid[y][x] = which;
   }
   // The key's row must not hold a horizontal block (it would never move out of the lane).
-  for (let x = 0; x < GRID_SIZE; x += 1) if (grid[2][x] !== "." && grid[2][x] !== "K") {
-    const ch = grid[2][x];
-    const across = [x - 1, x + 1].some((nx) => nx >= 0 && nx < GRID_SIZE && grid[2][nx] === ch);
-    if (across) return null;
-  }
+  for (let x = 0; x < GRID_SIZE; x += 1)
+    if (grid[2][x] !== "." && grid[2][x] !== "K") {
+      const ch = grid[2][x];
+      const across = [x - 1, x + 1].some((nx) => nx >= 0 && nx < GRID_SIZE && grid[2][nx] === ch);
+      if (across) return null;
+    }
   return grid.map((row) => row.join(""));
 }
 

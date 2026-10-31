@@ -1,6 +1,19 @@
 import { describe, expect, it } from "vitest";
 
-import { TUBE_CAPACITY, canPour, findDeadEnd, isSolved, isUseful, newTubeGame, pour, pourTubes, runOf, solveTubes, usefulPours, type TubeState } from "./tube-sort.ts";
+import {
+  TUBE_CAPACITY,
+  canPour,
+  findDeadEnd,
+  isSolved,
+  isUseful,
+  newTubeGame,
+  pour,
+  pourTubes,
+  runOf,
+  solveTubes,
+  usefulPours,
+  type TubeState,
+} from "./tube-sort.ts";
 import { TUBE_SORT_LEVELS } from "./tube-sort.levels.ts";
 import { tubeLayout } from "./tube-sort-view.ts";
 
@@ -24,7 +37,19 @@ describe("a pour", () => {
   it("moves the whole top run that fits, and no more", () => {
     expect(pourTubes([[0, 1, 1, 1], [1]], 0, 1)).toEqual([[0], [1, 1, 1, 1]]);
     // Room for two of the three.
-    expect(pourTubes([[0, 1, 1, 1], [1, 1]], 0, 1)).toEqual([[0, 1], [1, 1, 1, 1]]);
+    expect(
+      pourTubes(
+        [
+          [0, 1, 1, 1],
+          [1, 1],
+        ],
+        0,
+        1,
+      ),
+    ).toEqual([
+      [0, 1],
+      [1, 1, 1, 1],
+    ]);
     expect(runOf([0, 1, 1, 1])).toBe(3);
     expect(runOf([])).toBe(0);
   });
@@ -70,7 +95,15 @@ describe("a game", () => {
     expect(state.status).toBe("playing");
     state = pour(state, 1, 3);
     expect(state.status).toBe("playing");
-    state = { ...state, tubes: [[0, 0, 1, 1], [1, 1, 2, 2], [2, 2, 0, 0]], status: "playing" };
+    state = {
+      ...state,
+      tubes: [
+        [0, 0, 1, 1],
+        [1, 1, 2, 2],
+        [2, 2, 0, 0],
+      ],
+      status: "playing",
+    };
     expect(usefulPours(state.tubes)).toEqual([]);
   });
 
@@ -136,10 +169,11 @@ describe("the layout", () => {
         expect(p.y).toBeGreaterThanOrEqual(8);
         expect(p.y + 150).toBeLessThanOrEqual(412);
       }
-      for (let a = 0; a < n; a += 1) for (let b = a + 1; b < n; b += 1) {
-        const apart = Math.abs(places[a].x - places[b].x) >= 46 || Math.abs(places[a].y - places[b].y) >= 150;
-        expect(apart, `${a} and ${b} of ${n}`).toBe(true);
-      }
+      for (let a = 0; a < n; a += 1)
+        for (let b = a + 1; b < n; b += 1) {
+          const apart = Math.abs(places[a].x - places[b].x) >= 46 || Math.abs(places[a].y - places[b].y) >= 150;
+          expect(apart, `${a} and ${b} of ${n}`).toBe(true);
+        }
     }
   });
 });

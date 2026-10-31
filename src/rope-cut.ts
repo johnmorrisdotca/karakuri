@@ -70,7 +70,8 @@ const WIN_LINGER = 14;
 /** Starts a game of a level: builds the ropes and the load, and lets them hang still before the first step. */
 export function newRopeGame(level: RopeLevel): RopeGame {
   const rig = createRig({ gravity: 900, damping: 0.9992, iterations: 28, grip: 0.9, bounce: 0.3 });
-  for (const p of level.platforms) rig.statics.push({ ax: p.ax, ay: p.ay, bx: p.bx, by: p.by, r: p.r ?? 4 } as WorldShape);
+  for (const p of level.platforms)
+    rig.statics.push({ ax: p.ax, ay: p.ay, bx: p.bx, by: p.by, r: p.r ?? 4 } as WorldShape);
   const load = addNode(rig, level.load.x, level.load.y, 0.1, level.load.r);
   const ropes = level.anchors.map((a): RopeInPlay => {
     const length = Math.hypot(level.load.x - a.x, level.load.y - a.y);
@@ -92,7 +93,8 @@ export function newRopeGame(level: RopeLevel): RopeGame {
 const inside = (a: Area, x: number, y: number): boolean => x >= a.x && x <= a.x + a.w && y >= a.y && y <= a.y + a.h;
 
 /** The distance from a point to an area (0 inside it). */
-const reachTo = (a: Area, x: number, y: number): number => Math.hypot(Math.max(a.x - x, 0, x - (a.x + a.w)), Math.max(a.y - y, 0, y - (a.y + a.h)));
+const reachTo = (a: Area, x: number, y: number): number =>
+  Math.hypot(Math.max(a.x - x, 0, x - (a.x + a.w)), Math.max(a.y - y, 0, y - (a.y + a.h)));
 
 /** Cuts one link of one rope, if it is still there. Gives back whether it was. */
 export function cutLink(game: RopeGame, rope: number, link: number): boolean {
@@ -134,7 +136,8 @@ export function stepRopeGame(game: RopeGame): void {
     game.status = "won";
     return;
   }
-  if (load.y > pitY || load.x < -30 || load.x > 390 || pits.some((p) => inside(p, load.x, load.y))) game.status = "lost";
+  if (load.y > pitY || load.x < -30 || load.x > 390 || pits.some((p) => inside(p, load.x, load.y)))
+    game.status = "lost";
 }
 
 /** Whether a game has been decided and the wait before it is called is over. */

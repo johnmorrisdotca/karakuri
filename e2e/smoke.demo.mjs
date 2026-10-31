@@ -20,7 +20,13 @@ test("a page that keeps room round the board can say how much height it may take
     host.style.width = "900px";
     document.body.append(host);
     const stageHeight = (room) => {
-      const mount = mountKarakuri(host, { game: "tube-sort", level: 1, ui: "board", clock: "manual", ...(room === undefined ? {} : { room: () => room }) });
+      const mount = mountKarakuri(host, {
+        game: "tube-sort",
+        level: 1,
+        ui: "board",
+        clock: "manual",
+        ...(room === undefined ? {} : { room: () => room }),
+      });
       const height = host.querySelector(".kk-stage").getBoundingClientRect().height;
       mount.destroy();
       return height;
@@ -43,7 +49,9 @@ test("a page that keeps room round the board can say how much height it may take
   expect(errors).toEqual([]);
 });
 
-test("the language chooser speaks Japanese and the choice survives a reload, as the family's demos do", async ({ page }) => {
+test("the language chooser speaks Japanese and the choice survives a reload, as the family's demos do", async ({
+  page,
+}) => {
   const errors = await open(page, "?game=grid-escape");
   await page.locator('[data-lang="ja"]').click();
   await expect(page.locator(at("game-grid-escape"))).toHaveText("ブロック脱出");
@@ -59,7 +67,9 @@ test("the page does not scroll sideways at the width it is made for", async ({ p
   expect(over).toBeLessThanOrEqual(0);
 });
 
-test("a status event carries the level's line as words, in the language chosen, for a page that draws its own", async ({ page }) => {
+test("a status event carries the level's line as words, in the language chosen, for a page that draws its own", async ({
+  page,
+}) => {
   const errors = await open(page, "?game=tube-sort");
   await page.evaluate(() => {
     window.__events = [];

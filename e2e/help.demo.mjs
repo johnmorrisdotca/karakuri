@@ -5,7 +5,9 @@ import { at, open } from "./demo.mjs";
 
 // The Help switch in the family header (scripts/family-template.mjs): off, the page is as it was; on, every
 // option row says in one line what it does, in the page's language, and every control in it has hover words.
-test("Help is off at first, and on it shows a line under each option row, in either language, without resizing the play area", async ({ page }) => {
+test("Help is off at first, and on it shows a line under each option row, in either language, without resizing the play area", async ({
+  page,
+}) => {
   const errors = await open(page);
   const lines = page.locator(".fam-help");
   const rows = page.locator("[data-help-en]");
@@ -19,8 +21,16 @@ test("Help is off at first, and on it shows a line under each option row, in eit
   for (const row of await rows.all()) {
     if (await row.isVisible()) {
       const shown = await row.evaluate((el) => {
-        const line = el.classList.contains("fam-seg") || el.hasAttribute("data-help-after") ? el.nextElementSibling : el.querySelector(":scope > .fam-help");
-        return line !== null && line.classList.contains("fam-help") && window.getComputedStyle(line).display !== "none" && line.textContent.length > 10;
+        const line =
+          el.classList.contains("fam-seg") || el.hasAttribute("data-help-after")
+            ? el.nextElementSibling
+            : el.querySelector(":scope > .fam-help");
+        return (
+          line !== null &&
+          line.classList.contains("fam-help") &&
+          window.getComputedStyle(line).display !== "none" &&
+          line.textContent.length > 10
+        );
       });
       expect(shown).toBe(true);
     }
@@ -30,7 +40,9 @@ test("Help is off at first, and on it shows a line under each option row, in eit
   const after = await surface.boundingBox();
   // The play area keeps its width (to a fraction of a pixel); the lines sit above it.
   expect(Math.abs(after.width - before.width)).toBeLessThan(0.5);
-  const untitled = await page.evaluate(() => [...document.querySelectorAll("[data-help-en] button")].filter((b) => !b.title).map((b) => b.textContent.trim()));
+  const untitled = await page.evaluate(() =>
+    [...document.querySelectorAll("[data-help-en] button")].filter((b) => !b.title).map((b) => b.textContent.trim()),
+  );
   expect(untitled).toEqual([]);
   const english = await lines.first().textContent();
   await page.locator('[data-lang="ja"]').click();

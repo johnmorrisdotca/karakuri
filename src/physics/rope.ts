@@ -84,8 +84,19 @@ export interface Rig {
  * console.log(createRig({gravity:0}).gravity);
  * ```
  */
-export function createRig(options: { gravity?: number; damping?: number; iterations?: number; grip?: number; bounce?: number } = {}): Rig {
-  return { nodes: [], links: [], statics: [], gravity: options.gravity ?? 900, damping: options.damping ?? 0.999, iterations: options.iterations ?? 24, grip: options.grip ?? 0.9, bounce: options.bounce ?? 0.25 };
+export function createRig(
+  options: { gravity?: number; damping?: number; iterations?: number; grip?: number; bounce?: number } = {},
+): Rig {
+  return {
+    nodes: [],
+    links: [],
+    statics: [],
+    gravity: options.gravity ?? 900,
+    damping: options.damping ?? 0.999,
+    iterations: options.iterations ?? 24,
+    grip: options.grip ?? 0.9,
+    bounce: options.bounce ?? 0.25,
+  };
 }
 
 /** Adds a node and gives back its index.
@@ -153,7 +164,15 @@ export function addLink(rig: Rig, a: number, b: number, length_?: number): numbe
  * console.log(addRope(createRig({gravity:0}),0,0,10,0,2).links.length);
  * ```
  */
-export function addRope(rig: Rig, ax: number, ay: number, bx: number, by: number, pieces: number, end?: number): { nodes: number[]; links: number[] } {
+export function addRope(
+  rig: Rig,
+  ax: number,
+  ay: number,
+  bx: number,
+  by: number,
+  pieces: number,
+  end?: number,
+): { nodes: number[]; links: number[] } {
   const nodes: number[] = [];
   const links: number[] = [];
   for (let i = 0; i <= pieces; i += 1) {
@@ -271,7 +290,14 @@ export function stepRig(rig: Rig, dt: number): void {
  * console.log(linkCrossed(rig,5,-5,5,5));
  * ```
  */
-export function linkCrossed(rig: Rig, x1: number, y1: number, x2: number, y2: number, among?: readonly number[]): number {
+export function linkCrossed(
+  rig: Rig,
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  among?: readonly number[],
+): number {
   let best = -1;
   let bestAt = Infinity;
   const indices = among ?? rig.links.map((_, i) => i);

@@ -62,7 +62,8 @@ export const distance = (ax: number, ay: number, bx: number, by: number): number
  * console.log(distanceSquared(0,0,3,4));
  * ```
  */
-export const distanceSquared = (ax: number, ay: number, bx: number, by: number): number => (bx - ax) * (bx - ax) + (by - ay) * (by - ay);
+export const distanceSquared = (ax: number, ay: number, bx: number, by: number): number =>
+  (bx - ax) * (bx - ax) + (by - ay) * (by - ay);
 
 /** `value` held between `low` and `high`.
  *
@@ -77,7 +78,8 @@ export const distanceSquared = (ax: number, ay: number, bx: number, by: number):
  * console.log(clamp(20,0,10));
  * ```
  */
-export const clamp = (value: number, low: number, high: number): number => (value < low ? low : value > high ? high : value);
+export const clamp = (value: number, low: number, high: number): number =>
+  value < low ? low : value > high ? high : value;
 
 /** The point on the segment a to b nearest to (px, py), and how far along the segment it is (0 to 1).
  *
@@ -95,7 +97,14 @@ export const clamp = (value: number, low: number, high: number): number => (valu
  * console.log(closestOnSegment(3,4,0,0,10,0));
  * ```
  */
-export function closestOnSegment(px: number, py: number, ax: number, ay: number, bx: number, by: number): { x: number; y: number; t: number } {
+export function closestOnSegment(
+  px: number,
+  py: number,
+  ax: number,
+  ay: number,
+  bx: number,
+  by: number,
+): { x: number; y: number; t: number } {
   const dx = bx - ax;
   const dy = by - ay;
   const along = dx * dx + dy * dy;
@@ -142,13 +151,23 @@ export function distanceToSegment(px: number, py: number, ax: number, ay: number
  * console.log(segmentsIntersect(0,0,10,10,0,10,10,0));
  * ```
  */
-export function segmentsIntersect(a1x: number, a1y: number, a2x: number, a2y: number, b1x: number, b1y: number, b2x: number, b2y: number): boolean {
+export function segmentsIntersect(
+  a1x: number,
+  a1y: number,
+  a2x: number,
+  a2y: number,
+  b1x: number,
+  b1y: number,
+  b2x: number,
+  b2y: number,
+): boolean {
   const d1 = (a2x - a1x) * (b1y - a1y) - (a2y - a1y) * (b1x - a1x);
   const d2 = (a2x - a1x) * (b2y - a1y) - (a2y - a1y) * (b2x - a1x);
   const d3 = (b2x - b1x) * (a1y - b1y) - (b2y - b1y) * (a1x - b1x);
   const d4 = (b2x - b1x) * (a2y - b1y) - (b2y - b1y) * (a2x - b1x);
   if (((d1 > 0 && d2 < 0) || (d1 < 0 && d2 > 0)) && ((d3 > 0 && d4 < 0) || (d3 < 0 && d4 > 0))) return true;
-  const on = (px: number, py: number, qx: number, qy: number, rx: number, ry: number): boolean => Math.min(px, qx) <= rx && rx <= Math.max(px, qx) && Math.min(py, qy) <= ry && ry <= Math.max(py, qy);
+  const on = (px: number, py: number, qx: number, qy: number, rx: number, ry: number): boolean =>
+    Math.min(px, qx) <= rx && rx <= Math.max(px, qx) && Math.min(py, qy) <= ry && ry <= Math.max(py, qy);
   if (d1 === 0 && on(a1x, a1y, a2x, a2y, b1x, b1y)) return true;
   if (d2 === 0 && on(a1x, a1y, a2x, a2y, b2x, b2y)) return true;
   if (d3 === 0 && on(b1x, b1y, b2x, b2y, a1x, a1y)) return true;
@@ -174,7 +193,16 @@ export function segmentsIntersect(a1x: number, a1y: number, a2x: number, a2y: nu
  * console.log(closestBetweenSegments(0,0,10,0,0,5,10,5));
  * ```
  */
-export function closestBetweenSegments(a1x: number, a1y: number, a2x: number, a2y: number, b1x: number, b1y: number, b2x: number, b2y: number): { ax: number; ay: number; bx: number; by: number; distance: number } {
+export function closestBetweenSegments(
+  a1x: number,
+  a1y: number,
+  a2x: number,
+  a2y: number,
+  b1x: number,
+  b1y: number,
+  b2x: number,
+  b2y: number,
+): { ax: number; ay: number; bx: number; by: number; distance: number } {
   if (segmentsIntersect(a1x, a1y, a2x, a2y, b1x, b1y, b2x, b2y)) {
     // They cross: say where, by the parameter on A, so that the contact has a place.
     const rx = a2x - a1x;
@@ -205,7 +233,9 @@ export function closestBetweenSegments(a1x: number, a1y: number, a2x: number, a2
     }
   }
   const d = Math.sqrt(bestD);
-  return best.swap ? { ax: best.from.x, ay: best.from.y, bx: best.px, by: best.py, distance: d } : { ax: best.px, ay: best.py, bx: best.from.x, by: best.from.y, distance: d };
+  return best.swap
+    ? { ax: best.from.x, ay: best.from.y, bx: best.px, by: best.py, distance: d }
+    : { ax: best.px, ay: best.py, bx: best.from.x, by: best.from.y, distance: d };
 }
 
 /** Whether (px, py) is inside the polygon (an even-odd test over its vertices, in order).

@@ -5,16 +5,26 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const site = join(dirname(fileURLToPath(import.meta.url)), "..", "site");
-const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml" };
+const TYPES = {
+  ".html": "text/html",
+  ".js": "text/javascript",
+  ".css": "text/css",
+  ".json": "application/json",
+  ".svg": "image/svg+xml",
+};
 
 /** Serve `site/` to a page at http://karakuri.test/. */
 export async function serve(page) {
-  if (!existsSync(join(site, "index.html"))) throw new Error("site/ is not built: run `pnpm site` first (`pnpm test:demo` does)");
+  if (!existsSync(join(site, "index.html")))
+    throw new Error("site/ is not built: run `pnpm site` first (`pnpm test:demo` does)");
   await page.route("http://karakuri.test/**", (route) => {
     const { pathname } = new URL(route.request().url());
     const file = join(site, pathname.endsWith("/") ? `${pathname}index.html` : pathname);
     if (!existsSync(file)) return route.fulfill({ status: 404, body: "" });
-    return route.fulfill({ body: readFileSync(file), contentType: TYPES[file.slice(file.lastIndexOf("."))] ?? "application/octet-stream" });
+    return route.fulfill({
+      body: readFileSync(file),
+      contentType: TYPES[file.slice(file.lastIndexOf("."))] ?? "application/octet-stream",
+    });
   });
 }
 
@@ -35,12 +45,17 @@ export async function open(page, query = "") {
   await page.goto(`http://karakuri.test/${query}`);
   await page.waitForSelector(`${at("board")} canvas.kk-canvas`);
   // The whole board in view, so that a finger put down on it lands on the screen.
-  await page.evaluate(() => document.querySelector('[data-testid="board"] .kk-stage').scrollIntoView({ block: "center" }));
+  await page.evaluate(() =>
+    document.querySelector('[data-testid="board"] .kk-stage').scrollIntoView({ block: "center" }),
+  );
   return errors;
 }
 
 /** The mounted game's handle, for reading its state: `await mount(page, (m) => m.controller.snapshot())`. */
-export const read = (page, fn) => page.evaluate(`(${typeof fn === "string" ? fn : fn.toString()})(document.querySelector('[data-testid="board"]').karakuri)`);
+export const read = (page, fn) =>
+  page.evaluate(
+    `(${typeof fn === "string" ? fn : fn.toString()})(document.querySelector('[data-testid="board"]').karakuri)`,
+  );
 
 /** Whether this project drives a real touch screen (Chromium on a phone): its fingers come through the protocol, as touch pointer events. */
 export const isTouch = (testInfo) => testInfo.project.name.startsWith("chromium-phone");
@@ -54,7 +69,10 @@ export async function drag(page, testInfo, points, { stepsBetween = 4, hold = 0 
   for (let i = 1; i < points.length; i += 1) {
     for (let s = 1; s <= stepsBetween; s += 1) {
       const t = s / stepsBetween;
-      path.push({ x: points[i - 1].x + (points[i].x - points[i - 1].x) * t, y: points[i - 1].y + (points[i].y - points[i - 1].y) * t });
+      path.push({
+        x: points[i - 1].x + (points[i].x - points[i - 1].x) * t,
+        y: points[i - 1].y + (points[i].y - points[i - 1].y) * t,
+      });
     }
   }
   if (isTouch(testInfo)) {

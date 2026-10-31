@@ -34,13 +34,17 @@ describe("the stories", () => {
         expect(table[`story_${i + 1}`], `${lang} story ${i + 1}`).toBeTruthy();
         story.stages.forEach((stage, k) => {
           const key = stageKey(i, k);
-          for (const suffix of ["prompt", "right", "wrong"]) expect(table[`${key}_${suffix}`], `${lang} ${key}_${suffix}`).toBeTruthy();
+          for (const suffix of ["prompt", "right", "wrong"])
+            expect(table[`${key}_${suffix}`], `${lang} ${key}_${suffix}`).toBeTruthy();
           for (const tool of stage.tools) expect(table[`tool_${tool}`], `${lang} tool ${tool}`).toBeTruthy();
         });
       }
     }
-    const english = Object.entries(KARAKURI_STRINGS.en).filter(([key]) => /^s\d\d_wrong$/.test(key)).map(([, text]) => text.toLowerCase());
-    for (const text of english) expect(text).not.toMatch(/\b(kill|die|dead|blood|hurt|pain|bleed|hit|punch|stab|shoot)\b/);
+    const english = Object.entries(KARAKURI_STRINGS.en)
+      .filter(([key]) => /^s\d\d_wrong$/.test(key))
+      .map(([, text]) => text.toLowerCase());
+    for (const text of english)
+      expect(text).not.toMatch(/\b(kill|die|dead|blood|hurt|pain|bleed|hit|punch|stab|shoot)\b/);
   });
 });
 

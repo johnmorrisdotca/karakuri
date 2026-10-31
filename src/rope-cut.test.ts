@@ -1,6 +1,16 @@
 import { describe, expect, it } from "vitest";
 
-import { cutLink, cutSwipe, isCalled, isMoving, newRopeGame, playCuts, ropeNumbers, stepRopeGame, type CutPlan } from "./rope-cut.ts";
+import {
+  cutLink,
+  cutSwipe,
+  isCalled,
+  isMoving,
+  newRopeGame,
+  playCuts,
+  ropeNumbers,
+  stepRopeGame,
+  type CutPlan,
+} from "./rope-cut.ts";
 import { ROPE_CUT_LEVELS } from "./rope-cut.levels.ts";
 import { hashNumbers } from "./physics/geometry.ts";
 

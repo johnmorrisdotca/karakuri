@@ -89,7 +89,7 @@
     "test": "vitest run",
     "test:package": "pnpm build && node scripts/check-package.mjs",
     "family:readme": "node scripts/family-readme.mjs",
-    "check": "pnpm lint && pnpm typecheck && pnpm test",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm check:size",
     "prepublishOnly": "pnpm check && pnpm build",
     "site": "pnpm build && node scripts/site.mjs",
     "test:demo": "pnpm site && node scripts/docs-site.mjs build && playwright test",
@@ -99,7 +99,8 @@
     "docs:site": "pnpm build && node scripts/docs-site.mjs build",
     "docs:check": "pnpm build && node scripts/docs-site.mjs check",
     "size": "node scripts/docs-site.mjs size",
-    "format": "biome check --write ."
+    "format": "biome check --write .",
+    "check:size": "node scripts/check-size.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.4",

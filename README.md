@@ -685,7 +685,7 @@ Ideas, bug reports and pull requests are welcome in the [issues](https://github.
 
 ## Changes
 
-Every release is written up in [CHANGELOG.md](./CHANGELOG.md). The latest release, 0.2.0, adds the games as elements with the standard embed attributes, keyboard play, the shared embed builder, and the documentation site with a checked example for every export.
+Every release is written up in [CHANGELOG.md](./CHANGELOG.md). The latest release, 0.2.1, changes nothing a player sees.
 
 ## Licence
 

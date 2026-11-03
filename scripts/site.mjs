@@ -13,8 +13,11 @@ import {
   familyHeader,
   familyUnreviewed,
 } from "./family-template.mjs";
+import { publishThumbnails, thumbnailHead } from "./family-thumbnail.mjs";
 
 const id = "karakuri";
+const ALT =
+  "Karakuri: three of its puzzle boards, Pin Rescue with water running onto lava, Tube Sort's coloured blocks and Nuts and Bolts' screwed plates.";
 const ICON =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232f5d4a'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='%23f3efe4'%3E%E3%81%8B%E3%82%89%3C/text%3E%3C/svg%3E";
 
@@ -39,6 +42,7 @@ const page = `<!doctype html>
       ogDescription:
         "Eight small puzzle games, some with physics, each with levels that step up. Play by pointer or keyboard.",
     })}
+    ${thumbnailHead(JSON.parse(readFileSync("package.json", "utf8")), { alt: ALT })}
     <link rel="icon" href="${ICON}" />
     <link rel="stylesheet" href="family.css" />
     <link rel="stylesheet" href="karakuri.css" />
@@ -92,6 +96,8 @@ mkdirSync("site", { recursive: true });
 cpSync("demo", "site", { recursive: true });
 cpSync("dist", "site/dist", { recursive: true });
 writeFileSync("site/index.html", page);
+// The family's card, dark card and icon, at <site>/thumbnail.png, thumbnail-dark.png and icon.png.
+publishThumbnails(".", "site");
 // The API reference, made from the source: every export of every entry point.
 writeFileSync("site/api.css", API_CSS);
 writeFileSync("site/api.html", apiPage({ id, name: "Karakuri", icon: ICON }));

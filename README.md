@@ -1,3 +1,5 @@
+<p align="center"><a href="https://johnmorrisdotca.github.io/karakuri/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/johnmorrisdotca/karakuri/main/docs/images/thumbnail-dark.png"><img src="https://raw.githubusercontent.com/johnmorrisdotca/karakuri/main/docs/images/thumbnail.png" alt="Karakuri: three of its puzzle boards, Pin Rescue with water running onto lava, Tube Sort's coloured blocks and Nuts and Bolts' screwed plates." width="1200"></picture></a></p>
+
 <h1 align="center">Karakuri <sub>からくり</sub> — Physics and hyper-casual puzzle games</h1>
 
 <p align="center"><strong>Eight small puzzle games for JavaScript and TypeScript.</strong><br>

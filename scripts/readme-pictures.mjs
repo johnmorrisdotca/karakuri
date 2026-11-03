@@ -59,4 +59,46 @@ await takePictures({
     game("tube-sort", 3, `const c = m.controller.snapshot().centres[0]; press(c.x, c.y);`),
     game("choice-story", 1),
   ],
+  // The family's thumbnail, dark thumbnail and icon (scripts/family-thumbnail.mjs): three of the games' boards as their
+  // own pictures show them (Pin Rescue with its second pin pulled, Tube Sort and Nuts and Bolts), each the canvas the
+  // game drew on its board's own ground; the icon is the top row of Tube Sort's tubes.
+  thumbnail: {
+    url: address("pin-rescue", 2),
+    ready: READY,
+    target: "#thumbnail-stage",
+    icon: { target: "#thumbnail-icon" },
+    label: "Karakuri からくり",
+    async prepare(page) {
+      const boards = [];
+      for (const [id, level, lines] of [
+        ["pin-rescue", 2, `const p = m.controller.snapshot().pins[1].handle; press(p.x, p.y); m.advance(40);`],
+        ["tube-sort", 3, "m.advance(30);"],
+        ["nuts-and-bolts", 2, "m.advance(30);"],
+      ]) {
+        await page.goto(`http://karakuri.test${address(id, level)}`);
+        await page.waitForSelector(READY);
+        await play(lines)(page);
+        boards.push(
+          await page.locator(`${BOARD} .kk-stage`).evaluate((stage) => {
+            const look = getComputedStyle(stage);
+            const canvas = stage.querySelector("canvas");
+            return {
+              src: canvas.toDataURL("image/png"),
+              ground: look.backgroundColor,
+              ring: look.boxShadow,
+            };
+          }),
+        );
+      }
+      await page.evaluate((drawn) => {
+        const board = ({ src, ground, ring }, style) =>
+          `<div style="border-radius:14px;overflow:hidden;background:${ground};box-shadow:${ring};${style}"><img src="${src}" alt="" style="display:block;width:100%"></div>`;
+        const stage = `<div id="thumbnail-stage" style="display:flex;gap:36px;align-items:center;padding:8px;width:max-content">${drawn.map((one) => board(one, "width:330px")).join("")}</div>`;
+        const tubes = drawn[1];
+        const icon = `<div id="thumbnail-icon" style="width:420px;height:340px;padding:8px"><div style="width:420px;height:340px;border-radius:14px;overflow:hidden;background:${tubes.ground};box-shadow:${tubes.ring};position:relative"><img src="${tubes.src}" alt="" style="position:absolute;width:640px;left:-110px;top:-44px"></div></div>`;
+        document.body.replaceChildren();
+        document.body.insertAdjacentHTML("beforeend", stage + icon);
+      }, boards);
+    },
+  },
 });
